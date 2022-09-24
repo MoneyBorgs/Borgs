@@ -30,6 +30,7 @@ If you have a different setup, your mileage with the following instructions may 
 
 To run your website, in your VM, go into the repository directory and issue the following commands:
 ```
+cd Borgs/borgs-backend
 source env/bin/activate
 flask run
 ```
