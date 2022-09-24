@@ -1,24 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import { RouterContext, RouterView } from 'mobx-state-router';
+import { initRouter } from './router/initRouter';
+import { viewMap } from './router/viewMap';
 
 function App() {
+
+  const routerStore = initRouter();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterContext.Provider value={routerStore}>
+      <RouterView viewMap={viewMap} />
+    </RouterContext.Provider>
   );
 }
 
