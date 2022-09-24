@@ -5,6 +5,9 @@ Originally created by [Rickard Stureborg](http://www.rickard.stureborg.com) and 
 Amended for Fall 2022.
 
 We assume you are in your class VM.
+
+# NOTE the website is http://vcm-28553.vm.duke.edu:5000/
+
 If you have a different setup, your mileage with the following instructions may vary.
 
 ## Installing the Current Skeleton
