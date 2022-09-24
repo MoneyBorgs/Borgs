@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useRouterStore } from 'mobx-state-router';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,12 +15,30 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+let routerStore;
+const pages = [
+	{
+		key: 'dashboard',
+		displayName: 'Dashboard',
+		onClick: () => {
+			routerStore.goTo('mainpage');
+		}
+	},
+	{
+		key: 'reports',
+		displayName: 'Reports',
+		onClick: () => {
+			routerStore.goTo('reports');
+		}
+	},
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+	routerStore = useRouterStore()
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -88,8 +108,8 @@ const ResponsiveAppBar = () => {
 							}}
 						>
 							{pages.map((page) => (
-								<MenuItem key={page} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">{page}</Typography>
+								<MenuItem key={page.key} onClick={handleCloseNavMenu}>
+									<Typography textAlign="center">{page.displayName}</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -116,11 +136,11 @@ const ResponsiveAppBar = () => {
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map((page) => (
 							<Button
-								key={page}
-								onClick={handleCloseNavMenu}
+								key={page.key}
+								onClick={page.onClick}
 								sx={{ my: 2, color: 'white', display: 'block' }}
 							>
-								{page}
+								{page.displayName}
 							</Button>
 						))}
 					</Box>

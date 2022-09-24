@@ -13,6 +13,10 @@ export const routes = [
 		pattern: '/',
 	},
 	{
+		name: 'reports',
+		pattern: '/reports'
+	},
+	{
 		name: 'notFound',
 		pattern: '/not-found',
 	},
