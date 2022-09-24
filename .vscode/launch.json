@@ -5,11 +5,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "chrome",
+			"name": "Launch Chrome for debugging",
 			"request": "launch",
-			"name": "Launch Chrome against localhost",
-			"url": "http://localhost:8080",
+			"type": "chrome",
+			"url": "http://localhost:3000",
 			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"command": "npm start",
+			"name": "Run React App",
+			"request": "launch",
+			"type": "node-terminal",
+			"cwd": "${workspaceFolder}/borgs-frontend"
 		}
 	]
 }
