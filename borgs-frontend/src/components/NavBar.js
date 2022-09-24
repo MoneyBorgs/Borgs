@@ -25,6 +25,27 @@ const pages = [
 		}
 	},
 	{
+		key: 'accounts',
+		displayName: 'Accounts',
+		onClick: () => {
+			routerStore.goTo('accounts');
+		}
+	},
+	{
+		key: 'transactions',
+		displayName: 'Transactions',
+		onClick: () => {
+			routerStore.goTo('transactions');
+		}
+	},
+	{
+		key: 'allocations',
+		displayName: 'Allocations',
+		onClick: () => {
+			routerStore.goTo('allocations');
+		}
+	},
+	{
 		key: 'reports',
 		displayName: 'Reports',
 		onClick: () => {

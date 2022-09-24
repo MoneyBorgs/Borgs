@@ -17,8 +17,16 @@ export const routes = [
 		pattern: '/reports'
 	},
 	{
-		name: 'notFound',
-		pattern: '/not-found',
+		name: 'accounts',
+		pattern: '/accounts',
+	},
+	{
+		name: 'transactions',
+		pattern: '/transactions',
+	},
+	{
+		name: 'allocations',
+		pattern: '/allocations',
 	},
 ];
 
