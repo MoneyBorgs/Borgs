@@ -1,7 +1,8 @@
 import { makeAutoObservable } from "mobx"
+import RootStore from "./RootStore";
 
-export default class DashboardStore {
-	rootStore;
+export default class ReportsStore {
+	rootStore : RootStore;
 
 	constructor(rootStore) {
 		makeAutoObservable(this, { rootStore: false });

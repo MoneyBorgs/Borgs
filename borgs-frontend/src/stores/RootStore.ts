@@ -5,6 +5,11 @@ import ReportsStore from './ReportsStore';
 import TransactionsStore from './TransactionsStore';
 
 export default class RootStore {
+	transactionsStore: TransactionsStore;
+	accountsStore: AccountsStore;
+	allocationsStore: AllocationsStore;
+	dashboardStore: DashboardStore;
+	reportsStore: ReportsStore;
 	constructor() {
 		this.transactionsStore = new TransactionsStore(this);
 		this.accountsStore = new AccountsStore(this);

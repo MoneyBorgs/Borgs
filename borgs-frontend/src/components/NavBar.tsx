@@ -16,7 +16,14 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 let routerStore;
-const pages = [
+
+export interface IPage {
+	key: string,
+	displayName: string,
+	onClick: () => void
+}
+
+const pages : IPage[] = [
 	{
 		key: 'dashboard',
 		displayName: 'Dashboard',

@@ -1,9 +1,10 @@
 import { makeAutoObservable } from "mobx"
+import RootStore from "./RootStore";
 
 export default class AllocationsStore {
-	rootStore;
+	rootStore : RootStore;
 
-	constructor(rootStore) {
+	constructor(rootStore: RootStore) {
 		makeAutoObservable(this, { rootStore: false });
 		this.rootStore = rootStore;
 	}

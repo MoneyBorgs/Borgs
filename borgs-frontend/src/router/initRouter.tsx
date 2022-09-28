@@ -3,6 +3,7 @@ import {
 	createRouterState,
 	HistoryAdapter,
 	RouterStore,
+	Route
 } from 'mobx-state-router';
 
 import { MainPage } from '../pages/MainPage';
@@ -10,10 +11,16 @@ import { Reports } from '../pages/Reports';
 import { Accounts } from '../pages/Accounts';
 import { Allocations } from '../pages/Allocations';
 import { Transactions } from '../pages/Transactions';
+import React from 'react';
 
 export const notFound = createRouterState('notFound');
 
-export const routes = [
+export interface SuperRoute extends Route {
+	showNavBar: boolean,
+	container: React.ReactElement
+}
+
+export const routes : SuperRoute[] = [
 	{
 		name: 'mainpage',
 		pattern: '/',
