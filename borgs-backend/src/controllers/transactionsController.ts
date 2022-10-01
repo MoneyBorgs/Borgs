@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put } from '@decorators/express';
+import { Controller, Get, Params, Post, Put, Response } from '@decorators/express';
 
 @Controller('/')
 export default class TransactionsController {
@@ -8,17 +8,17 @@ export default class TransactionsController {
 	}
 
 	@Get("/transaction/:userId/:transactionId")
-	getTransaction(req, res) {
-		res.send('respond with a resource' + req.params.userId + req.params.transactionId);
+	getTransaction(@Params() params, @Response() res) {
+		res.send('respond with a resource' + params.userId + params.transactionId);
 	}
 
 	@Put("/transaction/:userId/:transactionId")
-	updateTransaction(arg0: string, updateTransaction: any) {
+	updateTransaction(req, res) {
 		throw new Error("Method not implemented.");
 	}
 
 	@Post("/transaction/:userId")
-	createTransactionForUser(arg0: string, createTransactionForUser: any) {
+	createTransactionForUser(req, res) {
 		throw new Error("Method not implemented.");
 	}
 }
