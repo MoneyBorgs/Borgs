@@ -1,4 +1,5 @@
-import { makeObservable, observable } from "mobx"
+import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { axiosRequest } from "../api/api";
 import RootStore from "./RootStore";
 
 export default class TransactionsStore {
@@ -8,7 +9,14 @@ export default class TransactionsStore {
     rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
-        makeObservable(this);
+        makeAutoObservable(this);
         this.rootStore = rootStore;
+    }
+
+    
+    getSomeRandomStuffFromAPI() {
+        axiosRequest.get('/todos/1')
+            .then(action((res) => this.test = res.data.title))
+            .catch(err => console.log(err))
     }
 }

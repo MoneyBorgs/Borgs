@@ -17,6 +17,13 @@
 			"request": "launch",
 			"type": "node-terminal",
 			"cwd": "${workspaceFolder}/borgs-frontend"
+		},
+		{
+			"command": "npm start",
+			"name": "Run Express API",
+			"request": "launch",
+			"type": "node-terminal",
+			"cwd": "${workspaceFolder}/borgs-backend"
 		}
 	]
 }
