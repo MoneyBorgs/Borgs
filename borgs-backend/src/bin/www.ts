@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
   console.log(process.env.PORT)
 }
 
-var port = normalizePort(process.env.PORT || '8080');
+var port = normalizePort(process.env.PORT || '8000');
 app.set('port', port);
 
 /**
