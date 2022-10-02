@@ -1,10 +1,12 @@
 import { Controller, Get, Params, Post, Put, Response } from '@decorators/express';
+import dbPool from '../db/dbPool';
 
 @Controller('/')
 export default class TransactionsController {
 	@Get("/transaction/:userId")
 	getTransactionsForUser(req, res) {
-		res.send('respond with a resource' + req.params.userId);
+
+		dbPool.query("SELECT * FROM Transactions").then((result) => res.send(result.rows));
 	}
 
 	@Get("/transaction/:userId/:transactionId")
