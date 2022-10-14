@@ -21,6 +21,6 @@ if [[ -n `psql -lqt | cut -d \| -f 1 | grep -w "$dbname"` ]]; then
 fi
 createdb $dbname
 
-psql -af create.sql $dbname
+psql -bf create.sql $dbname
 cd $datadir
-psql -af $mybase/load.sql $dbname
+psql -bf $mybase/load.sql $dbname

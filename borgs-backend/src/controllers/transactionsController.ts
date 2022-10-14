@@ -1,5 +1,6 @@
 import { Controller, Get, Params, Post, Put, Response } from '@decorators/express';
 import dbPool from '../db/dbPool';
+import { updateTransactionById } from '../util/queryBuilder';
 
 @Controller('/')
 export default class TransactionsController {
@@ -36,6 +37,7 @@ export default class TransactionsController {
 		const transactionId = req.params.transactionId
 
 		const { rows } = await dbPool.query(
+			/// TODO Return category object instead of displayName
 			`SELECT
 				T.transaction_id,
 				virtual_account,
@@ -105,7 +107,40 @@ export default class TransactionsController {
 	}
 
 	@Put("/transaction/:userId/:transactionId")
-	updateTransaction(req, res) {
-		throw new Error("Method not implemented.");
+	async updateTransaction(req, res) {
+		const userId = req.params.userId;
+		const transactionId = req.params.transactionId
+
+		const tags = req.body.tags;
+
+		const transactionTableParameters = req.body;
+		delete transactionTableParameters.tags;
+
+		var transactionQuery = updateTransactionById(transactionId, transactionTableParameters);
+		
+		// Turn req.body into an array of values
+		var colValues = Object.keys(transactionTableParameters).map(function (key) {
+			return transactionTableParameters[key];
+		});
+
+		const client = await dbPool.connect()
+		try {
+			await client.query(
+				transactionQuery, colValues
+			)
+
+			// TODO Update Tags
+
+			await client.query('COMMIT');
+
+			// TODO handle transfer queries
+
+			res.send(transactionQuery);
+		} catch (e) {
+			await client.query('ROLLBACK')
+			throw (e);
+		} finally {
+			client.release();
+		}
 	}
 }

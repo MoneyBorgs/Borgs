@@ -3,8 +3,8 @@ INSERT INTO Users DEFAULT VALUES;
 INSERT INTO PhysicalAccounts(user_id) VALUES (1);
 INSERT INTO VirtualAccounts(user_id) VALUES (1);
 
-INSERT INTO TransactionsCategories(user_id, displayName) VALUES (1, 'Income');
-INSERT INTO TransactionsCategories(user_id, displayName) VALUES (1, 'Expenses');
+INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Salary', 'INCOME');
+INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Rent', 'EXPENSE');
 
 INSERT INTO Transactions(
 	virtual_account,
