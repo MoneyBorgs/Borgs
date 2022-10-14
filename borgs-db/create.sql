@@ -15,10 +15,13 @@ CREATE TABLE PhysicalAccounts (
 	user_id INT NOT NULL REFERENCES Users(uid)
 );
 
+CREATE TYPE transaction_category_type AS ENUM('INCOME', 'EXPENSE', 'TRANSFER');
+
 CREATE TABLE TransactionsCategories (
 	category_id SERIAL PRIMARY KEY,
-	user_id INT REFERENCES Users(uid),
-	displayName TEXT,
+	user_id INT NOT NULL REFERENCES Users(uid),
+	displayName TEXT NOT NULL,
+	category_type transaction_category_type NOT NULL,
 	parentCategory int REFERENCES TransactionsCategories(category_id)
 );
 
@@ -37,6 +40,6 @@ CREATE TABLE Transactions (
 -- Create tags
 CREATE TABLE Tags (
 	tag TEXT NOT NULL,
-	transaction_id INT NOT NULL DEFERRABLE REFERENCES Transactions(transaction_id),
+	transaction_id INT NOT NULL REFERENCES Transactions(transaction_id) DEFERRABLE,
 	PRIMARY KEY (transaction_id, tag)
 );
