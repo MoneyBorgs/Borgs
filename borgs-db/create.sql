@@ -7,11 +7,13 @@ CREATE TABLE Users (
 
 CREATE TABLE VirtualAccounts (
 	account_id SERIAL PRIMARY KEY,
+	name VARCHAR(32) NOT NULL,
 	user_id INT NOT NULL REFERENCES Users(uid)
 );
 
 CREATE TABLE PhysicalAccounts (
 	account_id SERIAL PRIMARY KEY,
+	name VARCHAR(32) NOT NULL,
 	user_id INT NOT NULL REFERENCES Users(uid)
 );
 

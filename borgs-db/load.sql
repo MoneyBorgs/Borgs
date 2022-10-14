@@ -1,7 +1,25 @@
 INSERT INTO Users DEFAULT VALUES;
 
-INSERT INTO PhysicalAccounts(user_id) VALUES (1);
-INSERT INTO VirtualAccounts(user_id) VALUES (1);
+-- INSERT INTO PhysicalAccounts(user_id) VALUES (1);
+-- INSERT INTO VirtualAccounts(user_id) VALUES (1);
+-- INSERT INTO PhysicalAccounts(name) VALUES ("Savings account");
+-- INSERT INTO VirtualAccounts(name) VALUES ("Rent");
+
+INSERT INTO PhysicalAccounts(
+	user_id,
+	name
+) VALUES (
+	1,
+	'Savings account'
+);
+
+INSERT INTO VirtualAccounts(
+	user_id,
+	name
+) VALUES (
+	1,
+	'Rent'
+);
 
 INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Salary', 'INCOME');
 INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Rent', 'EXPENSE');
