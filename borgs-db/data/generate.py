@@ -2,10 +2,8 @@
 # requirements but only needs to be run once and committed
 # python version 3.10.6
 # faker version 15.1.1
-# werkzeug version 2.2.2
 import csv
 from random import randrange, choice
-from werkzeug.security import generate_password_hash
 from faker import Faker
 import pathlib
 
@@ -23,12 +21,11 @@ def gen_users(num_users):
         writer = get_csv_writer(f)
         print('Users...', end=' ', flush=True)
         for uid in range(num_users):
-            if uid % 10 == 0:
+            if uid % 1000 == 0:
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
             email = profile['mail']
-            plain_password = f'pass{uid}'
-            password = generate_password_hash(plain_password)
+            password = f'pass{uid}'
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
@@ -137,7 +134,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 
                 virtual_account_id = choice(virtual_account_relations[uid])
                 physical_account_id = choice(physical_account_relations[uid])
-                value = f'{str(fake.random_int(max=50000))}.{fake.random_int(max=99):02}'
+                value = f'{str(fake.random_int(max=50000, min = -50000))}.{fake.random_int(max=99):02}'
                 category = choice(category_relations[uid])
                 timestamp =  randrange(1647325502, 1663223101, 1)
                 description = fake.bs()
