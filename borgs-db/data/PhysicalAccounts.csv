@@ -1,0 +1,26 @@
+0,0,VISA 16 digit
+1,0,JCB 16 digit
+2,0,JCB 16 digit
+3,1,JCB 15 digit
+4,1,VISA 16 digit
+5,1,VISA 19 digit
+6,2,VISA 13 digit
+7,3,JCB 16 digit
+8,3,VISA 13 digit
+9,4,Mastercard
+10,4,JCB 15 digit
+11,5,VISA 19 digit
+12,5,VISA 16 digit
+13,5,American Express
+14,6,VISA 13 digit
+15,6,American Express
+16,7,VISA 16 digit
+17,7,Diners Club / Carte Blanche
+18,7,VISA 19 digit
+19,8,JCB 16 digit
+20,8,VISA 16 digit
+21,9,VISA 16 digit
+22,9,Maestro
+23,9,JCB 15 digit
+24,10,JCB 15 digit
+25,10,American Express

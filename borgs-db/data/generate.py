@@ -15,7 +15,7 @@ Faker.seed(0)
 fake = Faker()
 
 def get_csv_writer(f):
-    return csv.writer(f, dialect='unix')
+    return csv.writer(f)
 
 def gen_users(num_users):
     available_uids = []
@@ -98,13 +98,13 @@ def gen_physical_accounts(available_uids):
 
 def gen_transaction_categories(available_uids):
     category_relations = {}
-    with open(f'{path}/Categories.csv', 'w') as f:
+    with open(f'{path}/TransactionsCategories.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Categories...', end=' ', flush=True)
         category_id = 0
         for uid in available_uids:
             category_relations[uid] = []
-            for i in range(randrange(1,4,1)): # person can have [1:10] categories
+            for i in range(randrange(1,4,1)): # person can have [1:4] categories
                 names = []
                 name = fake.color_name()
                 
@@ -112,15 +112,15 @@ def gen_transaction_categories(available_uids):
 
                 if name not in names:
                     names.append(name)
-                    writer.writerow([category_id, uid, name])
                     category_relations[uid].append(category_id)
-                    category_id += 1
 
                     if i > 0 and fake.pybool():
                         parent_category = category_id - 1
                         writer.writerow([category_id, parent_category, name, uid, category_type])
                     else:
-                        writer.writerow([category_id, 'NULL', name, uid, category_type])
+                        writer.writerow([category_id, None, name, uid, category_type])
+
+                    category_id += 1
 
     print(f'{category_id} categories generated')
     return category_relations

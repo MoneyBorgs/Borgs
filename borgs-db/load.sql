@@ -1,51 +1,30 @@
-INSERT INTO Users DEFAULT VALUES;
+\COPY Users FROM 'Users.csv' WITH DELIMITER ',' NULL '' CSV
+-- since id is auto-generated; we need the next command to adjust the counter
+-- for auto-generation so next INSERT will not clash with ids loaded above:
+SELECT pg_catalog.setval('public.users_uid_seq',
+                         (SELECT MAX(uid)+1 FROM Users),
+                         false);
 
--- INSERT INTO PhysicalAccounts(user_id) VALUES (1);
--- INSERT INTO VirtualAccounts(user_id) VALUES (1);
--- INSERT INTO PhysicalAccounts(name) VALUES ("Savings account");
--- INSERT INTO VirtualAccounts(name) VALUES ("Rent");
+\COPY Logins FROM 'Logins.csv' WITH DELIMITER ',' NULL '' CSV
 
-INSERT INTO PhysicalAccounts(
-	user_id,
-	name
-) VALUES (
-	1,
-	'Savings account'
-);
+\COPY VirtualAccounts FROM 'VirtualAccounts.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.virtualaccounts_account_id_seq',
+                         (SELECT MAX(account_id)+1 FROM VirtualAccounts),
+                         false);
 
-INSERT INTO VirtualAccounts(
-	user_id,
-	name
-) VALUES (
-	1,
-	'Rent'
-);
+\COPY PhysicalAccounts FROM 'PhysicalAccounts.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.physicalaccounts_account_id_seq',
+                         (SELECT MAX(account_id)+1 FROM PhysicalAccounts),
+                         false);
 
-INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Salary', 'INCOME');
-INSERT INTO TransactionsCategories(user_id, displayName, category_type) VALUES (1, 'Rent', 'EXPENSE');
+\COPY TransactionsCategories FROM 'TransactionsCategories.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.transactionscategories_category_id_seq',
+                         (SELECT MAX(category_id)+1 FROM TransactionsCategories),
+                         false);
 
-INSERT INTO Transactions(
-	virtual_account,
-	physical_account,
-	value,
-	category,
-	timestampEpochSeconds,
-	description,
-	notes
-) VALUES (
-	1,
-	1,
-	100,
-	1,
-	10000,
-	'A big description',
-	'Some notes here'
-);
+\COPY Transactions FROM 'Transactions.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.transactions_transaction_id_seq',
+                         (SELECT MAX(transaction_id)+1 FROM Transactions),
+                         false);
 
-INSERT INTO Tags(
-	tag,
-	transaction_id
-) VALUES (
-	'ESSENTIAL_EXPENSE',
-	1
-);
+\COPY Tags FROM 'Tags.csv' WITH DELIMITER ',' NULL '' CSV
