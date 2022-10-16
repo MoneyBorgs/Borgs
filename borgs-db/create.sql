@@ -47,8 +47,7 @@ CREATE TABLE Transactions (
 	category INT NOT NULL REFERENCES TransactionsCategories(category_id),
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
 	description TEXT,
-	notes TEXT,
-	sister_transfer_transaction INT REFERENCES Transactions(transaction_id)
+	notes TEXT
 );
 
 -- Create tags
