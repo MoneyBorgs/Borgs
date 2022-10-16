@@ -68,8 +68,3 @@ npm install
 ### Install front-end
 cd $mybase/borgs-backend/
 npm install
-
-### Setup the database with custom data
-cd $mybase/borgs-db/
-chmod +x ./setup.sh
-./setup.sh
