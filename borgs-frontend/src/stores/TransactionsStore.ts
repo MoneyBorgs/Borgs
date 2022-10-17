@@ -4,7 +4,7 @@ import RootStore from "./RootStore";
 
 export default class TransactionsStore {
 
-    @observable test = "";
+    @observable isNewExpenseModalOpen : boolean = false;
 
     rootStore: RootStore;
 
@@ -13,10 +13,14 @@ export default class TransactionsStore {
         this.rootStore = rootStore;
     }
 
-    
-    getSomeRandomStuffFromAPI() {
-        axiosRequest.get('/todos/1')
-            .then(action((res) => this.test = res.data.title))
-            .catch(err => console.log(err))
+    // @action
+    setNewExpenseModalState(shouldBeOpen : boolean) {
+        this.isNewExpenseModalOpen = shouldBeOpen;
     }
+    
+    // getSomeRandomStuffFromAPI() {
+    //     axiosRequest.get('/todos/1')
+    //         .then(action((res) => this.test = res.data.title))
+    //         .catch(err => console.log(err))
+    // }
 }
