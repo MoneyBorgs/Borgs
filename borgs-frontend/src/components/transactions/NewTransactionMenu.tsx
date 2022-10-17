@@ -19,7 +19,7 @@ export const NewTransactionMenu = observer(() => {
 		};
 
 		const handleNewExpense = (event) => {
-			// handleClose();
+			handleClose();
 			transactionsStore.setNewExpenseModalState(true);
 		}
 

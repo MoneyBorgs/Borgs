@@ -1,14 +1,30 @@
 import * as React from 'react';
-import Button from '@mui/joy/Button';
-import TextField from '@mui/joy/TextField';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
 import { observer } from 'mobx-react-lite';
+import { CurrencyField } from '../fields/CurrencyField';
+import { Button, Modal, TextField } from '@mui/material';
+import DatePickerField from '../fields/DatePickerField';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Box from '@mui/material/Box';
+
+const style = {
+	position: 'absolute' as 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: 'background.paper',
+	border: '2px solid #000',
+	boxShadow: 24,
+	pt: 2,
+	px: 4,
+	pb: 3,
+};
 
 export const NewExpenseModal = observer(() => {
 	
@@ -16,15 +32,10 @@ export const NewExpenseModal = observer(() => {
 
 		return (
 				<Modal open={transactionsStore.isNewExpenseModalOpen} onClose={() => transactionsStore.setNewExpenseModalState(false)}>
-					<ModalDialog
+					<Box
 						aria-labelledby="basic-modal-dialog-title"
 						aria-describedby="basic-modal-dialog-description"
-						sx={{
-							maxWidth: 500,
-							borderRadius: 'md',
-							p: 3,
-							boxShadow: 'lg',
-						}}
+						sx={style}
 					>
 					<ModalClose
 						variant="outlined"
@@ -35,29 +46,34 @@ export const NewExpenseModal = observer(() => {
 							borderRadius: '50%',
 							bgcolor: 'background.body',
 						}}
+						onClick={() => transactionsStore.setNewExpenseModalState(false)}
 					/>
 						<Typography
 							id="basic-modal-dialog-title"
 							component="h2"
 							level="inherit"
 							fontSize="1.25em"
-							mb="0.25em"
+							mb="1em"
 						>
 							Create new expense
 						</Typography>
 						<form
 							onSubmit={(event) => {
+								console.log(event);
 								event.preventDefault();
 								transactionsStore.setNewExpenseModalState(false);
 							}}
-						>
+					>
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<Stack spacing={2}>
 								<TextField label="Description" autoFocus />
-								<TextField label="Amount" type="number"/>
-								<Button type="submit">Submit</Button>
+								<CurrencyField label="Value"/>
+								<DatePickerField/>
+								<Button type="submit">Create</Button>
 							</Stack>
+						</LocalizationProvider>
 						</form>
-					</ModalDialog>
+					</Box>
 				</Modal>
 		);
 	}
