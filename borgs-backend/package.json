@@ -13,6 +13,7 @@
     "@decorators/express": "^2.6.0",
     "@decorators/socket": "^3.2.0",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "express": "~4.16.1",

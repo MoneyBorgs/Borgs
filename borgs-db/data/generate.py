@@ -141,7 +141,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 note = fake.paragraph(nb_sentences=2)
 
                 writer.writerow([transaction_id, virtual_account_id, physical_account_id,
-                    value, category, timestamp, description, note])
+                    value, category, timestamp, description, note, None])
                 transaction_ids_relations[uid].append(transaction_id)
                 transaction_id += 1
 
