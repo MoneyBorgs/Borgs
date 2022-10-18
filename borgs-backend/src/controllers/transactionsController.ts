@@ -155,9 +155,7 @@ export default class TransactionsController {
 			client.release();
 		}
 	}
-	/**
-	 * 
-	 */
+
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
 
