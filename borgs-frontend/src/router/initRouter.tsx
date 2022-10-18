@@ -11,6 +11,7 @@ import { Reports } from '../pages/Reports';
 import { Accounts } from '../pages/Accounts';
 import { Allocations } from '../pages/Allocations';
 import { Transactions } from '../pages/Transactions';
+import { Register } from '../pages/Register';
 import React from 'react';
 
 export const notFound = createRouterState('notFound');
@@ -50,6 +51,12 @@ export const routes : SuperRoute[] = [
 		pattern: '/allocations',
 		showNavBar: true,
 		container: <Allocations/>
+	},
+	{
+		name: 'register',
+		pattern: '/register',
+		showNavBar: true,
+		container: <Register/>
 	},
 ];
 

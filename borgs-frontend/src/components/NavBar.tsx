@@ -60,6 +60,13 @@ const pages : IPage[] = [
 			routerStore.goTo('reports');
 		}
 	},
+	{
+		key: 'register',
+		displayName: 'Register',
+		onClick: () => {
+			routerStore.goTo('register');
+		}
+	},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
