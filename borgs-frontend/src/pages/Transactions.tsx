@@ -18,17 +18,7 @@ export const Transactions = observer(() => {
 				padding: "1em 2.5em",
 			}}>
 			<h1>Transactions</h1>
-			<Button onClick={() => transactionsStore.updateTransactions()}>Test</Button>
-			<>
-			{ transactionsStore.currentTransactionsData.map((transaction) => { return renderTransaction(transaction) })}
-			</>
-				<NewTransactionMenu/>
+			<NewTransactionMenu/>
 		</div>
 	)
 });
-
-function renderTransaction(transaction : Transaction) {
-	console.log(transaction.description);
-
-	return <Typography>{transaction.description}</Typography>
-}

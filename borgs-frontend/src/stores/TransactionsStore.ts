@@ -7,8 +7,9 @@ import RootStore from "./RootStore";
 export default class TransactionsStore {
 
     @observable isNewExpenseModalOpen : boolean = false;
-
     @observable currentTransactionsData : Transaction[] = [];
+
+    @observable availableCategories = [];
 
     rootStore: RootStore;
 
@@ -32,6 +33,9 @@ export default class TransactionsStore {
         axiosRequest.get(`/transaction/${userStore.uid}`)
             .then(action((res) : AxiosResponse<Transaction[], any> => this.currentTransactionsData = res.data));
     }
+
+    @action
+    getAvailable() {}
     
     // getSomeRandomStuffFromAPI() {
     //     axiosRequest.get('/todos/1')
