@@ -136,7 +136,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 physical_account_id = choice(physical_account_relations[uid])
                 value = f'{str(fake.random_int(max=50000, min = -50000))}.{fake.random_int(max=99):02}'
                 category = choice(category_relations[uid])
-                timestamp =  randrange(1647325502, 1663223101, 1)
+                timestamp =  randrange(1647325502, 1663223101, 1) #Tue Mar 15 2022 to Thu Sep 15 2022 
                 description = fake.bs()
                 note = fake.paragraph(nb_sentences=2)
 
