@@ -12,8 +12,14 @@ import AccountsController from "./controllers/accountsController";
 import DashboardController from "./controllers/dashboardController";
 import ReportsController from "./controllers/reportsController";
 import AllocationsController from "./controllers/allocationsController";
+import cors from "cors";
 
 var app = express();
+
+// CORS
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));  
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
