@@ -11,6 +11,9 @@ import DatePickerField from '../fields/DatePickerField';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
+import { CategoryPicker } from '../fields/CategoryPicker';
+import { AccountPicker } from '../fields/AccountPicker';
+import { TagsPicker } from '../fields/TagsPicker';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -28,7 +31,7 @@ const style = {
 
 export const NewExpenseModal = observer(() => {
 	
-		const { transactionsStore } = useStores();
+		const { transactionsStore, accountsStore } = useStores();
 
 		return (
 				<Modal open={transactionsStore.isNewExpenseModalOpen} onClose={() => transactionsStore.setNewExpenseModalState(false)}>
@@ -69,6 +72,10 @@ export const NewExpenseModal = observer(() => {
 								<TextField label="Description" autoFocus />
 								<CurrencyField label="Value"/>
 								<DatePickerField/>
+								<CategoryPicker availableCategories={transactionsStore.availableCategories}/>
+								<AccountPicker availableAccounts={accountsStore.availableVirtualAccounts} label={"Virtual Account"}/>
+								<AccountPicker availableAccounts={accountsStore.availablePhysicalAccounts} label={"Physical Account"} />
+								<TagsPicker/>
 								<Button type="submit">Create</Button>
 							</Stack>
 						</LocalizationProvider>

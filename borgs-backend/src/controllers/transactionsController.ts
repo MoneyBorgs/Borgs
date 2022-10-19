@@ -64,8 +64,9 @@ export default class TransactionsController {
 
 	@Post("/transaction/:userId")
 	async createTransactionForUser(req, res) {
-
 		const t : Transaction = req.body;
+
+		// TODO Validate virtual and physical accounts belong to user
 
 		const client = await dbPool.connect()
 		try {
@@ -159,6 +160,43 @@ export default class TransactionsController {
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
 
+	}
+
+	@Get("/category/:userId")
+	async getCategories(req, res) {
+		const userId = req.params.userId;
+
+		const availableCategories = (
+			await dbPool.query(
+				`
+				SELECT
+					category_id,
+					displayname,
+					user_id,
+					category_type,
+					(
+						SELECT json_agg(nested_category)
+						FROM (
+								SELECT
+								category_id,
+								displayname,
+								user_id,
+								category_type
+							FROM
+								TransactionsCategories T_sub
+							WHERE
+								user_id = $1 AND T_sub.parent_category = T.category_id
+						) AS nested_category
+					) AS children
+				FROM
+					TransactionsCategories T
+				WHERE user_id =$1 AND parent_category IS NULL
+				`,
+				[userId]
+			)
+		).rows;
+
+		res.send(availableCategories);		
 	}
 
 	async getTransactionType(client: ClientBase, transactionId: number) {

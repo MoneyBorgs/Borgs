@@ -3,19 +3,24 @@ import { action, makeAutoObservable, makeObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
 import Transaction from "../model/Transaction";
 import RootStore from "./RootStore";
+import UserStore from "./UserStore";
+import Category from "../model/Category";
 
 export default class TransactionsStore {
 
     @observable isNewExpenseModalOpen : boolean = false;
     @observable currentTransactionsData : Transaction[] = [];
 
-    @observable availableCategories = [];
+    @observable availableCategories : Category[] = [];
+    @observable isUpdatingCategories : boolean = false;
 
     rootStore: RootStore;
+    userStore : UserStore;
 
     constructor(rootStore: RootStore) {
         makeAutoObservable(this);
         this.rootStore = rootStore;
+        this.userStore = this.rootStore.userStore;
     }
 
     @action
@@ -26,16 +31,25 @@ export default class TransactionsStore {
     // TODO include filters
     @action
     updateTransactions() {
-        const { userStore } = this.rootStore;
-
         console.log("Updating transactions");
 
-        axiosRequest.get(`/transaction/${userStore.uid}`)
+        axiosRequest.get(`/transaction/${this.userStore.uid}`)
             .then(action((res) : AxiosResponse<Transaction[], any> => this.currentTransactionsData = res.data));
     }
 
     @action
-    getAvailable() {}
+    updateAvailableCategories(force : boolean) {
+        if(!this.isUpdatingCategories && (this.availableCategories.length === 0 || force)) {
+            this.isUpdatingCategories = true;
+            console.log("Getting latest categories");
+
+            axiosRequest.get(`/category/${this.userStore.uid}`)
+                .then(action((res: AxiosResponse<Category[], any>) => {
+                    this.isUpdatingCategories = false;
+                    this.availableCategories = res.data;
+            }));
+        }
+    }
     
     // getSomeRandomStuffFromAPI() {
     //     axiosRequest.get('/todos/1')
