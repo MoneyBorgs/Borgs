@@ -43,7 +43,14 @@ export default class TransactionsStore {
     // TODO implement
     @action
     createNewTransaction(transaction: Transaction) {
-        throw new Error('Method not implemented.');
+        console.log(`Creating new transaction`);
+
+        axiosRequest.post(`/transaction/${this.userStore.uid}`, transaction)
+            .then(action(
+                (res: AxiosResponse<Transaction, any>) => {
+                    this.currentTransactionsData.push(res.data)
+                }
+            ));
     }
 
     @action
@@ -58,6 +65,11 @@ export default class TransactionsStore {
                     this.availableCategories = res.data;
             }));
         }
+    }
+
+    @action
+    addNewTransaction(transaction : Transaction) {
+
     }
     
     // getSomeRandomStuffFromAPI() {

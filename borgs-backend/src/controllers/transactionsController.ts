@@ -225,7 +225,7 @@ export default class TransactionsController {
 					) VALUES ($1,$2,$3,$4,$5,$6,$7)
 					RETURNING transaction_id;
 				`,
-			[t.virtual_account, t.physical_account, t.value, t.category, t.timestampEpochSeconds, t.description, t.notes]
+			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampEpochSeconds, t.description, t.notes]
 		);
 
 		t.transaction_id = result.rows[0].transaction_id;
