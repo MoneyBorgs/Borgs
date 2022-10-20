@@ -17,7 +17,7 @@ import { AccountPicker } from '../fields/AccountPicker';
 import TransactionsStore from '../../stores/TransactionsStore';
 import Transaction from '../../model/Transaction';
 import { useState } from 'react';
-import { NewTagsPicker as TagsPicker } from '../fields/NewTagsPicker';
+import { TagsPicker } from '../fields/TagsPicker';
 import Tag from '../../model/Tag';
 
 const style = {
