@@ -5,6 +5,7 @@ import Transaction from "../model/Transaction";
 import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 import Category from "../model/Category";
+import Tag from "../model/Tag";
 
 export default class TransactionsStore {
 
@@ -13,6 +14,8 @@ export default class TransactionsStore {
 
     @observable availableCategories : Category[] = [];
     @observable isUpdatingCategories : boolean = false;
+
+    @observable availableTags: Tag[] = [];
 
     rootStore: RootStore;
     userStore : UserStore;
@@ -35,6 +38,12 @@ export default class TransactionsStore {
 
         axiosRequest.get(`/transaction/${this.userStore.uid}`)
             .then(action((res) : AxiosResponse<Transaction[], any> => this.currentTransactionsData = res.data));
+    }
+
+    // TODO implement
+    @action
+    createNewTransaction(transaction: Transaction) {
+        throw new Error('Method not implemented.');
     }
 
     @action

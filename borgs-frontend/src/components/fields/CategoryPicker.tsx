@@ -4,25 +4,26 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { observer } from 'mobx-react-lite';
 import Category from '../../model/Category';
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
+import { Typography, AutocompleteProps } from '@mui/material';
 
-interface Props {
-	availableCategories: Category[]
+export interface CategoryPickerProps
+	extends Omit<AutocompleteProps<Category, false, true, false>, "renderOption" | "renderInput"> {
+	inputName: string
 }
 
-export const CategoryPicker = observer((props: Props) => {
+export const CategoryPicker = observer((props: CategoryPickerProps) => {
 
-	const { availableCategories } = props;
+	const { inputName } = props;
 
 	return (
 		<Autocomplete
+			{...props}
 			disablePortal
-			id="combo-box-demo"
-			options={availableCategories}
+			id="ca"
 			sx={{ width: 300 }}
 			getOptionLabel={(category) => category.displayname}
 			renderOption={(props, category) => renderCategoryOption(props, category)}
-			renderInput={(params) => renderCategoryInput(params)}
+			renderInput={(params) => renderCategoryInput(params, inputName)}
 		/>
 	);
 }
@@ -36,6 +37,6 @@ function renderCategoryOption(props, category) : React.ReactElement {
 	);
 }
 
-function renderCategoryInput(params) {
-	return <TextField {...params} label={"Category"}/>
+function renderCategoryInput(params, inputName) {
+	return <TextField {...params} label={"Category"} name={inputName}/>
 }

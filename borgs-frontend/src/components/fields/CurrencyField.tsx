@@ -41,11 +41,12 @@ interface State {
 
 interface Props {
 	label : String
+	onChange?: (newValue : number) => void
 }
 
 export const CurrencyField = observer((props : Props) => {
 		const [values, setValues] = React.useState<State>({
-			numberformat: '1320',
+			numberformat: '0',
 		});
 
 		const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +54,10 @@ export const CurrencyField = observer((props : Props) => {
 				...values,
 				[event.target.name]: event.target.value,
 			});
+
+			if(props.onChange) {
+				props.onChange(Number(event.target.value));
+			}
 		};
 
 		return (
