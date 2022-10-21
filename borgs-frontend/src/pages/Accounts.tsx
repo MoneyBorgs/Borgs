@@ -5,15 +5,14 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
+import { ButtonGroup } from '@mui/material';
 
 export const Accounts = observer(() => {
 	return (
 		<div>
 			<h1>Accounts</h1>
-			<FormControl>
-  				<InputLabel htmlFor="my-input">Email address</InputLabel>
-  				<Input id="my-input" aria-describedby="my-helper-text" />
-			</FormControl>
+			<TextField id="outlined-basic" label="Outlined" variant="outlined" />
+			<Button variant="outlined">Outlined</Button>
 		</div>
 		
 	)
