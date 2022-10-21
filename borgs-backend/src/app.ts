@@ -13,6 +13,7 @@ import DashboardController from "./controllers/dashboardController";
 import ReportsController from "./controllers/reportsController";
 import AllocationsController from "./controllers/allocationsController";
 import cors from "cors";
+import UsersController from "./controllers/usersController";
 
 var app = express();
 
@@ -39,7 +40,8 @@ attachControllers(app, [
   AccountsController,
   DashboardController,
   ReportsController,
-  AllocationsController
+  AllocationsController,
+  UsersController
 ])
 
 app.use('/', indexRouter);
