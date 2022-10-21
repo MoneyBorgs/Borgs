@@ -16,9 +16,6 @@ export default class TransactionsStore {
 
     @observable availableTags: Tag[] = [];
 
-    @observable isExpenseModalOpen: boolean = false;
-    @observable currentLoadedExpenseOnModal : Transaction = new Transaction();
-
     rootStore: RootStore;
     userStore : UserStore;
 
@@ -26,17 +23,6 @@ export default class TransactionsStore {
         makeAutoObservable(this);
         this.rootStore = rootStore;
         this.userStore = this.rootStore.userStore;
-    }
-
-    @action
-    setIsExpenseModalOpen(shouldBeOpen : boolean) {
-        this.isExpenseModalOpen = shouldBeOpen;
-    }
-
-    @action
-    openExpenseModal(transaction : Transaction) {
-        this.currentLoadedExpenseOnModal = transaction;
-        this.setIsExpenseModalOpen(true);
     }
 
     // TODO include filters
