@@ -1,5 +1,3 @@
-import { SettingsPowerSharp } from "@mui/icons-material";
-import { getTTFB } from "web-vitals";
 import Tag from "./Tag";
 
 export default class Transaction {
@@ -12,4 +10,9 @@ export default class Transaction {
 	description!: String;
 	notes!: String;
 	tags!: Tag[];
+
+	static getDefaultTransaction() : Transaction {
+		const t = new Transaction();
+		return t;
+	}
 }

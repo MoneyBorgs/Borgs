@@ -6,14 +6,13 @@ import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
 import { observer } from 'mobx-react-lite';
 import { CurrencyField } from '../fields/CurrencyField';
-import { Button, Modal, TextField } from '@mui/material';
+import { Button, Modal, ModalUnstyledOwnProps, TextField } from '@mui/material';
 import { DatePickerField } from '../fields/DatePickerField';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { CategoryPicker } from '../fields/CategoryPicker';
 import { AccountPicker } from '../fields/AccountPicker';
-// import { TagsPicker } from '../fields/TagsPicker';
 import TransactionsStore from '../../stores/TransactionsStore';
 import Transaction from '../../model/Transaction';
 import { useState } from 'react';
@@ -34,7 +33,11 @@ const style = {
 	pb: 3,
 };
 
-export const NewExpenseModal = observer(() => {
+export interface ExpenseEditCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+	onClose: () => void	
+}
+
+export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalProps) => {
 	
 		const { accountsStore, transactionsStore} = useStores();
 
@@ -53,11 +56,12 @@ export const NewExpenseModal = observer(() => {
 
 		const handleOnSubmitForm = (event) => {			
 			transactionsStore.createNewTransaction(transactionState);
-			transactionsStore.setNewExpenseModalState(false);
+			props.onClose();
+			// transactionsStore.setIsExpenseModalOpen(false);
 		}
 
 		return (
-				<Modal open={transactionsStore.isNewExpenseModalOpen} onClose={() => transactionsStore.setNewExpenseModalState(false)}>
+				<Modal {...props}>
 					<Box
 						aria-labelledby="basic-modal-dialog-title"
 						aria-describedby="basic-modal-dialog-description"
@@ -72,7 +76,7 @@ export const NewExpenseModal = observer(() => {
 							borderRadius: '50%',
 							bgcolor: 'background.body',
 						}}
-						onClick={() => transactionsStore.setNewExpenseModalState(false)}
+						onClick={() => {props.onClose()}}
 					/>
 						<Typography
 							id="basic-modal-dialog-title"
@@ -88,10 +92,11 @@ export const NewExpenseModal = observer(() => {
 								event.preventDefault();
 								handleOnSubmitForm(event);
 							}}
-					>
+						>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<Stack spacing={2}>
 								<TextField
+									required
 									label="Description" autoFocus
 									onChange={(event) => { handleOnValueChange("description", event.target.value) }}
 								/>

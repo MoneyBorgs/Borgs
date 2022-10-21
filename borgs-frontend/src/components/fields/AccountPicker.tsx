@@ -12,9 +12,6 @@ interface Props extends Omit<AutocompleteProps<Account, false, true, false>, "re
 
 export const AccountPicker = observer((props : Props) => {
 		const { label, inputName } = props;
-
-		console.log("Rerendering")
-
 		return (
 			<Autocomplete
 				{...props}

@@ -9,13 +9,15 @@ import Tag from "../model/Tag";
 
 export default class TransactionsStore {
 
-    @observable isNewExpenseModalOpen : boolean = false;
     @observable currentTransactionsData : Transaction[] = [];
 
     @observable availableCategories : Category[] = [];
     @observable isUpdatingCategories : boolean = false;
 
     @observable availableTags: Tag[] = [];
+
+    @observable isExpenseModalOpen: boolean = false;
+    @observable currentLoadedExpenseOnModal : Transaction = new Transaction();
 
     rootStore: RootStore;
     userStore : UserStore;
@@ -27,8 +29,14 @@ export default class TransactionsStore {
     }
 
     @action
-    setNewExpenseModalState(shouldBeOpen : boolean) {
-        this.isNewExpenseModalOpen = shouldBeOpen;
+    setIsExpenseModalOpen(shouldBeOpen : boolean) {
+        this.isExpenseModalOpen = shouldBeOpen;
+    }
+
+    @action
+    openExpenseModal(transaction : Transaction) {
+        this.currentLoadedExpenseOnModal = transaction;
+        this.setIsExpenseModalOpen(true);
     }
 
     // TODO include filters
@@ -40,7 +48,6 @@ export default class TransactionsStore {
             .then(action((res) : AxiosResponse<Transaction[], any> => this.currentTransactionsData = res.data));
     }
 
-    // TODO implement
     @action
     createNewTransaction(transaction: Transaction) {
         console.log(`Creating new transaction`);
@@ -66,15 +73,4 @@ export default class TransactionsStore {
             }));
         }
     }
-
-    @action
-    addNewTransaction(transaction : Transaction) {
-
-    }
-    
-    // getSomeRandomStuffFromAPI() {
-    //     axiosRequest.get('/todos/1')
-    //         .then(action((res) => this.test = res.data.title))
-    //         .catch(err => console.log(err))
-    // }
 }
