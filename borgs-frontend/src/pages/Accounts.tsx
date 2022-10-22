@@ -15,6 +15,7 @@ export const Accounts = observer(() => {
     const { userStore, accountsStore } = useStores();
     const [userID, setUserID] = useState('');
     const handleOnSubmitForm = (event) => {
+        console.log(userID)
         userStore.updateUser(userID);
         accountsStore.updateVirtualAccounts();
     }

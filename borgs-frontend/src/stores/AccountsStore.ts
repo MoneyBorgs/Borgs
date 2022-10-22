@@ -17,9 +17,11 @@ export default class AccountsStore {
 	}
 	@action
     updateVirtualAccounts() {
+		const {userStore} = this.rootStore
+		console.log(this.userStore.uid);
         console.log("Updating virtual accounts");
 		
-        axiosRequest.get(`/virtualaccounts/${this.userStore.uid}`)
+        axiosRequest.get(`/virtualaccounts/${userStore.uid}`)
             .then(action((res) : AxiosResponse<Account[], any> => this.currentVirtualAccountsData = res.data));
     }
 }
