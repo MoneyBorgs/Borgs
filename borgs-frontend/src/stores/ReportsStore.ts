@@ -1,10 +1,11 @@
-import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { AxiosResponse } from "axios";
+import { action, makeAutoObservable, makeObservable, observable } from "mobx";
 import { axiosRequest } from "../api/api";
 import RootStore from "./RootStore";
 
 export default class ReportsStore {
 
-	@observable test = "";
+	@observable currentBalance : number = 0.0;
 
 	rootStore : RootStore;
 
@@ -13,10 +14,15 @@ export default class ReportsStore {
 		this.rootStore = rootStore;
 	}
 
-	getSomeRandomStuffFromAPI() {
-        axiosRequest.get('/accounts_balance/8')
-            .then(action((res) => this.test = res.data.title))
-            .catch(err => console.log(err));
-		console.log("asdfasd");
+	@action
+    updateBalance() {
+        const { userStore } = this.rootStore;
+
+        console.log("Updating accounts balance");
+
+        axiosRequest.get(`/accounts_balance/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<Number> => this.currentBalance = res.data));
+
+		console.log("imma die bruh");
     }
 }
