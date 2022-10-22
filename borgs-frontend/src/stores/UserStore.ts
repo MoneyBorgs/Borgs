@@ -4,7 +4,7 @@ import RootStore from "./RootStore";
 export default class ReportsStore {
 	rootStore: RootStore;
 
-	@observable uid = 1;
+	@observable uid = 5;
 
 	constructor(rootStore: RootStore) {
 		makeAutoObservable(this, { rootStore: false });

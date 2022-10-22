@@ -9,15 +9,18 @@ import TextField from '@mui/material/TextField';
 
 export const Reports = observer(() => {
 
-	const { reportsStore } = useStores();
+	const { reportsStore, userStore } = useStores();
 
 	return (
 		<div>
-			<h1>Reports</h1>
+			<h1>Reports for user {userStore.uid}</h1>
 			<CssVarsProvider>
-				<Button onClick={() => { reportsStore.updateBalance() }}> {reportsStore.currentBalance} </Button>
+				<Button onClick={() => { reportsStore.updateBalance() }}> Update balance </Button>
 			</CssVarsProvider>
 			<br></br>
+			<Typography>
+				Total balance = {reportsStore.currentBalance}
+			</Typography>
 		</div>
 	)
 });

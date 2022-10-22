@@ -5,7 +5,7 @@ import RootStore from "./RootStore";
 
 export default class ReportsStore {
 
-	@observable currentBalance : number = 3.0;
+	@observable currentBalance : number = 0;
 
 	rootStore : RootStore;
 
@@ -21,9 +21,13 @@ export default class ReportsStore {
         console.log("Updating accounts balance");
 
         axiosRequest.get(`/accounts_balance/${userStore.uid}`)
-            .then(action((res) : AxiosResponse<Number> => this.currentBalance = res.data));
+            .then(action((res) : AxiosResponse<number, any> => {
+				
+				
+				
+				return this.currentBalance = res.data.sum
+			}));
 
-		console.log(this.currentBalance);
 		console.log("imma die bruh");
     }
 }
