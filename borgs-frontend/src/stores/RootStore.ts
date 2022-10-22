@@ -19,5 +19,6 @@ export default class RootStore {
 		this.allocationsStore = new AllocationsStore(this);
 		this.dashboardStore = new DashboardStore(this);
 		this.reportsStore = new ReportsStore(this);
+		this.userStore = new UserStore(this);
 	}
 }
