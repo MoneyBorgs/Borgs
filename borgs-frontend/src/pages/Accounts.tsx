@@ -32,7 +32,6 @@ export const Accounts = observer(() => {
             {
             accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
             )}
-            test
             </div>
             
         </div>
