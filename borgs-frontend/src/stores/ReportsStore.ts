@@ -23,6 +23,7 @@ export default class ReportsStore {
         axiosRequest.get(`/accounts_balance/${userStore.uid}`)
             .then(action((res) : AxiosResponse<Number> => this.currentBalance = res.data));
 
+		console.log(this.currentBalance);
 		console.log("imma die bruh");
     }
 }

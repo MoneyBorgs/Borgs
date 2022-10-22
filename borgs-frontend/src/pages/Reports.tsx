@@ -15,12 +15,9 @@ export const Reports = observer(() => {
 		<div>
 			<h1>Reports</h1>
 			<CssVarsProvider>
-				<Button onClick={() => { reportsStore.updateBalance() }}> please bruh </Button>
+				<Button onClick={() => { reportsStore.updateBalance() }}> {reportsStore.currentBalance} </Button>
 			</CssVarsProvider>
 			<br></br>
-			<Typography>
-				{reportsStore.currentBalance}
-			</Typography>
 		</div>
 	)
 });
