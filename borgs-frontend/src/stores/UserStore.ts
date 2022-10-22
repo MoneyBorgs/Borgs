@@ -37,7 +37,7 @@ export default class UserStore {
     createNewUser(user: User) {
         console.log(`Registering new user`);
 
-        axiosRequest.post(`/user/${this.userStore.uid}`, user)
+        axiosRequest.post(`/user`, user)
             .then(action(
                 (res: AxiosResponse<User, any>) => {
                     this.currentUserData.push(res.data)
