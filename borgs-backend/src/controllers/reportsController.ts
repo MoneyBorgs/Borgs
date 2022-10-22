@@ -21,6 +21,6 @@ export default class ReportsController {
 			[userId]
 		);
 
-		res.send(rows);
+		res.send(rows[0]);
 	}
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from "mobx-react-lite";
 import { useStores } from '../hooks/useStores';
 import { CssVarsProvider } from '@mui/joy/styles';
@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 
 export const Reports = observer(() => {
 
-	let { reportsStore } = useStores();
+	const { reportsStore } = useStores();
 
 	return (
 		<div>
@@ -17,17 +17,6 @@ export const Reports = observer(() => {
 			<CssVarsProvider>
 				<Button onClick={() => { reportsStore.updateBalance() }}> please bruh </Button>
 			</CssVarsProvider>
-			<br></br>
-			<Box
-				component="form"
-				sx={{
-					'& > :not(style)': { m: 1, width: '25ch' },
-				}}
-				noValidate
-				autoComplete="off"
-				>
-				<TextField id="outlined-basic" label="Outlined" variant="outlined" />
-			</Box>
 			<br></br>
 			<Typography>
 				{reportsStore.currentBalance}

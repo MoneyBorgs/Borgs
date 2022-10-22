@@ -5,7 +5,7 @@ import RootStore from "./RootStore";
 
 export default class ReportsStore {
 
-	@observable currentBalance : number = 0.0;
+	@observable currentBalance : number = 3.0;
 
 	rootStore : RootStore;
 
@@ -16,7 +16,7 @@ export default class ReportsStore {
 
 	@action
     updateBalance() {
-        const { userStore } = this.rootStore;
+		const { userStore } = this.rootStore;
 
         console.log("Updating accounts balance");
 
