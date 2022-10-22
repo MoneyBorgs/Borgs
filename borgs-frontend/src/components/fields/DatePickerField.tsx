@@ -9,7 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
-export default function DatePickerFIeld() {
+export default function DatePickerField() {
 	const [value, setValue] = React.useState<Dayjs | null>(
 		dayjs('2014-08-18T21:11:54'),
 	);
