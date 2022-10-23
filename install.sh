@@ -36,8 +36,8 @@ echo "DB_NAME=$dbname" >> $mybase/borgs-db/.env
 sudo apt-get -qq --yes install postgresql postgresql-contrib libpq-dev
 if ! sudo -s sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$user'" | grep -q 1; then
     sudo -s sudo -u postgres createuser -s $user
-    sudo -s sudo -u postgres psql -c "ALTER USER $user WITH PASSWORD '$password'"
 fi
+sudo -s sudo -u postgres psql -c "ALTER USER $user WITH PASSWORD '$password'"
 postgresql_conf=/etc/postgresql/10/main/postgresql.conf
 if ! sudo grep -q 'BEGIN DBCOURSE CUSTOMIZATION' $postgresql_conf; then
     sudo tee -a $postgresql_conf << EOF

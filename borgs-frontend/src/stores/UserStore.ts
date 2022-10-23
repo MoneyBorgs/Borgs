@@ -44,4 +44,11 @@ export default class UserStore {
                 }
             ));
     }
+
+    @action
+    updateUser(new_uid) {
+        this.uid = new_uid
+		console.log(this.uid)
+		console.log(new_uid)
+    }
 }
