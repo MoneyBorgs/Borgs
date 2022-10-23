@@ -10,7 +10,9 @@ export default class AccountsController {
 		const userId = req.params.userId;
 		const { rows } = await dbPool.query(
 			`SELECT
-                name
+                name,
+				account_id,
+				user_id
             FROM VirtualAccounts
             WHERE user_id = $1`,
 			[userId]
