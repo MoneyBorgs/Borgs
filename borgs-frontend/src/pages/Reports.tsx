@@ -15,11 +15,11 @@ export const Reports = observer(() => {
 		<div>
 			<h1>Reports for user {userStore.uid}</h1>
 			<CssVarsProvider>
-				<Button onClick={() => { reportsStore.updateBalance() }}> Update balance </Button>
+				<Button onClick={() => { reportsStore.updateBalance() }}> Pull data </Button>
 			</CssVarsProvider>
 			<br></br>
 			<Typography>
-				Total balance = {reportsStore.currentBalance}
+				Total balance = ${reportsStore.currentBalance}
 			</Typography>
 		</div>
 	)

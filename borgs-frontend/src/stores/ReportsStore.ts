@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { action, makeAutoObservable, makeObservable, observable } from "mobx";
 import { axiosRequest } from "../api/api";
 import RootStore from "./RootStore";
+import MonthlyBalance from "../model/MonthlyBalance";
 
 export default class ReportsStore {
 
@@ -22,12 +23,19 @@ export default class ReportsStore {
 
         axiosRequest.get(`/accounts_balance/${userStore.uid}`)
             .then(action((res) : AxiosResponse<number, any> => {
-				
-				
-				
 				return this.currentBalance = res.data.sum
 			}));
-
-		console.log("imma die bruh");
     }
+
+	@action
+	getMonthlyData(year: number) {
+		const { userStore } = this.rootStore;
+
+		console.log("");
+
+        axiosRequest.get(`/monthly_balance/${userStore.uid}/${year}/`)
+            .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
+				return this.currentBalance = res.data
+			})); 
+	}
 }
