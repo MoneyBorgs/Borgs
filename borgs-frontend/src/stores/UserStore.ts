@@ -3,7 +3,7 @@ import { action, makeAutoObservable, makeObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
 import RootStore from "./RootStore";
 
-export default class ReportsStore {
+export default class UserStore {
 	rootStore: RootStore;
 
 	@observable uid = 1;
