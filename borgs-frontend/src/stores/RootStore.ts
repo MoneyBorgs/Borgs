@@ -14,11 +14,16 @@ export default class RootStore {
 	userStore: UserStore;
 	constructor() {
 		this.userStore = new UserStore(this);
-		this.transactionsStore = new TransactionsStore(this);
 		this.accountsStore = new AccountsStore(this);
 		this.allocationsStore = new AllocationsStore(this);
 		this.dashboardStore = new DashboardStore(this);
 		this.reportsStore = new ReportsStore(this);
-		this.userStore = new UserStore(this);
+		this.transactionsStore = new TransactionsStore(this);
+
+		// Cache initial results
+		this.transactionsStore.updateAvailableCategories(false);
+		this.transactionsStore.updateAvailableTags();
+		this.accountsStore.updateVirtualAccounts();
+		this.accountsStore.updatePhysicalAccounts();
 	}
 }

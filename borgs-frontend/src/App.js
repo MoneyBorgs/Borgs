@@ -90,9 +90,9 @@ function App() {
   return (
     <RouterContext.Provider value={routerStore}>
         {routerStore.getCurrentRoute() && routerStore.getCurrentRoute().showNavBar ? <NavBar/> : null}
-      <CssVarsProvider theme={theme}>
+      {/* <CssVarsProvider theme={theme}> */}
         <RouterView viewMap={viewMap} />
-      </CssVarsProvider>
+      {/* </CssVarsProvider> */}
     </RouterContext.Provider>
   );
 }
