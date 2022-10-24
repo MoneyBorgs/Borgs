@@ -7,8 +7,9 @@ import RootStore from "./RootStore";
 export default class UserStore {
 
     @observable currentUserData : User[] = [];
-
+    @observable currentUsersWithName : User[] = [];
 	@observable uid = 1
+    @observable firstname = 'Ryan'
 
     @observable isRegisterModalOpen: boolean = false;
     @observable currentRegisterModal : User = new User();
@@ -43,6 +44,23 @@ export default class UserStore {
                     this.currentUserData.push(res.data)
                 }
             ));
+    }
+
+	@action
+    usersWithName() {
+		const {userStore} = this.rootStore
+		console.log(this.userStore.firstname);
+        console.log("Updating users with first name");
+		
+        axiosRequest.get(`/user/${userStore.firstname}`)
+            .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
+    }
+
+    @action
+    updateFirstName(new_name) {
+        this.firstname = new_name
+		console.log(this.firstname)
+		console.log(new_name)
     }
 
     @action

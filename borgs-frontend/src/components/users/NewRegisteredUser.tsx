@@ -78,7 +78,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 							fontSize="1.25em"
 							mb="1em"
 						>
-							Create new user
+							Register an account
 						</Typography>
 						<form
 							onSubmit={(event) => {
@@ -96,6 +96,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 								<TextField
 									required
 									label="Password" autoFocus
+									type = "password"
 									onChange={(password) => { handleOnValueChange("password", password.target.value) }}
 								/>
 								<TextField
