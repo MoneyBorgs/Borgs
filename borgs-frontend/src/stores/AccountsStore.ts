@@ -37,6 +37,6 @@ export default class AccountsStore {
 		console.log("Updating physical accounts");
 
 		axiosRequest.get(`/physicalaccounts/${userStore.uid}`)
-			.then(action((res): AxiosResponse<Account[], any> => this.currentVirtualAccountsData = res.data));
+			.then(action((res): AxiosResponse<Account[], any> => this.availablePhysicalAccounts = res.data));
 	}
 }

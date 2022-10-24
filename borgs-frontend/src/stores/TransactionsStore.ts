@@ -64,7 +64,7 @@ export default class TransactionsStore {
     updateAvailableTags() {
         console.log("Updating avaiable tags");
 
-        axiosRequest.get(`/physicalaccounts/${this.userStore.uid}`)
+        axiosRequest.get(`/tag/${this.userStore.uid}`)
             .then(action((res): AxiosResponse<Tag[], any> => this.availableTags = res.data));
     }
 

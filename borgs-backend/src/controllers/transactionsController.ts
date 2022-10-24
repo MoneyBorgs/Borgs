@@ -199,6 +199,22 @@ export default class TransactionsController {
 		res.send(availableCategories);		
 	}
 
+	@Get("/tag/:userId")
+	async getTagsForUser(req, res) {
+		const userId = req.params.userId;
+
+		const availableTags = (await dbPool.query(`
+			SELECT DISTINCT tag
+			FROM Tags, Transactions, VirtualAccounts
+			WHERE Tags.transaction_id = Transactions.transaction_id
+			  	AND Transactions.virtual_account = VirtualAccounts.account_id
+				AND VirtualAccounts.user_id = $1
+		`, [userId]
+		)).rows;
+
+		res.send(availableTags);
+	}
+
 	async getTransactionType(client: ClientBase, transactionId: number) {
 		const transactionCategory = (await client.query(format(
 			`

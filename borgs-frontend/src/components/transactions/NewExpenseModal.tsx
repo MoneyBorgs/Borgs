@@ -126,7 +126,7 @@ export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalPr
 									inputName="physical-account-picker"
 								/>
 								<TagsPicker
-									tags={transactionsStore.availableTags}
+									tags={tagObjectsToStrings(transactionsStore.availableTags)}
 									onChange={ (newTags) => { handleOnValueChange("tags", newTags) }}
 								/>
 								<Button type="submit">Create</Button>
@@ -143,6 +143,14 @@ function transactionFromFormData(data: FormData) : Transaction {
 	let t = new Transaction();
 
 	throw new Error('Function not implemented.');
+}
+
+function tagObjectsToStrings(tags : Tag[]) {
+	let ret : string[] = [];
+	for(const tag of tags) {
+		ret.push(tag.tag);
+	}
+	return ret;
 }
 
 const exampleTags = ["tag1", "tag2", "tag3"]
