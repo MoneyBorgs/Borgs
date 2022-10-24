@@ -1,4 +1,4 @@
-import { Controller, Post } from '@decorators/express';
+import { Controller, Post, Get } from '@decorators/express';
 import dbPool from '../db/dbPool';
 import User from '../model/User';
 
@@ -24,4 +24,27 @@ export default class UsersController {
 
 			res.send(u);
 		} 
+
+    @Get("/user/:firstName")
+    async getUsersWithName(req, res) {
+        const firstName = req.params.firstName;
+            const { rows } = await dbPool.query(
+                `SELECT *
+                FROM Users
+                WHERE firstname = $1`,
+                [firstName]
+            );
+            res.send(rows);
+        }
+    
+    @Get("/user")
+	async getRecentlyRegistered(res) {
+		const { rows } = await dbPool.query(
+			`SELECT uid, firstname, lastname
+            FROM Users
+            ORDER BY uid DESC
+            LIMIT = 5`
+		);
+		    res.send(rows);
+	    }
 	}
