@@ -25,7 +25,9 @@ export default class AccountsController {
 
 		const { rows } = await dbPool.query(
 			`SELECT
-                name
+                name,
+				account_id,
+				user_id
             FROM PhysicalAccounts
             WHERE user_id = $1`,
 			[userId]

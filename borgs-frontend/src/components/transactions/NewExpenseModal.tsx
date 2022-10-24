@@ -126,7 +126,7 @@ export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalPr
 									inputName="physical-account-picker"
 								/>
 								<TagsPicker
-									tags={exampleTags}
+									tags={transactionsStore.availableTags}
 									onChange={ (newTags) => { handleOnValueChange("tags", newTags) }}
 								/>
 								<Button type="submit">Create</Button>

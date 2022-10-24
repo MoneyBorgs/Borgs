@@ -31,22 +31,12 @@ export default class AccountsStore {
     }
 
 	@action
-	updatePhysicalAccounts(force: boolean) {
-		if (!this.isUpadtingPhysicalAccount && (this.availablePhysicalAccounts.length === 0 || force)) {
-			this.availablePhysicalAccounts = [{ "account_id": 1, "user_id": this.userStore.uid, name: "Account A" }];
-		}
+	updatePhysicalAccounts() {
+		const { userStore } = this.rootStore
+		console.log(this.userStore.uid);
+		console.log("Updating physical accounts");
 
-		return;
-		// TODO Update accordingly
-		if (!this.isUpadtingPhysicalAccount && (this.availablePhysicalAccounts.length === 0 || force)) {
-			this.isUpadtingPhysicalAccount = true;
-			console.log("Getting latest virtual accounts");
-
-			axiosRequest.get(`/accounts/${this.userStore.uid}`)
-				.then(action((res: AxiosResponse<VirtualAccount[], any>) => {
-					this.isUpadtingPhysicalAccount = false;
-					this.availablePhysicalAccounts = res.data;
-				}));
-		}
+		axiosRequest.get(`/physicalaccounts/${userStore.uid}`)
+			.then(action((res): AxiosResponse<Account[], any> => this.currentVirtualAccountsData = res.data));
 	}
 }

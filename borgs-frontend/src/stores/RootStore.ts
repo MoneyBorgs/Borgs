@@ -22,7 +22,8 @@ export default class RootStore {
 
 		// Cache initial results
 		this.transactionsStore.updateAvailableCategories(false);
+		this.transactionsStore.updateAvailableTags();
 		this.accountsStore.updateVirtualAccounts();
-		this.accountsStore.updatePhysicalAccounts(false);
+		this.accountsStore.updatePhysicalAccounts();
 	}
 }
