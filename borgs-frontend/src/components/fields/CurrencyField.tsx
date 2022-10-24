@@ -3,7 +3,7 @@ import { InputAttributes, NumericFormat } from 'react-number-format';
 import FormControl from '@mui/joy/TextField';
 import { observer } from 'mobx-react-lite';
 import { FormHelperText, FormLabel } from '@mui/joy';
-import { Input, TextField } from '@mui/material';
+import { Input, StandardTextFieldProps, TextField } from '@mui/material';
 
 interface CustomProps {
 	onChange: (event: { target: { name: string; value: string } }) => void;
@@ -39,13 +39,14 @@ interface State {
 	numberformat: string;
 }
 
-interface Props {
-	label : String
+interface CurrencyFieldProps extends Omit<StandardTextFieldProps, "onChange"> {
+	onChange?: (newValue : number) => void
+	defaultValue?: number
 }
 
-export const CurrencyField = observer((props : Props) => {
+export const CurrencyField = observer((props : CurrencyFieldProps) => {
 		const [values, setValues] = React.useState<State>({
-			numberformat: '1320',
+			numberformat: props.defaultValue ? props.defaultValue.toString() : '',
 		});
 
 		const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +54,10 @@ export const CurrencyField = observer((props : Props) => {
 				...values,
 				[event.target.name]: event.target.value,
 			});
+
+			if(props.onChange) {
+				props.onChange(Number(event.target.value));
+			}
 		};
 
 		return (
