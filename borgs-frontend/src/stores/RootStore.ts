@@ -21,9 +21,14 @@ export default class RootStore {
 		this.transactionsStore = new TransactionsStore(this);
 
 		// Cache initial results
+		this.updateCache();
+	}
+
+	updateCache() {
 		this.transactionsStore.updateAvailableCategories(false);
 		this.transactionsStore.updateAvailableTags();
 		this.accountsStore.updateVirtualAccounts();
 		this.accountsStore.updatePhysicalAccounts();
+		this.dashboardStore.updateBalance();
 	}
 }

@@ -15,12 +15,10 @@ export default class UserStore {
     @observable currentRegisterModal : User = new User();
 
     rootStore: RootStore;
-    userStore : UserStore;
 
     constructor(rootStore: RootStore) {
         makeAutoObservable(this);
         this.rootStore = rootStore;
-        this.userStore = this.rootStore.userStore;
     }
 
     @action
@@ -48,11 +46,10 @@ export default class UserStore {
 
 	@action
     usersWithName() {
-		const {userStore} = this.rootStore
-		console.log(this.userStore.firstname);
+		console.log(this.firstname);
         console.log("Updating users with first name");
 		
-        axiosRequest.get(`/user/${userStore.firstname}`)
+        axiosRequest.get(`/user/${this.firstname}`)
             .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
     }
 
