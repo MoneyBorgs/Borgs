@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
-import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
@@ -13,7 +12,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { CategoryPicker } from '../fields/CategoryPicker';
 import { AccountPicker } from '../fields/AccountPicker';
-import TransactionsStore from '../../stores/TransactionsStore';
 import Transaction from '../../model/Transaction';
 import { useState } from 'react';
 import { TagsPicker } from '../fields/TagsPicker';
@@ -151,19 +149,15 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 		);
 	}
 )
-
-function transactionFromFormData(data: FormData) : Transaction {
-	let t = new Transaction();
-
-	throw new Error('Function not implemented.');
-}
-
-function tagObjectsToStrings(tags : Tag[]) {
+function tagObjectsToStrings(tags : (Tag | string)[]) {
 	let ret : string[] = [];
 	for(const tag of tags) {
-		ret.push(tag.tag);
+
+		if(typeof tag === 'string') {
+			ret.push(tag);
+		} else {
+			ret.push(tag.tag);
+		}
 	}
 	return ret;
 }
-
-const exampleTags = ["tag1", "tag2", "tag3"]

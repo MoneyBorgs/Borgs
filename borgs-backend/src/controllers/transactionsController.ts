@@ -19,17 +19,20 @@ export default class TransactionsController {
 				virtual_account,
 				physical_account,
 				value,
-				TC.displayName AS category,
+				(
+					SELECT row_to_json(TC.*)
+					FROM TransactionsCategories TC
+					WHERE TC.category_id = T.category
+				) AS category,
 				timestampepochseconds,
 				description,
 				notes,
 				array_agg(Tags.tag) AS tags
 			FROM Transactions T
 			INNER JOIN VirtualAccounts VA ON T.virtual_account = VA.account_id 
-			INNER JOIN TransactionsCategories TC ON T.category = TC.category_Id
 			INNER JOIN Tags ON Tags.transaction_id = T.transaction_id
 			WHERE VA.user_id = $1 AND timestampepochseconds BETWEEN $2 AND $3
-			GROUP BY T.transaction_id, TC.displayName`,
+			GROUP BY T.transaction_id`,
 			[userId, startDate, endDate]
 		);
 
@@ -48,16 +51,19 @@ export default class TransactionsController {
 				virtual_account,
 				physical_account,
 				value,
-				TC.displayName AS category,
+				(
+					SELECT row_to_json(TC.*)
+					FROM TransactionsCategories TC
+					WHERE TC.category_id = T.category
+				) AS category,
 				timestampepochseconds,
 				description,
 				notes,
 				array_agg(Tags.tag) AS tags
 			FROM Transactions T
-			INNER JOIN TransactionsCategories TC ON T.category = TC.category_Id
 			INNER JOIN Tags ON Tags.transaction_id = T.transaction_id
 			WHERE T.transaction_id = $1
-			GROUP BY T.transaction_id, TC.displayName`,
+			GROUP BY T.transaction_id`,
 			[transactionId]
 		);
 
@@ -247,17 +253,17 @@ export default class TransactionsController {
 		);
 
 		t.transaction_id = result.rows[0].transaction_id;
-
-		for (const tag of t.tags) {
-			await client.query( // TODO: Do within single transaction
-				`
-						INSERT INTO Tags(
-							tag,
-							transaction_id
-						) VALUES ($1,$2);
+		if(t.tags) {
+			for (const tag of t.tags) {
+				await client.query( // TODO: Do within single transaction
+					`
+						INSERT INTO Tags(tag,
+										 transaction_id)
+						VALUES ($1, $2);
 					`,
-				[tag, t.transaction_id]
-			);
+					[tag, t.transaction_id]
+				);
+			}
 		}
 	}
 }

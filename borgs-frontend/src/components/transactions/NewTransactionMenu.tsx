@@ -28,6 +28,7 @@ export const NewTransactionMenu = observer(() => {
 
 		const handleNewExpense = (event) => {
 			handleClose();
+			// TODO Replace by single state object
 			setLoadedTransaction(undefined);
 			setTransactionType(CategoryType.EXPENSE);
 			setIsModalOpen(true);

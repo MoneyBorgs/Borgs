@@ -1,6 +1,15 @@
 import * as React from 'react';
 import {observer} from "mobx-react-lite";
-import {Avatar, ListItem, ListItemAvatar, ListItemProps, ListItemText, Paper, Typography} from "@mui/material";
+import {
+    Avatar,
+    ListItem,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemProps,
+    ListItemText,
+    Paper,
+    Typography
+} from "@mui/material";
 import Transaction from "../../../model/Transaction";
 import {useStores} from "../../../hooks/useStores";
 import currency from 'currency.js';
@@ -27,30 +36,32 @@ export const TransactionListItem = observer((props: TransactionListItemProps) =>
         }
 
         return (
-            <ListItem {...props}>
-                <ListItemAvatar>
-                    <Avatar>
-                        // TODO Have pictures
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                    primary={props.transaction.description}
-                    secondary={
-                        <Typography variant="subtitle2">
-                            {findPhysicalAccountName(props.transaction.physical_account)
-                            + ", "
-                            + findVirtualAccountName(props.transaction.virtual_account)}
-                        </Typography>
-                    }
-                />
+            <ListItem {...props} >
+                <ListItemButton>
+                    <ListItemAvatar>
+                        <Avatar>
+                            // TODO Have pictures
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={props.transaction.description}
+                        secondary={
+                            <Typography variant="subtitle2">
+                                {findPhysicalAccountName(props.transaction.physical_account)
+                                + ", "
+                                + findVirtualAccountName(props.transaction.virtual_account)}
+                            </Typography>
+                        }
+                    />
 
-                <Typography color={props.transaction.value < 0 ? "#c62828" : "#4caf50"}>
-                    {
-                        currency(props.transaction.value,
-                            { separator: ".", decimal: ",", symbol: "$" }
-                        ).format()
-                    }
-                </Typography>
+                    <Typography color={props.transaction.value < 0 ? "#c62828" : "#4caf50"}>
+                        {
+                            currency(props.transaction.value,
+                                { separator: ".", decimal: ",", symbol: "$" }
+                            ).format()
+                        }
+                    </Typography>
+                </ListItemButton>
             </ListItem>
         );
     }
