@@ -25,9 +25,9 @@ export default class ReportsController {
 		res.send(rows[0]);
 	}
 
-	@Get("/monthly_balance/:userId/:year")
+	@Get("/monthly_balance/:va/:year")
 	async getMonthlyAccountBalance(req, res) {
-		const userId = req.params.userId;
+		const va = req.params.va;
 		const year = req.params.year;
 
 		const { rows } = await dbPool.query(
@@ -38,26 +38,37 @@ export default class ReportsController {
 			FROM
 				Transactions
 			WHERE 
-				virtual_account IN (
-					SELECT
-						account_id
-					FROM
-						VirtualAccounts
-					WHERE
-						user_id = $1
-					LIMIT 1
-				)
+				virtual_account = $1
 				AND EXTRACT(YEAR FROM TO_TIMESTAMP(timestampepochseconds)) = $2
 			GROUP BY 
 				1, 2
 			ORDER BY
 				1, 2, 3`,
-			[userId, year]
+			[va, year]
 		);
 
-		let months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		let empty_space = rows.length
 
-		
+		if (empty_space > 0) {			
+			let j = 0;
+			for (let i = 1; i < 13; i++) {
+				if (rows[j].month != i) {
+					
+					
+					let test = {
+						month: i,
+						net_result: 0
+					}
+
+					rows[12+i] = test
+				}
+				else {
+					if (j < rows.length) j++
+				}
+			}
+		}
+
+		rows[12] = empty_space
 
 		res.send(rows);
 	}
