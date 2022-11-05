@@ -5,7 +5,7 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { Typography } from '@mui/material';
 import Button from '@mui/joy/Button';
 import MonthlyBalance from "../model/MonthlyBalance";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const Reports = observer(() => {
 
@@ -20,13 +20,12 @@ export const Reports = observer(() => {
 
 			<br></br>
 
-			<LineChart width={600} height={300} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-				<Line type="monotone" dataKey="net_result" stroke="#8884d8" />
+			<BarChart width={600} height={300} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
 				<XAxis dataKey="month" />
-				<YAxis dataKey="net_result"/>
-				<Tooltip />
-			</LineChart>
+				<YAxis/>
+				<Bar dataKey="net_result" fill="#8884d8" />
+			</BarChart>
 		</div>
 	)
 });

@@ -49,27 +49,27 @@ export default class ReportsController {
 
 		let empty_space = rows.length
 
-		if (empty_space > 0) {			
-			let j = 0;
-			for (let i = 1; i < 13; i++) {
-				if (rows[j].month != i) {
-					
-					
-					let test = {
-						month: i,
-						net_result: 0
-					}
+		let included_months : number[] = []
 
-					rows[12+i] = test
+		for (let j = 0; j < rows.length; j++) {
+			included_months.push(rows[j].month)
+		}
+
+		let ret : any[] = []
+
+		for (let i = 1; i < 13; i++) {
+			if (!included_months.includes(i)) {
+				let temp = {
+					month: i,
+					net_result: 0,
 				}
-				else {
-					if (j < rows.length) j++
-				}
+
+				ret.push(temp)
+			} else {
+				ret.push(rows.shift())
 			}
 		}
 
-		rows[12] = empty_space
-
-		res.send(rows);
+		res.send(ret);
 	}
 }
