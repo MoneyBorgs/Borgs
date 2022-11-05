@@ -7,6 +7,7 @@ import MonthlyBalance from "../model/MonthlyBalance";
 export default class ReportsStore {
 
 	@observable currentBalance : number = 0;
+	@observable monthlyBalance : MonthlyBalance[] = [];
 
 	rootStore : RootStore;
 
@@ -35,7 +36,7 @@ export default class ReportsStore {
 
         axiosRequest.get(`/monthly_balance/${userStore.uid}/${year}/`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
-				return this.currentBalance = res.data
+				return this.monthlyBalance = res.data
 			})); 
 	}
 }
