@@ -10,11 +10,16 @@ import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers/D
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { observer } from 'mobx-react-lite';
 
-export interface DatePickerFieldProps extends Omit<DesktopDatePickerProps<Dayjs, Dayjs>, "value" | "renderInput"> {}
+export interface DatePickerFieldProps extends Omit<DesktopDatePickerProps<Dayjs, Dayjs>, "value" | "renderInput"> {
+	/**
+	 * The default date to pick in UNIX time
+	 */
+	defaultValue?: number;
+}
 
 export const DatePickerField = observer((props: DatePickerFieldProps) => {
 		const [value, setValue] = React.useState<Dayjs | null>(
-			dayjs('2014-08-18T21:11:54'),
+			props.defaultValue ? dayjs.unix(props.defaultValue) : dayjs()
 		);
 
 		const handleChange = (newValue: Dayjs | null) => {

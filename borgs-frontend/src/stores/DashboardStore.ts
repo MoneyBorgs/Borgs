@@ -1,10 +1,8 @@
 import { AxiosResponse } from "axios";
-import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { action, makeAutoObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
-import Transaction from "../model/Transaction";
 import Dashboard from "../model/Dashboard"
 import RootStore from "./RootStore";
-import UserStore from "./UserStore";
 
 export default class DashboardStore {
 	rootStore: RootStore;

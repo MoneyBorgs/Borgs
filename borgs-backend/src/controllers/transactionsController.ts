@@ -1,4 +1,4 @@
-import { Controller, Get, Params, Patch, Post, Put, Response } from '@decorators/express';
+import { Controller, Get, Params, Patch, Post, Put, Query, Response } from '@decorators/express';
 import dbPool from '../db/dbPool';
 import { updateTransactionById } from '../util/queryBuilder';
 import format from 'pg-format';
@@ -10,6 +10,8 @@ export default class TransactionsController {
 	@Get("/transaction/:userId")
 	async getTransactionsForUser(req, res) {
 		const userId = req.params.userId;
+		const startDate = req.query.startDate;
+		const endDate = req.query.endDate;
 
 		const { rows } = await dbPool.query(
 			`SELECT
@@ -26,9 +28,9 @@ export default class TransactionsController {
 			INNER JOIN VirtualAccounts VA ON T.virtual_account = VA.account_id 
 			INNER JOIN TransactionsCategories TC ON T.category = TC.category_Id
 			INNER JOIN Tags ON Tags.transaction_id = T.transaction_id
-			WHERE VA.user_id = $1
+			WHERE VA.user_id = $1 AND timestampepochseconds BETWEEN $2 AND $3
 			GROUP BY T.transaction_id, TC.displayName`,
-			[userId]
+			[userId, startDate, endDate]
 		);
 
 		res.send(rows);
@@ -241,7 +243,7 @@ export default class TransactionsController {
 					) VALUES ($1,$2,$3,$4,$5,$6,$7)
 					RETURNING transaction_id;
 				`,
-			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampEpochSeconds, t.description, t.notes]
+			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampepochseconds, t.description, t.notes]
 		);
 
 		t.transaction_id = result.rows[0].transaction_id;

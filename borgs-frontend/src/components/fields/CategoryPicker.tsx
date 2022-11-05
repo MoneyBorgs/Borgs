@@ -22,6 +22,7 @@ export const CategoryPicker = observer((props: CategoryPickerProps) => {
 			id="ca"
 			sx={{ width: 300 }}
 			getOptionLabel={(category) => category.displayname}
+			isOptionEqualToValue={(option, value) => option.category_id === value.category_id}
 			renderOption={(props, category) => renderCategoryOption(props, category)}
 			renderInput={(params) => renderCategoryInput(params, inputName)}
 		/>

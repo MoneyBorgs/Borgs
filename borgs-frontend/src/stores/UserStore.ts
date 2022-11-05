@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { action, makeAutoObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
 import User from "../model/User";
 import RootStore from "./RootStore";

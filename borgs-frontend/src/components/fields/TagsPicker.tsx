@@ -12,6 +12,7 @@ interface TagsPickerProps
 		mostRecentSelectedTags: string[]
 	) => void
 	tags : string[]
+	defaultTags? : string[]
 }
 
 interface TagPickOption extends Tag {
@@ -23,7 +24,7 @@ interface TagPickOption extends Tag {
 const filter = createFilterOptions<TagPickOption>();
 
 export const TagsPicker = observer((props : TagsPickerProps) => {
-	const [selected, setSelected] = useState<(string | TagPickOption)[]>([])
+	const [selected, setSelected] = useState<(string | TagPickOption)[]>(props.defaultTags ? tagOptionFromTagStrings(props.defaultTags) : [])
 	const [options, setOptions] = useState<TagPickOption[]>([]);
 
 	useEffect(() => {
@@ -91,6 +92,7 @@ export const TagsPicker = observer((props : TagsPickerProps) => {
 			renderInput={(params) => (
 				<TextField {...params} label="Tags" />
 			)}
+			isOptionEqualToValue={(option, value) => option.tag === value.tag}
 		/>
 	);
 }

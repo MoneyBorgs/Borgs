@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
-import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
@@ -10,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 
 const style = {

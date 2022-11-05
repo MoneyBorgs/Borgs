@@ -18,6 +18,7 @@ import Transaction from '../../model/Transaction';
 import { useState } from 'react';
 import { TagsPicker } from '../fields/TagsPicker';
 import Tag from '../../model/Tag';
+import {CategoryType} from "../../model/Category";
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -34,15 +35,19 @@ const style = {
 };
 
 export interface ExpenseEditCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
-	onClose: () => void	
+	onClose: () => void;
+	transactionType? : CategoryType;
+	preFilledTransaction? : Transaction;
 }
 
-export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalProps) => {
+export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModalProps) => {
 	
 		const { accountsStore, transactionsStore} = useStores();
 
+		const preFilledTransaction = props.preFilledTransaction ? props.preFilledTransaction : new Transaction();
+
 		// TODO get default transaction and make values consistent across usages
-		const [ transactionState, setTransactionState ] = useState(new Transaction());
+		const [ transactionState, setTransactionState ] = useState(JSON.parse(JSON.stringify(preFilledTransaction)));
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -54,7 +59,8 @@ export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalPr
 			setTransactionState({...transactionState, [field] : value})
 		}
 
-		const handleOnSubmitForm = (event) => {			
+		// TODO have base TransactionModal that can be extended with different behavior.
+		const handleOnSubmitForm = (event) => {
 			transactionsStore.createNewTransaction(transactionState);
 			props.onClose();
 			// transactionsStore.setIsExpenseModalOpen(false);
@@ -85,7 +91,7 @@ export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalPr
 							fontSize="1.25em"
 							mb="1em"
 						>
-							Create new expense
+							Create new {props.transactionType?.displayName}
 						</Typography>
 						<form
 							onSubmit={(event) => {
@@ -98,35 +104,42 @@ export const ExpenseEditCreateModal = observer((props : ExpenseEditCreateModalPr
 								<TextField
 									required
 									label="Description" autoFocus
+									defaultValue={preFilledTransaction.description}
 									onChange={(event) => { handleOnValueChange("description", event.target.value) }}
 								/>
 								<CurrencyField
 									label="Value"
+									defaultValue={preFilledTransaction.value}
 									onChange={(newValue) => { handleOnValueChange("value", newValue) }}
 								/>
 								<DatePickerField
 									label="Transaction date"
-									onChange={(newDate) => { handleOnValueChange("timestampEpochSeconds", newDate?.unix())}}
+									defaultValue={preFilledTransaction.timestampepochseconds}
+									onChange={(newDate) => { handleOnValueChange("timestampepochseconds", newDate?.unix())}}
 								/>
 								<CategoryPicker
 									options={transactionsStore.availableCategories}
+									defaultValue={preFilledTransaction.category}
 									onChange={((event, category) => {handleOnValueChange("category", category)})}
 									inputName={"category"}
 								/>
 								<AccountPicker
 									options={accountsStore.currentVirtualAccountsData}
 									label={"Virtual Account"}
+									defaultValue={accountsStore.currentVirtualAccountsData.find(account => account.account_id === preFilledTransaction.virtual_account)}
 									onChange={((event, account) => { handleOnValueChange("virtual_account", account.account_id) })}
 									inputName="virtual-account-picker"
 								/>
 								<AccountPicker
 									options={accountsStore.availablePhysicalAccounts}
 									label={"Physical Account"}
+									defaultValue={accountsStore.availablePhysicalAccounts.find(account => account.account_id === preFilledTransaction.physical_account)}
 									onChange={((event, account) => { handleOnValueChange("physical_account", account.account_id) })}
 									inputName="physical-account-picker"
 								/>
 								<TagsPicker
 									tags={tagObjectsToStrings(transactionsStore.availableTags)}
+									defaultTags={preFilledTransaction.tags ? tagObjectsToStrings(preFilledTransaction.tags) : undefined}
 									onChange={ (newTags) => { handleOnValueChange("tags", newTags) }}
 								/>
 								<Button type="submit">Create</Button>

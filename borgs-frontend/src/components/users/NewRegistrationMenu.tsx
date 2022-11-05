@@ -5,7 +5,6 @@ import MenuItem from '@mui/joy/MenuItem';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { RegisterCreateModal } from './NewRegisteredUser';
-import User from '../../model/User';
 
 export const NewRegistrationMenu = observer(() => {
 		const { userStore } = useStores();
