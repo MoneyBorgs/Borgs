@@ -13,6 +13,7 @@ import { useState } from 'react';
 import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 
+
 const style = {
 	position: 'absolute' as 'absolute',
 	top: '50%',

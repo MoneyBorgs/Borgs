@@ -9,6 +9,7 @@ import { ButtonGroup, List } from '@mui/material';
 import AccountsStore from '../stores/AccountsStore';
 import Account from '../model/Account';
 import { useStores } from '../hooks/useStores';
+import { NewAccountMenu } from '../components/accounts/NewAccountMenu';
 
 export const Accounts = observer(() => {
 
@@ -19,6 +20,7 @@ export const Accounts = observer(() => {
         console.log(userID)
         userStore.updateUser(userID);
         accountsStore.updateVirtualAccounts();
+        accountsStore.updatePhysicalAccounts();
 
         rootStore.updateCache();
     }
@@ -26,6 +28,7 @@ export const Accounts = observer(() => {
 
     return (
         <div>
+            <NewAccountMenu/>
             <TextField id="outlined-basic" 
             label="Outlined" variant="outlined" 
             onChange={(event) => setUserID(event.target.value)}
