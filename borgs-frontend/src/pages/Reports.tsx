@@ -5,18 +5,24 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { Typography } from '@mui/material';
 import Button from '@mui/joy/Button';
 import MonthlyBalance from "../model/MonthlyBalance";
+import { AccountPicker } from '../components/fields/AccountPicker';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const Reports = observer(() => {
 
-	const { reportsStore, userStore } = useStores();
+	const { reportsStore, userStore, accountsStore } = useStores();
 
 	return (
 		<div>
-			<h1>Reports for user {userStore.uid}</h1>
-			<CssVarsProvider>
-				<Button onClick={() => { reportsStore.getMonthlyData(2022) }}> Pull balance data </Button>
-			</CssVarsProvider>
+			
+			<br></br>
+
+			<AccountPicker
+				options={accountsStore.currentVirtualAccountsData}
+				label={"Virtual Account"}
+				inputName="virtual-account-picker"
+				onChange={((event, account) => { reportsStore.getMonthlyData(account.account_id, 2022) })}
+			/>
 
 			<br></br>
 
@@ -26,6 +32,11 @@ export const Reports = observer(() => {
 				<YAxis/>
 				<Bar dataKey="net_result" fill="#8884d8" />
 			</BarChart>
+
+			<br></br> 
+
+			Current balance of account is {reportsStore.totalAccountBalance}
+
 		</div>
 	)
 });

@@ -7,6 +7,7 @@ import MonthlyBalance from "../model/MonthlyBalance";
 export default class ReportsStore {
 
 	@observable currentBalance : number = 0;
+	@observable totalAccountBalance : number = 0;
 	@observable monthlyBalance : MonthlyBalance[] = [];
 
 	rootStore : RootStore;
@@ -29,13 +30,21 @@ export default class ReportsStore {
     }
 
 	@action
-	getMonthlyData(year: number) {
-		const { userStore } = this.rootStore;
+	getMonthlyData(account_id : number, year: number) {
 
-		console.log("");
+		console.log("Getting virtual id monthly balances");
 
-        axiosRequest.get(`/monthly_balance/${userStore.uid}/${year}/`)
+        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
+
+				let total_balance : number = 0;
+
+				for (let i = 0; i < res.data.length; i++) {
+					total_balance += res.data[i]["net_result"]
+				}
+
+				this.totalAccountBalance = total_balance;
+
 				return this.monthlyBalance = res.data
 			})); 
 	}
