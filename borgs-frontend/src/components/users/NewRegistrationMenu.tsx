@@ -4,12 +4,11 @@ import Menu from '@mui/joy/Menu';
 import MenuItem from '@mui/joy/MenuItem';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import { ExpenseEditCreateModal } from './NewExpenseModal';
-import Transaction from '../../model/Transaction';
+import { RegisterCreateModal } from './NewRegisteredUser';
+import User from '../../model/User';
 
-export const NewTransactionMenu = observer(() => {
-		const { transactionsStore } = useStores();
-
+export const NewRegistrationMenu = observer(() => {
+		const { userStore } = useStores();
 		const [anchorEl, setAnchorEl] = React.useState(null);
 		const [isModalOpen, setIsModenOpen] = React.useState(false);
 		const open = Boolean(anchorEl);
@@ -20,7 +19,7 @@ export const NewTransactionMenu = observer(() => {
 			setAnchorEl(null);
 		};
 
-		const handleNewExpense = (event) => {
+		const handleNewUser = (event) => {
 			handleClose();
 			setIsModenOpen(true);
 			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
@@ -37,7 +36,7 @@ export const NewTransactionMenu = observer(() => {
 					color="neutral"
 					onClick={handleClick}
 				>
-					New Transaction
+					Register or Login
 				</Button>
 				<Menu
 					id="basic-menu"
@@ -47,11 +46,10 @@ export const NewTransactionMenu = observer(() => {
 					aria-labelledby="basic-demo-button"
 					placement="bottom-start"
 				>
-					<MenuItem onClick={handleNewExpense}>Expense</MenuItem>
-					<MenuItem onClick={handleClose}>My account</MenuItem>
-					<MenuItem onClick={handleClose}>Logout</MenuItem>
+					<MenuItem onClick={handleNewUser}>Register</MenuItem>
+					<MenuItem onClick={handleClose}>Login</MenuItem>
 				</Menu>
-				<ExpenseEditCreateModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
+				<RegisterCreateModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
 			</div>
 		);
 	}

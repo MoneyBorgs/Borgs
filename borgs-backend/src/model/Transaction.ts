@@ -1,3 +1,4 @@
+import Category from "./Category";
 import Tag from "./Tag";
 
 export default class Transaction {
@@ -5,7 +6,7 @@ export default class Transaction {
 	virtual_account!: number;
 	physical_account!: number;
 	value!: number;
-	category!: number;
+	category!: Category;
 	timestampEpochSeconds!: number;
 	description!: String;
 	notes!: String;

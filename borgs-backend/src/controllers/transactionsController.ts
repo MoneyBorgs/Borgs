@@ -64,8 +64,9 @@ export default class TransactionsController {
 
 	@Post("/transaction/:userId")
 	async createTransactionForUser(req, res) {
-
 		const t : Transaction = req.body;
+
+		// TODO Validate virtual and physical accounts belong to user
 
 		const client = await dbPool.connect()
 		try {
@@ -161,6 +162,59 @@ export default class TransactionsController {
 
 	}
 
+	@Get("/category/:userId")
+	async getCategories(req, res) {
+		const userId = req.params.userId;
+
+		const availableCategories = (
+			await dbPool.query(
+				`
+				SELECT
+					category_id,
+					displayname,
+					user_id,
+					category_type,
+					(
+						SELECT json_agg(nested_category)
+						FROM (
+								SELECT
+								category_id,
+								displayname,
+								user_id,
+								category_type
+							FROM
+								TransactionsCategories T_sub
+							WHERE
+								user_id = $1 AND T_sub.parent_category = T.category_id
+						) AS nested_category
+					) AS children
+				FROM
+					TransactionsCategories T
+				WHERE user_id =$1 AND parent_category IS NULL
+				`,
+				[userId]
+			)
+		).rows;
+
+		res.send(availableCategories);		
+	}
+
+	@Get("/tag/:userId")
+	async getTagsForUser(req, res) {
+		const userId = req.params.userId;
+
+		const availableTags = (await dbPool.query(`
+			SELECT DISTINCT tag
+			FROM Tags, Transactions, VirtualAccounts
+			WHERE Tags.transaction_id = Transactions.transaction_id
+			  	AND Transactions.virtual_account = VirtualAccounts.account_id
+				AND VirtualAccounts.user_id = $1
+		`, [userId]
+		)).rows;
+
+		res.send(availableTags);
+	}
+
 	async getTransactionType(client: ClientBase, transactionId: number) {
 		const transactionCategory = (await client.query(format(
 			`
@@ -187,7 +241,7 @@ export default class TransactionsController {
 					) VALUES ($1,$2,$3,$4,$5,$6,$7)
 					RETURNING transaction_id;
 				`,
-			[t.virtual_account, t.physical_account, t.value, t.category, t.timestampEpochSeconds, t.description, t.notes]
+			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampEpochSeconds, t.description, t.notes]
 		);
 
 		t.transaction_id = result.rows[0].transaction_id;
