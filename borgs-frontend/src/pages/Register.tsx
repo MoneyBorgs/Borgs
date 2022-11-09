@@ -18,6 +18,7 @@ export const Register = observer(() => {
 		console.log(firstName)
         userStore.updateFirstName(firstName);
         userStore.usersWithName();
+		console.log(userStore.currentUsersWithName);
     }
 
 	return (
@@ -33,7 +34,6 @@ export const Register = observer(() => {
             onChange={(event) => setFirstName(event.target.value)}
             value = {firstName}/>
 			<Button variant="solid" onClick={handleOnSubmitForm}>Find Users With Name</Button>
-
 			<div>
             {
             userStore.currentUsersWithName.map( user => {return <li> {[user.firstname, ' ', user.lastname, ' ', user.email]} </li>}

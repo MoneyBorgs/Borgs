@@ -23,7 +23,32 @@ export default class UsersController {
             u.uid = result.rows[0].uid;
 
 			res.send(u);
-		} 
+		}
+
+    @Get("/user/:emailAddress")
+    async getUserWithEmail(req, res) {
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `SELECT *
+                FROM Users
+                WHERE email = $1`,
+                [emailAddress]
+            )
+            res.send(rows);
+    }
+
+    @Get("/user/:emailAddress/:passWord")
+    async getUserWithPassWord(req, res) {
+        const passWord = req.params.passWord;
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `SELECT *
+                FROM Users
+                WHERE password = $1 AND email = $2`,
+                [passWord, emailAddress]
+            )
+            res.send(rows);
+    }
 
     @Get("/user/:firstName")
     async getUsersWithName(req, res) {
