@@ -18,7 +18,6 @@ export const Register = observer(() => {
 		console.log(firstName)
         userStore.updateFirstName(firstName);
         userStore.usersWithName();
-		console.log(userStore.currentUsersWithName);
     }
 
 	return (

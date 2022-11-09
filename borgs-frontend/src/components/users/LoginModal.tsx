@@ -48,11 +48,12 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 
 		const handleOnSubmitForm = (event) => {			
 			userStore.updateEmail(emailAddress);
-			userStore.userWithEmail();
 			userStore.updatePassWord(passWord);
 			userStore.userWithPassWord();
-			console.log(userStore.currentUserWithPassWord);
-			if (userStore.currentUserWithEmail == userStore.currentUserWithPassWord) {
+			console.log(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
+			console.log(passWord);
+			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
+				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
 				props.onClose();
 			}
 		}

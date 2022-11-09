@@ -61,15 +61,4 @@ export default class UsersController {
             );
             res.send(rows);
         }
-    
-    @Get("/user")
-	async getRecentlyRegistered(res) {
-		const { rows } = await dbPool.query(
-			`SELECT uid, firstname, lastname
-            FROM Users
-            ORDER BY uid DESC
-            LIMIT = 5`
-		);
-		    res.send(rows);
-	    }
 	}
