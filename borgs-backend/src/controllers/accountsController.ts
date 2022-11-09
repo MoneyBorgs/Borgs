@@ -36,7 +36,7 @@ export default class AccountsController {
 
 		res.send(rows);
 	}
-	@Post("/physicalaccount/:userID")
+	@Post("/physicalaccount/:userId")
 	async addNewPhysicalAccount(req, res) {
 		console.log(`Creating new physical account AccountsController`);
 		const userId = req.params.userId;
@@ -55,7 +55,7 @@ export default class AccountsController {
 
 			res.send(a);
 		} 
-	@Post("/virtualaccount/:userID")
+	@Post("/virtualaccount/:userId")
 	async addNewVirtualAccount(req, res) {
 		console.log(`Creating new virtual account AccountsController`);
 		const userId = req.params.userId;

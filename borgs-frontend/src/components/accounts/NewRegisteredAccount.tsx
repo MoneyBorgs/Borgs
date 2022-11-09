@@ -93,8 +93,9 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 								<TextField
 									required
 									label="Account Name" autoFocus
-									onChange={(accountName) => { handleOnValueChange("name", accountName.target.value); 
-									 { handleOnValueChange("user_id", userStore.uid) }}}
+									onChange={(accountName) => {
+										handleOnValueChange("name", accountName.target.value);
+									}}
 								/>														
 								<Button type="submit">Create!</Button>
 							</Stack>
