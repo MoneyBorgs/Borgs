@@ -58,8 +58,8 @@ export default class UserStore {
 
     @action
     userWithPassWord() {
-        console.log(this.password);
-        console.log('Retrieving user with given password');
+        console.log('Current UserStore password is: ' + this.password);
+        console.log('Retrieving user with given password: ' + this.password);
         axiosRequest.get(`/user/${this.email}/${this.password}`)
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithPassWord = res.data));
     }
@@ -71,6 +71,7 @@ export default class UserStore {
 		
         axiosRequest.get(`/user/${this.firstname}`)
             .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
+        
     }
 
     @action
@@ -91,20 +92,20 @@ export default class UserStore {
     updateLoginStatus(new_status) {
         this.loggedInUser = new_status;
         console.log('Logged In/Out')
-        console.log(this.loggedInUser)
+        console.log('New UserStore Login Status is: ' + this.loggedInUser)
     }
 
     @action
     updatePassWord(new_password) {
         this.password = new_password
-        console.log(this.password)
-        console.log(new_password)
+        console.log('New UserStore Password is: ' + this.password)
+        console.log('Submitted Password is: ' + new_password)
     }
 
     @action
     updateUser(new_uid) {
         this.uid = new_uid
-		console.log(this.uid)
-		console.log(new_uid)
+		console.log('New UserStore UID is: ' + this.uid)
+		console.log('Submitted UID is: ' + new_uid)
     }
 }

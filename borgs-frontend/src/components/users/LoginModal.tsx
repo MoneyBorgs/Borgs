@@ -13,6 +13,7 @@ import { useState } from 'react';
 import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
+import Alert from '@mui/material/Alert';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -53,8 +54,8 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 			userStore.updateEmail(emailAddress);
 			userStore.updatePassWord(passWord);
 			userStore.userWithPassWord();
-			console.log(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log(passWord);
+			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
+			console.log('Printing' + passWord);
 			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
 				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
 				userStore.updateLoginStatus(true);
