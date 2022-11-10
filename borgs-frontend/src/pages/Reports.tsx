@@ -4,8 +4,10 @@ import { useStores } from '../hooks/useStores';
 import { AccountPicker } from '../components/fields/AccountPicker';
 import Button from '@mui/material/Button';
 import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Line, ResponsiveContainer } from 'recharts';
-import { Table } from 'rsuite';
+import {IconButton, Stack, Table} from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
+import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -30,19 +32,20 @@ export const Reports = observer(() => {
 				onChange={((event, account) => { reportsStore.updateVirtualAccount(account.account_id) })} //+ turns stringyear into int
 			/>
 
-			<br></br>
-			<br></br>
 
-			<Button variant="contained" onClick={() => {reportsStore.updateYear(next_year)}}>Increase year</Button>
-
-			<br></br>
-			<h2>{year}</h2>
-			<br></br>
-
-			<Button variant="contained" onClick={() => {reportsStore.updateYear(last_year)}}>Decrease year</Button>
-
-			<br></br>
-			<br></br>
+			<Stack style={{marginTop: "1em", marginBottom: "1em"}}>
+				<IconButton
+					appearance="subtle"
+					onClick={() => {reportsStore.updateYear(last_year)}}
+					icon={<ArrowLeftLineIcon/>}
+				/>
+				<h5>{year}</h5>
+				<IconButton
+					appearance="subtle"
+					onClick={() => {reportsStore.updateYear(next_year)}}
+					icon={<ArrowRightLineIcon/>}
+				/>
+			</Stack>
 
 			<ComposedChart width={1100} height={500} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
