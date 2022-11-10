@@ -30,7 +30,6 @@ export default class ReportsController {
 					1
 			)
 			SELECT
-				VA.user_id,
 				T.virtual_account,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_VA_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_VA_incomes,
@@ -53,7 +52,7 @@ export default class ReportsController {
 			WHERE
 				VA.user_id = $1
 			GROUP BY
-				1, 2, total_expenses, total_incomes`,
+				VA.user_id, T.virtual_account, total_expenses, total_incomes`,
 			[userId]
 		);
 

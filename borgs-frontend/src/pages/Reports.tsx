@@ -5,12 +5,13 @@ import { AccountPicker } from '../components/fields/AccountPicker';
 import Button from '@mui/material/Button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Table } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
+
+const { Column, HeaderCell, Cell } = Table;
 
 export const Reports = observer(() => {
 
 	const { reportsStore, userStore, accountsStore } = useStores();
-
-	const { Column, HeaderCell, Cell } = Table;
 
 	const year = reportsStore.year;
 
@@ -35,7 +36,7 @@ export const Reports = observer(() => {
 			<Button variant="contained" onClick={() => {reportsStore.updateYear(next_year)}}>Increase year</Button>
 
 			<br></br>
-			{year}
+			<h2>{year}</h2>
 			<br></br>
 
 			<Button variant="contained" onClick={() => {reportsStore.updateYear(last_year)}}>Decrease year</Button>
@@ -54,58 +55,49 @@ export const Reports = observer(() => {
 
 			The change in balance of {reportsStore.virtualAccount} throughout {year} is {reportsStore.totalAccountBalance}
 
+			<br></br>
+			<br></br>
+
+			<h2>General virtual account reports</h2>
+
+			<br></br>
+
+			<Button variant="contained" onClick={() => {reportsStore.getTableData()}}>Update table</Button>
+
+			<br></br>
+			<br></br>
+
 			<Table
-			height={400}
-			data={reportsStore.getTableData()}
-			onRowClick={rowData => {
-				console.log(rowData);
-			}}
+			virtualized height={800}
+			data={reportsStore.tableBalance}
+			onRowClick={data => {
+				console.log(data);
+			  }}
 			>
-			<Column width={60} align="center" fixed>
-				<HeaderCell>Id</HeaderCell>
-				<Cell dataKey="id" />
-			</Column>
+				<Column width={60} align="center" fixed>
+					<HeaderCell>Id</HeaderCell>
+					<Cell dataKey="virtual_account" />
+				</Column>
 
-			<Column width={150}>
-				<HeaderCell>First Name</HeaderCell>
-				<Cell dataKey="firstName" />
-			</Column>
+				<Column width={150}>
+					<HeaderCell>Account expenses</HeaderCell>
+					<Cell dataKey="total_va_expenses" />
+				</Column>
 
-			<Column width={150}>
-				<HeaderCell>Last Name</HeaderCell>
-				<Cell dataKey="lastName" />
-			</Column>
+				<Column width={150}>
+					<HeaderCell>Account income</HeaderCell>
+					<Cell dataKey="total_va_incomes" />
+				</Column>
 
-			<Column width={100}>
-				<HeaderCell>Gender</HeaderCell>
-				<Cell dataKey="gender" />
-			</Column>
+				<Column width={100}>
+					<HeaderCell>% of total expenses</HeaderCell>
+					<Cell dataKey="percent_total_expenses" />
+				</Column>
 
-			<Column width={100}>
-				<HeaderCell>Age</HeaderCell>
-				<Cell dataKey="age" />
-			</Column>
-
-			<Column width={150}>
-				<HeaderCell>Postcode</HeaderCell>
-				<Cell dataKey="postcode" />
-			</Column>
-
-			<Column width={300}>
-				<HeaderCell>Email</HeaderCell>
-				<Cell dataKey="email" />
-			</Column>
-			<Column width={80} fixed="right">
-				<HeaderCell>...</HeaderCell>
-
-				<Cell>
-				{rowData => (
-					<span>
-					<a onClick={() => alert(`id:${rowData.id}`)}> Edit </a>
-					</span>
-				)}
-				</Cell>
-			</Column>
+				<Column width={100}>
+					<HeaderCell>% of total income</HeaderCell>
+					<Cell dataKey="percent_total_incomes" />
+				</Column>
 			</Table>
 
 			</div>
