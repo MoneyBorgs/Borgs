@@ -4,6 +4,7 @@ import { axiosRequest } from "../api/api";
 import Transaction from "../model/Transaction";
 import Dashboard from "../model/Dashboard"
 import CategoryBalance from "../model/CategoryBalance"
+import ExpensesIncomes from "../model/ExpensesIncomes"
 import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 
@@ -22,6 +23,7 @@ export default class DashboardStore {
 
 	@observable currentBalancesData : Dashboard[] = [];
 	@observable currentTopCategories : CategoryBalance[] = [];
+	@observable currentExpensesIncomes : ExpensesIncomes[] = [];
 	@observable currentTotalBalance : number = 0;
 
 	@action
@@ -49,6 +51,15 @@ export default class DashboardStore {
 		console.log('Update categories')
         axiosRequest.get(`/top_categories/${userStore.uid}`)
             .then(action((res) : AxiosResponse<CategoryBalance[], any> => this.currentTopCategories = res.data));
+    }
+
+	@action
+    updateIncomesExpenses() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update incomes and expenses')
+        axiosRequest.get(`/expenses_incomes/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<ExpensesIncomes[], any> => this.currentExpensesIncomes = res.data));
     }
 }
 

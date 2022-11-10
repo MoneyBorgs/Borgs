@@ -32,5 +32,6 @@ export default class RootStore {
 		this.dashboardStore.updateBalance();
 		this.dashboardStore.updateTotalBalance();
 		this.dashboardStore.updateTopCategories();
+		this.dashboardStore.updateIncomesExpenses();
 	}
 }

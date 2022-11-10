@@ -29,7 +29,7 @@ export const MainPage = observer(() => {
 				dashboard => {
 					return <li key={dashboard.name.toString()}>
 						<b>{dashboard.name + ": "}</b> 
-						{dashboard.balance.toFixed(2)}
+						${dashboard.balance.toFixed(2)}
 					</li>})
 			}
 
@@ -40,7 +40,21 @@ export const MainPage = observer(() => {
 				cat => {
 					return <li key={cat.category.toString()}>
 						<b>{cat.category + ": "}</b> 
-						{cat.balance.toFixed(2)}
+						${cat.balance.toFixed(2)}
+					</li>})
+			}
+
+			<h2>Incomes and Expenses Summary</h2>
+
+			{
+			dashboardStore.currentExpensesIncomes.map( 
+				expandincs => {
+					return <li>
+						<b>Total Incomes: </b> 
+						${expandincs.total_incomes.toFixed(2)}
+						<br></br>
+						<b>Total Expenses: </b> 
+						${expandincs.total_expenses.toFixed(2)}
 					</li>})
 			}
 			</div>

@@ -47,14 +47,50 @@ export default class DashboardController {
 
 		const { rows } = await dbPool.query(
 			`SELECT
-				category AS category,
+				TC.displayName AS category,
 				SUM(value) AS balance
 			FROM Transactions T
-			INNER JOIN PhysicalAccounts PA ON T.physical_account = PA.account_id
-			WHERE PA.user_id = $1
-			GROUP BY category
-			ORDER BY balance DESC
+			JOIN 
+				PhysicalAccounts PA 
+				ON 
+					T.physical_account = PA.account_id
+			JOIN
+				TransactionsCategories TC
+				ON
+					T.category = TC.category_id
+			WHERE 
+				PA.user_id = $1
+			GROUP BY 
+				TC.displayName
+			ORDER BY 
+				balance DESC
 			LIMIT 5`,
+			[userId]
+		);
+
+		res.send(rows);
+	}
+
+	@Get("/expenses_incomes/:userId")
+	async getExpensesAndIncomes(req, res) {
+		const userId = req.params.userId;
+
+		const { rows } = await dbPool.query(
+			`SELECT
+				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_expenses,
+				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes
+			FROM
+				Transactions T
+			JOIN
+				PhysicalAccounts PA
+			ON
+				T.physical_account = PA.account_id
+			JOIN
+				TransactionsCategories TC
+			ON
+				T.category = TC.category_id
+			WHERE
+				PA.user_id = $1`,
 			[userId]
 		);
 
