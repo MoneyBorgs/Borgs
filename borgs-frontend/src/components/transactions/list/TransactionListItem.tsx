@@ -7,12 +7,11 @@ import {
     ListItemButton,
     ListItemProps,
     ListItemText,
-    Paper,
     Typography
 } from "@mui/material";
 import Transaction from "../../../model/Transaction";
 import {useStores} from "../../../hooks/useStores";
-import currency from 'currency.js';
+import {computeCurrencyTextColor, formatCurrencyText} from "../../../utils/TextUtils";
 
 export interface TransactionListItemProps extends ListItemProps {
     transaction : Transaction;
@@ -54,12 +53,8 @@ export const TransactionListItem = observer((props: TransactionListItemProps) =>
                         }
                     />
 
-                    <Typography color={props.transaction.value < 0 ? "#c62828" : "#4caf50"}>
-                        {
-                            currency(props.transaction.value,
-                                { separator: ".", decimal: ",", symbol: "$" }
-                            ).format()
-                        }
+                    <Typography color={computeCurrencyTextColor(props.transaction.value)}>
+                        {formatCurrencyText(props.transaction.value)}
                     </Typography>
                 </ListItemButton>
             </ListItem>

@@ -7,9 +7,9 @@ import {useStores} from "../../hooks/useStores";
 import {useState} from "react";
 import {ExpenseCreateOrEditModal} from "./NewExpenseModal";
 import TrashIcon from '@rsuite/icons/Trash';
-import currency from "currency.js";
 import {Typography} from "@mui/material";
 import dayjs from "dayjs";
+import {computeCurrencyTextColor, formatCurrencyText} from "../../utils/TextUtils";
 
 export interface TransactionDrawer extends DrawerProps {
     transaction?: Transaction;
@@ -154,8 +154,6 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
 )
 
 function renderValue(value) {
-    return <Typography variant={"subtitle2"} color={value < 0 ? "#c62828" : "#4caf50"}><b>
-        {currency(value,
-            { separator: ".", decimal: ",", symbol: "$" }
-        ).format()}</b></Typography>;
+    return <Typography variant={"subtitle2"} color={computeCurrencyTextColor(value)}><b>
+        {formatCurrencyText(value)}</b></Typography>;
 }
