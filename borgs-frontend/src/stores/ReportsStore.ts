@@ -7,9 +7,10 @@ import MonthlyBalance from "../model/MonthlyBalance";
 export default class ReportsStore {
 
 	@observable currentBalance : number = 0;
-	@observable totalAccountBalance : number = 0;
+	@observable virtualAccount : number = -1;
+	@observable year : number = 2018;
+	@observable totalAccountBalance : number = 0
 	@observable monthlyBalance : MonthlyBalance[] = [];
-
 	rootStore : RootStore;
 
 	constructor(rootStore: RootStore) {
@@ -18,23 +19,27 @@ export default class ReportsStore {
 	}
 
 	@action
-    updateBalance() {
+    updateVirtualAccount(account_id) {
 		const { userStore } = this.rootStore;
-
-        console.log("Updating accounts balance");
-
-        axiosRequest.get(`/accounts_balance/${userStore.uid}`)
-            .then(action((res) : AxiosResponse<number, any> => {
-				return this.currentBalance = res.data.sum
-			}));
+		this.virtualAccount = account_id
+		this.getMonthlyData()
+		return true
     }
 
 	@action
-	getMonthlyData(account_id : number, year: number) {
+    updateYear(year) {
+		const { userStore } = this.rootStore;
+		this.year = year
+		this.getMonthlyData()
+		return true
+    }
+
+	@action
+	getMonthlyData() {
 
 		console.log("Getting virtual id monthly balances");
 
-        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
+        axiosRequest.get(`/monthly_balance/${this.virtualAccount}/${this.year}/`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;

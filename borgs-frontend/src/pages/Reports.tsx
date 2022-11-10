@@ -1,18 +1,19 @@
 import React, { useState, PureComponent } from 'react';
 import { observer } from "mobx-react-lite";
 import { useStores } from '../hooks/useStores';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AccountPicker } from '../components/fields/AccountPicker';
+import Button from '@mui/material/Button';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const Reports = observer(() => {
 
 	const { reportsStore, userStore, accountsStore } = useStores();
 
-	const [year, setYear] = useState('');
+	const year = reportsStore.year;
+
+	const next_year = +year + 1
+	const last_year = +year - 1
 
 	return (
 		<div>
@@ -23,28 +24,19 @@ export const Reports = observer(() => {
 				options={accountsStore.currentVirtualAccountsData}
 				label={"Virtual Account"}
 				inputName="virtual-account-picker"
-				onChange={((event, account) => { reportsStore.getMonthlyData(account.account_id, +year) })} //+ turns stringyear into int
+				onChange={((event, account) => { reportsStore.updateVirtualAccount(account.account_id) })} //+ turns stringyear into int
 			/>
 
 			<br></br>
 			<br></br>
 
-			<FormControl fullWidth>
-			<InputLabel id="select-year-label">Year</InputLabel>
-			<Select
-				labelId="select-year-label"
-				id="select-year"
-				value={year}
-				label="Year"
-				onChange={(event) => setYear(event.target.value)}
-			>
-				<MenuItem value={2016}>2016</MenuItem>
-				<MenuItem value={2017}>2017</MenuItem>
-				<MenuItem value={2018}>2018</MenuItem>
-				<MenuItem value={2019}>2019</MenuItem>
-				<MenuItem value={2020}>2020</MenuItem>
-			</Select>
-			</FormControl>
+			<Button variant="contained" onClick={() => {reportsStore.updateYear(next_year)}}>Increase year</Button>
+
+			<br></br>
+			{year}
+			<br></br>
+
+			<Button variant="contained" onClick={() => {reportsStore.updateYear(last_year)}}>Decrease year</Button>
 
 			<br></br>
 			<br></br>
@@ -58,8 +50,18 @@ export const Reports = observer(() => {
 
 			<br></br> 
 
-			Current balance of account is {reportsStore.totalAccountBalance}
+			The change in balance of {reportsStore.virtualAccount} throughout {year} is {reportsStore.totalAccountBalance}
+
+			<DataGrid
+			rows={reportsStore.tableRows}
+			columns={reportsStore.tableColumns}
+			pageSize={5}
+			rowsPerPageOptions={[5]}
+			checkboxSelection
+			/>
 
 		</div>
+
+		
 	)
 });
