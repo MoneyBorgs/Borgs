@@ -10,53 +10,105 @@ import DashboardStore from '../stores/DashboardStore';
 import Dashboard from '../model/Dashboard';
 import { useStores } from '../hooks/useStores';
 import { AccountCard } from '../components/dashboard/accountCard';
+import { Table } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
 
 export const MainPage = observer(() => {
 	const {dashboardStore} = useStores();
+	const {Column, HeaderCell, Cell} = Table;
+
 	return (
 		<div>
 			<h1>Home</h1>
 			<div>
 
+			<br></br>
+
 			<Typography>
 				Total balance = ${dashboardStore.currentTotalBalance.toFixed(2)}
 			</Typography>
 
+			<br></br>
+			<br></br>
+
 			<h2>Account Balances</h2>
 
-			{
-			dashboardStore.currentBalancesData.map( 
-				dashboard => {
-					return <li key={dashboard.name.toString()}>
-						<b>{dashboard.name + ": "}</b> 
-						${dashboard.balance.toFixed(2)}
-					</li>})
-			}
+			<div style={{
+            display: 'block', width: 500
+        	}}>
+				<Table
+				autoHeight={true}
+				data={dashboardStore.currentBalancesData}
+				onRowClick={data => {
+					console.log(data);
+				}}
+				>
+					<Column width={300} align="center" fixed>
+						<HeaderCell><b>Physical Account</b></HeaderCell>
+						<Cell dataKey="name" />
+					</Column>
+
+					<Column width={150} align="center">
+						<HeaderCell><b>Balance</b></HeaderCell>
+						<Cell dataKey="balance" />
+					</Column>
+				</Table>	
+			</div>
+
+			<br></br>
+			<br></br>
 
 			<h2>Top Categories</h2>
 
-			{
-			dashboardStore.currentTopCategories.map( 
-				cat => {
-					return <li key={cat.category.toString()}>
-						<b>{cat.category + ": "}</b> 
-						${cat.balance.toFixed(2)}
-					</li>})
-			}
+			<div style={{
+            display: 'block', width: 500
+        	}}>
+				<Table
+				autoHeight={true}
+				data={dashboardStore.currentTopCategories}
+				onRowClick={data => {
+					console.log(data);
+				}}
+				>
+					<Column width={300} align="center" fixed>
+						<HeaderCell><b>Category</b></HeaderCell>
+						<Cell dataKey="category" />
+					</Column>
+
+					<Column width={150} align="center">
+						<HeaderCell><b>Balance</b></HeaderCell>
+						<Cell dataKey="balance" />
+					</Column>
+				</Table>	
+			</div>
+
+			<br></br>
+			<br></br>
 
 			<h2>Incomes and Expenses Summary</h2>
 
-			{
-			dashboardStore.currentExpensesIncomes.map( 
-				expandincs => {
-					return <li>
-						<b>Total Incomes: </b> 
-						${expandincs.total_incomes.toFixed(2)}
-						<br></br>
-						<b>Total Expenses: </b> 
-						${expandincs.total_expenses.toFixed(2)}
-					</li>})
-			}
+			<div style={{
+            display: 'block', width: 500
+        	}}>
+				<Table
+				autoHeight={true}
+				data={dashboardStore.currentExpensesIncomes}
+				onRowClick={data => {
+					console.log(data);
+				}}
+				>
+					<Column width={300} align="center" fixed>
+						<HeaderCell><b>Total Incomes</b></HeaderCell>
+						<Cell dataKey="total_incomes" />
+					</Column>
+
+					<Column width={150} align="center">
+						<HeaderCell><b>Total Expenses</b></HeaderCell>
+						<Cell dataKey="total_expenses" />
+					</Column>
+				</Table>	
+			</div>
+
 			</div>
 		</div>
 	)
