@@ -3,6 +3,7 @@ import { action, makeAutoObservable, makeObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
 import Transaction from "../model/Transaction";
 import Dashboard from "../model/Dashboard"
+import CategoryBalance from "../model/CategoryBalance"
 import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 
@@ -16,9 +17,11 @@ export default class DashboardStore {
 		// Update cache
 		this.updateTotalBalance();
 		this.updateBalance();
+		this.updateTopCategories();
 	}
 
 	@observable currentBalancesData : Dashboard[] = [];
+	@observable currentTopCategories : CategoryBalance[] = [];
 	@observable currentTotalBalance : number = 0;
 
 	@action
@@ -37,6 +40,15 @@ export default class DashboardStore {
 		console.log('Update total balance')
         axiosRequest.get(`/total/${userStore.uid}`)
             .then(action((res) : AxiosResponse<number, any> => this.currentTotalBalance = res.data.balance));
+    }
+
+	@action
+    updateTopCategories() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update categories')
+        axiosRequest.get(`/top_categories/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<CategoryBalance[], any> => this.currentTopCategories = res.data));
     }
 }
 

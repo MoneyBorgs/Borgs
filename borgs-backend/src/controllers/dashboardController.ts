@@ -40,4 +40,24 @@ export default class DashboardController {
 
 		res.send(rows[0]);
 	}
+
+	@Get("/top_categories/:userId")
+	async getTopCategories(req, res) {
+		const userId = req.params.userId;
+
+		const { rows } = await dbPool.query(
+			`SELECT
+				category AS category,
+				SUM(value) AS balance
+			FROM Transactions T
+			INNER JOIN PhysicalAccounts PA ON T.physical_account = PA.account_id
+			WHERE PA.user_id = $1
+			GROUP BY category
+			ORDER BY balance DESC
+			LIMIT 5`,
+			[userId]
+		);
+
+		res.send(rows);
+	}
 }

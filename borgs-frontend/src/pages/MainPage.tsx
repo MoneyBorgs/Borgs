@@ -19,7 +19,7 @@ export const MainPage = observer(() => {
 			<div>
 
 			<Typography>
-				Total balance = ${dashboardStore.currentTotalBalance}
+				Total balance = ${dashboardStore.currentTotalBalance.toFixed(2)}
 			</Typography>
 
 			<h2>Account Balances</h2>
@@ -30,6 +30,17 @@ export const MainPage = observer(() => {
 					return <li key={dashboard.name.toString()}>
 						<b>{dashboard.name + ": "}</b> 
 						{dashboard.balance.toFixed(2)}
+					</li>})
+			}
+
+			<h2>Top Categories</h2>
+
+			{
+			dashboardStore.currentTopCategories.map( 
+				cat => {
+					return <li key={cat.category.toString()}>
+						<b>{cat.category + ": "}</b> 
+						{cat.balance.toFixed(2)}
 					</li>})
 			}
 			</div>

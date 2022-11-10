@@ -30,5 +30,7 @@ export default class RootStore {
 		this.accountsStore.updateVirtualAccounts();
 		this.accountsStore.updatePhysicalAccounts();
 		this.dashboardStore.updateBalance();
+		this.dashboardStore.updateTotalBalance();
+		this.dashboardStore.updateTopCategories();
 	}
 }
