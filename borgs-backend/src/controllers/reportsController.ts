@@ -9,20 +9,55 @@ export default class ReportsController {
 		const userId = req.params.userId;
 
 		const { rows } = await dbPool.query(
-			`SELECT
-				SUM(value)
+			`WITH totals AS (
+				SELECT
+					VA.user_id,
+					SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_expenses,
+					SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes
+				FROM
+					Transactions T
+				JOIN
+					VirtualAccounts VA
+				ON
+					T.virtual_account = VA.account_id
+				JOIN
+					TransactionsCategories TC
+				ON
+					T.category = TC.category_id
+				WHERE
+					VA.user_id = $1
+				GROUP BY
+					1
+			)
+			SELECT
+				VA.user_id,
+				T.virtual_account,
+				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_VA_expenses,
+				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_VA_incomes,
+				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses AS percent_total_expenses,
+				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END)/total_incomes AS percent_total_incomes
 			FROM
 				Transactions T
 			JOIN
 				VirtualAccounts VA
 			ON
-				T.virtual_account = VA.account_id 
+				T.virtual_account = VA.account_id
+			JOIN
+				TransactionsCategories TC
+			ON
+				T.category = TC.category_id
+			JOIN 
+				totals
+			ON
+				totals.user_id = VA.user_id
 			WHERE
-				VA.user_id = $1`,
+				VA.user_id = $1
+			GROUP BY
+				1, 2, total_expenses, total_incomes`,
 			[userId]
 		);
 
-		res.send(rows[0]);
+		res.send(rows);
 	}
 
 	@Get("/monthly_balance/:va/:year")

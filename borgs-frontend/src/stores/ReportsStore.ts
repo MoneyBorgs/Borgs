@@ -11,6 +11,7 @@ export default class ReportsStore {
 	@observable year : number = 2018;
 	@observable totalAccountBalance : number = 0
 	@observable monthlyBalance : MonthlyBalance[] = [];
+
 	rootStore : RootStore;
 
 	constructor(rootStore: RootStore) {
@@ -52,5 +53,27 @@ export default class ReportsStore {
 
 				return this.monthlyBalance = res.data
 			})); 
+	}
+
+	@action
+	getTableData() {
+
+		console.log("Getting virtual id monthly balances");
+
+        axiosRequest.get(`/monthly_balance/${this.virtualAccount}/${this.year}/`)
+            .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
+
+				let total_balance : number = 0;
+
+				for (let i = 0; i < res.data.length; i++) {
+					total_balance += res.data[i]["net_result"]
+				}
+
+				this.totalAccountBalance = total_balance;
+
+				return this.monthlyBalance = res.data
+			})); 
+		
+		return true
 	}
 }
