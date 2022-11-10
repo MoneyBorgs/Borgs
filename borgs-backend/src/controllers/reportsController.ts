@@ -60,6 +60,7 @@ export default class ReportsController {
 		for (let i = 1; i < 13; i++) {
 			if (!included_months.includes(i)) {
 				let temp = {
+					virtual_account: +va, // + operator turns strings to int
 					month: i,
 					net_result: 0,
 				}
