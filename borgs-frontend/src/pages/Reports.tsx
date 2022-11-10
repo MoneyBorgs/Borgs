@@ -8,6 +8,7 @@ import {IconButton, Stack, Table} from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
+import {formatCurrencyText} from "../utils/TextUtils";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -47,10 +48,12 @@ export const Reports = observer(() => {
 				/>
 			</Stack>
 
-			<ComposedChart width={1100} height={500} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+			<ComposedChart width={1100} height={250} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 100 }}>
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
 				<XAxis dataKey="month" />
-				<YAxis/>
+				<YAxis
+					tickFormatter={(value) => {return formatCurrencyText(value)}}
+				/>
 				<Bar dataKey="total_va_expenses" fill="#F26CA7" />
           		<Bar dataKey="total_va_incomes" fill="#21FA90" />
 				<Line type="monotone" dataKey="net_result" stroke="#8884d8"/>
