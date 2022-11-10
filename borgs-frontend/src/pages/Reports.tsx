@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useStores } from '../hooks/useStores';
 import { AccountPicker } from '../components/fields/AccountPicker';
 import Button from '@mui/material/Button';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Line, ResponsiveContainer } from 'recharts';
 import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 
@@ -44,16 +44,19 @@ export const Reports = observer(() => {
 			<br></br>
 			<br></br>
 
-			<BarChart width={600} height={300} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+			<ComposedChart width={1100} height={500} data={reportsStore.monthlyBalance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
 				<XAxis dataKey="month" />
 				<YAxis/>
-				<Bar dataKey="net_result" fill="#8884d8" />
-			</BarChart>
+				<Bar dataKey="total_va_expenses" fill="#F26CA7" />
+          		<Bar dataKey="total_va_incomes" fill="#21FA90" />
+				<Line type="monotone" dataKey="net_result" stroke="#8884d8"/>
+				<Tooltip />
+			</ComposedChart>
 
 			<br></br> 
 
-			The change in balance of {reportsStore.virtualAccount} throughout {year} is {reportsStore.totalAccountBalance}
+			The change in balance of {reportsStore.virtualAccount} throughout {year} is: {reportsStore.totalAccountBalance}
 
 			<br></br>
 			<br></br>
@@ -68,7 +71,7 @@ export const Reports = observer(() => {
 			<br></br>
 
 			<Table
-			virtualized height={800}
+			virtualized height={1200}
 			data={reportsStore.tableBalance}
 			onRowClick={data => {
 				console.log(data);
