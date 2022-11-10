@@ -15,6 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStores } from '../hooks/useStores';
+import UserStore from '../stores/UserStore';
 
 let routerStore;
 
@@ -76,6 +77,8 @@ const ResponsiveAppBar = () => {
 
 	routerStore = useRouterStore()
 
+	let { userStore } = useStores();
+
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
 	};
@@ -88,6 +91,7 @@ const ResponsiveAppBar = () => {
 	};
 
 	const handleCloseUserMenu = () => {
+		userStore.updateLoginStatus(false);
 		setAnchorElUser(null);
 	};
 
@@ -203,11 +207,14 @@ const ResponsiveAppBar = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
+							<MenuItem onClick={handleCloseUserMenu}>
+								<Typography textAlign="center">Logout</Typography>
+							</MenuItem>
+							{/* {settings.map((setting) => (
 								<MenuItem key={setting} onClick={handleCloseUserMenu}>
 									<Typography textAlign="center">{setting}</Typography>
 								</MenuItem>
-							))}
+							))} */}
 						</Menu>
 					</Box>
 				</Toolbar>

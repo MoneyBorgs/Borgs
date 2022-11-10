@@ -14,7 +14,7 @@ export default class UserStore {
     @observable firstname = 'Ryan'
     @observable email = 'rtm40@duke.edu'
     @observable password = 'ryan'
-
+    @observable loggedInUser: boolean = false;
     @observable isRegisterModalOpen: boolean = false;
     @observable currentRegisterModal : User = new User();
 
@@ -85,6 +85,13 @@ export default class UserStore {
         this.email = new_email
         console.log(this.email)
         console.log(new_email)
+    }
+
+    @action
+    updateLoginStatus(new_status) {
+        this.loggedInUser = new_status;
+        console.log('Logged In/Out')
+        console.log(this.loggedInUser)
     }
 
     @action

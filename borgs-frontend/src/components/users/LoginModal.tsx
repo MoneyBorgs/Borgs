@@ -39,6 +39,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const [ emailAddress, setEmailAddress ] = useState('');
 		const [ passWord, setPassWord ] = useState('');
 
+
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
 		 * on the userState with the recently chosen value
@@ -54,6 +55,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 			console.log(passWord);
 			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
 				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
+				userStore.updateLoginStatus(true);
 				props.onClose();
 			}
 		}
