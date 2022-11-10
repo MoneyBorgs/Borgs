@@ -55,7 +55,7 @@ export const routes : SuperRoute[] = [
 	{
 		name: 'register',
 		pattern: '/register',
-		showNavBar: true,
+		showNavBar: false,
 		container: <Register/>
 	},
 ];

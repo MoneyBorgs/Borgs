@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import { useState } from 'react';
 import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
+import {useRouterStore} from "mobx-state-router";
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -34,6 +35,7 @@ export interface LoginCreateModalProps extends Omit<ModalUnstyledOwnProps, "chil
 export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 	
 		const { userStore } = useStores();
+		const router = useRouterStore();
 
 		// TODO get default user and make values consistent across usages
 		const [ emailAddress, setEmailAddress ] = useState('');
@@ -56,6 +58,9 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
 				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
 				userStore.updateLoginStatus(true);
+
+				router.goTo("mainpage");
+
 				props.onClose();
 			}
 		}

@@ -61,13 +61,6 @@ const pages : IPage[] = [
 			routerStore.goTo('reports');
 		}
 	},
-	{
-		key: 'register',
-		displayName: 'Register',
-		onClick: () => {
-			routerStore.goTo('register');
-		}
-	},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -92,6 +85,7 @@ const ResponsiveAppBar = () => {
 
 	const handleCloseUserMenu = () => {
 		userStore.updateLoginStatus(false);
+		routerStore.goTo("register");
 		setAnchorElUser(null);
 	};
 
