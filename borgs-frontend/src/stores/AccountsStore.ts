@@ -7,11 +7,13 @@ import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 import MonthlyBalance from "../model/MonthlyBalance";
 
+
 export default class AccountsStore {
 	rootStore : RootStore;
 	userStore : UserStore;
 	@observable adding_account : string = "physical"
 	@observable monthlyBalance : MonthlyBalance[] = [];
+	@observable totalAccountBalance : number = 0;
 	@observable currentVirtualAccountsData : VirtualAccount[] = [];
 	@observable currentPhysicalAccountsData : PhysicalAccount[] = [];
 
@@ -46,16 +48,44 @@ export default class AccountsStore {
 			.then(action((res): AxiosResponse<Account[], any> => this.currentPhysicalAccountsData = res.data));
 	}
 	@action
-	getMonthlyAccountData(year: number) {
-		const { userStore } = this.rootStore;
+	getMonthlyVirtualAccountData(account_id : number, year: number) {
 
-		console.log("");
+		console.log("Getting virtual id monthly balances");
 
-        axiosRequest.get(`/monthly_balance/${userStore.uid}/${year}/`)
+        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
+
+				let total_balance : number = 0;
+
+				for (let i = 0; i < res.data.length; i++) {
+					total_balance += res.data[i]["net_result"]
+				}
+
+				this.totalAccountBalance = total_balance;
+
 				return this.monthlyBalance = res.data
 			})); 
 	}
+
+	getMonthlyPhysicalAccountData(account_id : number, year: number) {
+
+		console.log("Getting physical id monthly balances");
+
+        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
+            .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
+
+				let total_balance : number = 0;
+
+				for (let i = 0; i < res.data.length; i++) {
+					total_balance += res.data[i]["net_result"]
+				}
+
+				this.totalAccountBalance = total_balance;
+
+				return this.monthlyBalance = res.data
+			})); 
+	}
+
 	@action
     createNewPhysicalAccount(account: Account) {
         console.log(`Creating new physical account`);
