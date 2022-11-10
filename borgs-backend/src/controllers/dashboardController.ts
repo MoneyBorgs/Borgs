@@ -24,4 +24,20 @@ export default class DashboardController {
 
 		res.send(rows);
 	}
+
+	@Get("/total/:userId")
+	async getTotalForUser(req, res) {
+		const userId = req.params.userId;
+
+		const { rows } = await dbPool.query(
+			`SELECT
+				SUM(value) AS balance
+			FROM Transactions T
+			INNER JOIN PhysicalAccounts PA ON T.physical_account = PA.account_id
+			WHERE PA.user_id = $1`,
+			[userId]
+		);
+
+		res.send(rows[0]);
+	}
 }

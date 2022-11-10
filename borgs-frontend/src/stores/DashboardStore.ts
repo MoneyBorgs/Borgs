@@ -14,10 +14,12 @@ export default class DashboardStore {
 		this.rootStore = rootStore;
 
 		// Update cache
+		this.updateTotalBalance();
 		this.updateBalance();
 	}
 
-	@observable currentBalanacesData : Dashboard[] = [];
+	@observable currentBalancesData : Dashboard[] = [];
+	@observable currentTotalBalance : number = 0;
 
 	@action
     updateBalance() {
@@ -25,7 +27,16 @@ export default class DashboardStore {
 		console.log(userStore.uid)
 		console.log('Update pa')
         axiosRequest.get(`/balances/${userStore.uid}`)
-            .then(action((res) : AxiosResponse<Dashboard[], any> => this.currentBalanacesData = res.data));
+            .then(action((res) : AxiosResponse<Dashboard[], any> => this.currentBalancesData = res.data));
+    }
+
+	@action
+    updateTotalBalance() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update total balance')
+        axiosRequest.get(`/total/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<number, any> => this.currentTotalBalance = res.data.balance));
     }
 }
 

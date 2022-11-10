@@ -18,10 +18,14 @@ export const MainPage = observer(() => {
 			<h1>Home</h1>
 			<div>
 
+			<Typography>
+				Total balance = ${dashboardStore.currentTotalBalance}
+			</Typography>
+
 			<h2>Account Balances</h2>
 
 			{
-			dashboardStore.currentBalanacesData.map( 
+			dashboardStore.currentBalancesData.map( 
 				dashboard => {
 					return <li key={dashboard.name.toString()}>
 						<b>{dashboard.name + ": "}</b> 
