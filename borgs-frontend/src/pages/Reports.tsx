@@ -90,7 +90,7 @@ export const Reports = observer(() => {
 
 				<Column width={150}>
 					<HeaderCell>Account expenses</HeaderCell>
-					<Cell dataKey="total_va_expenses" />
+					<Cell dataKey="total_va_expenses"/>
 				</Column>
 
 				<Column width={150}>
