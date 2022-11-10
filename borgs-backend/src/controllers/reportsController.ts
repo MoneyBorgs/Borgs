@@ -30,7 +30,7 @@ export default class ReportsController {
 					1
 			)
 			SELECT
-				T.virtual_account,
+				VA.name,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_VA_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_VA_incomes,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100 AS percent_total_expenses,
@@ -52,7 +52,7 @@ export default class ReportsController {
 			WHERE
 				VA.user_id = $1
 			GROUP BY
-				VA.user_id, T.virtual_account, total_expenses, total_incomes`,
+				VA.name, T.virtual_account, total_expenses, total_incomes`,
 			[userId]
 		);
 

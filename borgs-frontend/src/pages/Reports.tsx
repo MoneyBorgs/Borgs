@@ -83,9 +83,9 @@ export const Reports = observer(() => {
 				console.log(data);
 			  }}
 			>
-				<Column width={60} align="center" fixed>
-					<HeaderCell>Id</HeaderCell>
-					<Cell dataKey="virtual_account" />
+				<Column width={250} align="center" fixed>
+					<HeaderCell>Virtual Account</HeaderCell>
+					<Cell dataKey="name" />
 				</Column>
 
 				<Column width={150}>
