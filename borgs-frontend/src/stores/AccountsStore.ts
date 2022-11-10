@@ -10,6 +10,7 @@ import MonthlyBalance from "../model/MonthlyBalance";
 export default class AccountsStore {
 	rootStore : RootStore;
 	userStore : UserStore;
+	@observable adding_account : string = "physical"
 	@observable monthlyBalance : MonthlyBalance[] = [];
 	@observable currentVirtualAccountsData : VirtualAccount[] = [];
 	@observable currentPhysicalAccountsData : PhysicalAccount[] = [];
@@ -42,7 +43,7 @@ export default class AccountsStore {
 		console.log("Updating physical accounts");
 
 		axiosRequest.get(`/physicalaccounts/${userStore.uid}`)
-			.then(action((res): AxiosResponse<Account[], any> => this.availablePhysicalAccounts = res.data));
+			.then(action((res): AxiosResponse<Account[], any> => this.currentPhysicalAccountsData = res.data));
 	}
 	@action
 	getMonthlyAccountData(year: number) {

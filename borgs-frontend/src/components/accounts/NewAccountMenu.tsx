@@ -21,7 +21,15 @@ export const NewAccountMenu = observer(() => {
 			setAnchorEl(null);
 		};
 
+		const handleNewVirtualAccount = (event) => {
+			accountsStore.adding_account = "virtual"
+			handleClose();
+			setIsModenOpen(true);
+			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
+		}
+
 		const handleNewPhysicalAccount = (event) => {
+			accountsStore.adding_account = "physical"
 			handleClose();
 			setIsModenOpen(true);
 			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
@@ -48,8 +56,8 @@ export const NewAccountMenu = observer(() => {
 					aria-labelledby="basic-demo-button"
 					placement="bottom-start"
 				>
+					<MenuItem onClick={handleNewVirtualAccount}>New Virtual Account</MenuItem>
 					<MenuItem onClick={handleNewPhysicalAccount}>New Physical Account</MenuItem>
-					<MenuItem onClick={handleClose}>New Virtual Account</MenuItem>
 				</Menu>
 				<AccountCreateModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
 			</div>

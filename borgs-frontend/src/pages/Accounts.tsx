@@ -36,8 +36,15 @@ export const Accounts = observer(() => {
 			<Button variant="text" onClick={handleOnSubmitForm}>Text</Button>
             
             <div>
+                Virtual Accounts
             {
             accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
+            )}
+            </div>
+            <div>
+                Physical Accounts
+            {
+            accountsStore.currentPhysicalAccountsData.map( account => {return <li> {account.name} </li>}
             )}
             </div>
             

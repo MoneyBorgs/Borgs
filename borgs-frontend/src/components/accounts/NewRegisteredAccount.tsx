@@ -50,8 +50,13 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 			setAccountState({...accountState, [field] : value})
 		}
 
-		const handleOnSubmitForm = (event) => {			
-			accountsStore.createNewVirtualAccount(accountState);
+		const handleOnSubmitForm = (event) => {
+			if (accountsStore.adding_account=="virtual"){
+				accountsStore.createNewVirtualAccount(accountState);
+			} 			
+			else{
+				accountsStore.createNewPhysicalAccount(accountState);
+			}
 			props.onClose();
 		}
 
