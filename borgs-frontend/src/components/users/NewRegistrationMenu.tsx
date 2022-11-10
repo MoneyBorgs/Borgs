@@ -7,6 +7,8 @@ import { observer } from 'mobx-react-lite';
 import { RegisterCreateModal } from './NewRegisteredUser';
 import { LoginCreateModal } from './LoginModal';
 import User from '../../model/User';
+import Box from '@mui/material/Box';
+import { spacing } from '@mui/system';
 
 export const NewRegistrationMenu = observer(() => {
 		const { userStore } = useStores();
@@ -35,6 +37,7 @@ export const NewRegistrationMenu = observer(() => {
 
 		return (
 			<div>
+				<Box textAlign='center' sx={{ p: 1 }}>
 				<Button
 					id="basic-demo-button"
 					aria-controls={open ? 'basic-menu' : undefined}
@@ -42,21 +45,23 @@ export const NewRegistrationMenu = observer(() => {
 					aria-expanded={open ? 'true' : undefined}
 					variant="outlined"
 					color="neutral"
-					onClick={handleClick}
+					onClick={handleNewLogin}
 				>
-					Register or Login
-				</Button>
-				<Menu
-					id="basic-menu"
-					anchorEl={anchorEl}
-					open={open}
-					onClose={handleClose}
-					aria-labelledby="basic-demo-button"
-					placement="bottom-start"
+					Already have an account? Login here!
+				</Button> </Box>
+
+				<Box textAlign='center'>
+				<Button
+					id="basic-demo-button"
+					aria-controls={open ? 'basic-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					variant="outlined"
+					color="neutral"
+					onClick={handleNewUser}
 				>
-					<MenuItem onClick={handleNewUser}>Register</MenuItem>
-					<MenuItem onClick={handleNewLogin}>Login</MenuItem>
-				</Menu>
+					Register for MoneyBorgs! 
+				</Button> </Box>
 				<RegisterCreateModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
 				<LoginCreateModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 			</div>
