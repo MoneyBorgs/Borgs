@@ -6,8 +6,10 @@ export default class Category {
 	children!: Category[] | null
 }
 
-enum CategoryType {
-	EXPENSE = "EXPENSE",
-	INCOME = "INCOME",
-	TRANSFER = "TRANSFER"
+export class CategoryType {
+	public static readonly EXPENSE = new CategoryType("EXPENSE", "Expense");
+	public static readonly INCOME = new CategoryType("INCOME", "Income");
+	public static readonly TRANSFER = new CategoryType("TRANSFER", "Transfer")
+
+	private constructor(public readonly typeId: string, public readonly displayName: string) {}
 }

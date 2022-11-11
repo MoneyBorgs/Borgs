@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
-import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { action, makeAutoObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
-import Transaction from "../model/Transaction";
 import Dashboard from "../model/Dashboard"
+import CategoryBalance from "../model/CategoryBalance"
+import ExpensesIncomes from "../model/ExpensesIncomes"
 import RootStore from "./RootStore";
-import UserStore from "./UserStore";
 
 export default class DashboardStore {
 	rootStore: RootStore;
@@ -14,10 +14,15 @@ export default class DashboardStore {
 		this.rootStore = rootStore;
 
 		// Update cache
+		this.updateTotalBalance();
 		this.updateBalance();
+		this.updateTopCategories();
 	}
 
-	@observable currentBalanacesData : Dashboard[] = [];
+	@observable currentBalancesData : Dashboard[] = [];
+	@observable currentTopCategories : CategoryBalance[] = [];
+	@observable currentExpensesIncomes : ExpensesIncomes[] = [];
+	@observable currentTotalBalance : number = 0;
 
 	@action
     updateBalance() {
@@ -25,7 +30,34 @@ export default class DashboardStore {
 		console.log(userStore.uid)
 		console.log('Update pa')
         axiosRequest.get(`/balances/${userStore.uid}`)
-            .then(action((res) : AxiosResponse<Dashboard[], any> => this.currentBalanacesData = res.data));
+            .then(action((res) : AxiosResponse<Dashboard[], any> => this.currentBalancesData = res.data));
+    }
+
+	@action
+    updateTotalBalance() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update total balance')
+        axiosRequest.get(`/total/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<number, any> => this.currentTotalBalance = res.data.balance));
+    }
+
+	@action
+    updateTopCategories() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update categories')
+        axiosRequest.get(`/top_categories/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<CategoryBalance[], any> => this.currentTopCategories = res.data));
+    }
+
+	@action
+    updateIncomesExpenses() {
+		const {userStore} = this.rootStore
+		console.log(userStore.uid)
+		console.log('Update incomes and expenses')
+        axiosRequest.get(`/expenses_incomes/${userStore.uid}`)
+            .then(action((res) : AxiosResponse<ExpensesIncomes[], any> => this.currentExpensesIncomes = res.data));
     }
 }
 

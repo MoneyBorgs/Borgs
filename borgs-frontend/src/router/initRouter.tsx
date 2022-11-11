@@ -55,12 +55,22 @@ export const routes : SuperRoute[] = [
 	{
 		name: 'register',
 		pattern: '/register',
-		showNavBar: true,
+		showNavBar: false,
 		container: <Register/>
 	},
 ];
 
+export const routes1 : SuperRoute[] = [
+	{
+		name: 'register',
+		pattern: '/register',
+		showNavBar: true,
+		container: <Register/>
+	}
+];
+
 export function initRouter() {
+
 	const routerStore = new RouterStore(routes, notFound);
 
 	// Observe history changes

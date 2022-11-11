@@ -7,7 +7,7 @@ export default class Transaction {
 	physical_account!: number;
 	value!: number;
 	category!: Category;
-	timestampEpochSeconds!: number;
+	timestampepochseconds!: number;
 	description!: String;
 	notes!: String;
 	tags!: Tag[];
