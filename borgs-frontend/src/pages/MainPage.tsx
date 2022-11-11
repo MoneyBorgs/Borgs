@@ -12,9 +12,11 @@ import { useStores } from '../hooks/useStores';
 import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import accountCard, { categoryCard, incomesAndExpensesCard } from '../components/dashboard/accountCard';
+import { useRouterStore } from 'mobx-state-router';
 
 export const MainPage = observer(() => {
 	const {dashboardStore, userStore} = useStores();
+	const routerStore = useRouterStore();
 
 	return (
 		<div>
@@ -37,7 +39,7 @@ export const MainPage = observer(() => {
 				paddingLeft: '5%',
 				paddingTop: '5%'}}>
 
-			{accountCard(dashboardStore)}
+			{accountCard(dashboardStore, routerStore)}
 			</div>
 
 			<div style={{ 
@@ -47,9 +49,9 @@ export const MainPage = observer(() => {
 				alignItems: 'center',
 				padding: '5%'}}>
 
-			{categoryCard(dashboardStore)}
+			{categoryCard(dashboardStore, routerStore)}
 
-			{incomesAndExpensesCard(dashboardStore)}
+			{incomesAndExpensesCard(dashboardStore, routerStore)}
 			</div>
 
 		</div>

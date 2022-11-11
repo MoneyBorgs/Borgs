@@ -7,7 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import { RouterStore } from 'mobx-state-router';
+import { useRouterStore } from 'mobx-state-router';
 
+let routerStore;
 const {Column, HeaderCell, Cell} = Table;
 const BoldCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
@@ -33,7 +36,7 @@ const CurrencyCell = ({rowData, dataKey, ...props }) => (
 	</Cell>
 	);
 
-export default function accountCard(dashboardStore) {
+export default function accountCard(dashboardStore, routerStore) {
   	return (
     <Card>
       <CardContent>
@@ -65,13 +68,13 @@ export default function accountCard(dashboardStore) {
 
       </CardContent>
       <CardActions>
-        <Button size="small">See Accounts</Button>
+        <Button size="small" onClick={() => { routerStore.goTo('accounts'); }}>See Accounts</Button>
       </CardActions>
     </Card>
   );
 }
 
-export function categoryCard(dashboardStore) {
+export function categoryCard(dashboardStore, routerStore) {
   	return (
     <Card>
       <CardContent>
@@ -102,13 +105,13 @@ export function categoryCard(dashboardStore) {
 			</div>
       </CardContent>
 	  <CardActions>
-	  	<Button size="small">See Detailed Reports</Button>
+	  	<Button size="small" onClick={() => { routerStore.goTo('reports'); }}>See Detailed Reports</Button>
 	  </CardActions>
     </Card>
   );
 }
 
-export function incomesAndExpensesCard(dashboardStore) {
+export function incomesAndExpensesCard(dashboardStore, routerStore) {
 	return (
   <Card>
 	<CardContent>
@@ -139,7 +142,7 @@ export function incomesAndExpensesCard(dashboardStore) {
 			</div>
 	</CardContent>
 	<CardActions>
-	  <Button size="small">See Detailed Reports</Button>
+	  <Button size="small" onClick={() => { routerStore.goTo('reports'); }}>See Detailed Reports</Button>
 	</CardActions>
   </Card>
 );
