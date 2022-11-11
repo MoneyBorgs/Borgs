@@ -5,11 +5,16 @@ import MenuItem from '@mui/joy/MenuItem';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { RegisterCreateModal } from './NewRegisteredUser';
+import { LoginCreateModal } from './LoginModal';
+import User from '../../model/User';
+import Box from '@mui/material/Box';
+import { spacing } from '@mui/system';
 
 export const NewRegistrationMenu = observer(() => {
 		const { userStore } = useStores();
 		const [anchorEl, setAnchorEl] = React.useState(null);
-		const [isModalOpen, setIsModenOpen] = React.useState(false);
+		const [isModal1Open, setIsModen1Open] = React.useState(false);
+		const [isModal2Open, setIsModen2Open] = React.useState(false);
 		const open = Boolean(anchorEl);
 		const handleClick = (event) => {
 			setAnchorEl(event.currentTarget);
@@ -20,12 +25,19 @@ export const NewRegistrationMenu = observer(() => {
 
 		const handleNewUser = (event) => {
 			handleClose();
-			setIsModenOpen(true);
+			setIsModen1Open(true);
+			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
+		}
+
+		const handleNewLogin = (event) => {
+			handleClose();
+			setIsModen2Open(true);
 			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
 		}
 
 		return (
 			<div>
+				<Box textAlign='center' sx={{ p: 1 }}>
 				<Button
 					id="basic-demo-button"
 					aria-controls={open ? 'basic-menu' : undefined}
@@ -33,22 +45,25 @@ export const NewRegistrationMenu = observer(() => {
 					aria-expanded={open ? 'true' : undefined}
 					variant="outlined"
 					color="neutral"
-					onClick={handleClick}
+					onClick={handleNewLogin}
 				>
-					Register or Login
-				</Button>
-				<Menu
-					id="basic-menu"
-					anchorEl={anchorEl}
-					open={open}
-					onClose={handleClose}
-					aria-labelledby="basic-demo-button"
-					placement="bottom-start"
+					Already have an account? Login here!
+				</Button> </Box>
+
+				<Box textAlign='center'>
+				<Button
+					id="basic-demo-button"
+					aria-controls={open ? 'basic-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					variant="outlined"
+					color="neutral"
+					onClick={handleNewUser}
 				>
-					<MenuItem onClick={handleNewUser}>Register</MenuItem>
-					<MenuItem onClick={handleClose}>Login</MenuItem>
-				</Menu>
-				<RegisterCreateModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
+					Register for MoneyBorgs! 
+				</Button> </Box>
+				<RegisterCreateModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
+				<LoginCreateModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 			</div>
 		);
 	}
