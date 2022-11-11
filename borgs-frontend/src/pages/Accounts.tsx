@@ -36,10 +36,10 @@ export const Accounts = observer(() => {
         <div>
             <NewAccountMenu/>
             <TextField id="outlined-basic" 
-            label="Outlined" variant="outlined" 
+            label="Account ID" variant="outlined" 
             onChange={(event) => setUserID(event.target.value)}
             value = {userID}/>
-			<Button variant="text" onClick={handleOnSubmitForm}>Text</Button>
+			<Button variant="text" onClick={handleOnSubmitForm}>Submit</Button>
             
             <div>
                 Virtual Accounts
@@ -62,7 +62,7 @@ export const Accounts = observer(() => {
 				options={accountsStore.currentPhysicalAccountsData}
 				label={"Physical Account"}
 				inputName="physical-account-picker"
-				onChange={((event, account) => { accountsStore.getMonthlyPhysicalAccountData(account.account_id, +year) })} //+ turns stringyear into int
+				onChange={((event, account) => { accountsStore.getMonthlyPhysicalAccountData(account.account_id, +year) })} 
 			/>
 
 			<br></br>
@@ -82,6 +82,8 @@ export const Accounts = observer(() => {
 				<MenuItem value={2018}>2018</MenuItem>
 				<MenuItem value={2019}>2019</MenuItem>
 				<MenuItem value={2020}>2020</MenuItem>
+				<MenuItem value={2021}>2021</MenuItem>
+				<MenuItem value={2022}>2022</MenuItem>
 			</Select>
 			</FormControl>
 

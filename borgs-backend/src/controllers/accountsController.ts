@@ -23,7 +23,7 @@ export default class AccountsController {
 	@Get("/physicalaccounts/:userId")
 	async getPhysicalAccountsForUser(req, res) {
 		const userId = req.params.userId;
-
+		console.log("Getting physical accounts for user controller");
 		const { rows } = await dbPool.query(
 			`SELECT
                 name,
@@ -77,6 +77,7 @@ export default class AccountsController {
 
 		@Get("/monthly_physical_balance/:pa/:year")
 		async getMonthlyPhysicalAccountBalance(req, res) {
+			console.log("Getting physical id monthly balances controller");
 			const pa = req.params.pa;
 			const year = req.params.year;
 	
@@ -126,6 +127,7 @@ export default class AccountsController {
 
 	@Get("/monthly_virtual_balance/:va/:year")
 	async getMonthlyVirtualAccountBalance(req, res) {
+		console.log("Getting virtual id monthly balances controller");
 		const va = req.params.va;
 		const year = req.params.year;
 
