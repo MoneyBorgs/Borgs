@@ -9,9 +9,11 @@ import { LoginCreateModal } from './LoginModal';
 import User from '../../model/User';
 import Box from '@mui/material/Box';
 import { spacing } from '@mui/system';
+import {useRouterStore} from "mobx-state-router";
 
 export const NewRegistrationMenu = observer(() => {
 		const { userStore } = useStores();
+		const router = useRouterStore();
 		const [anchorEl, setAnchorEl] = React.useState(null);
 		const [isModal1Open, setIsModen1Open] = React.useState(false);
 		const [isModal2Open, setIsModen2Open] = React.useState(false);
@@ -35,6 +37,14 @@ export const NewRegistrationMenu = observer(() => {
 			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
 		}
 
+		const bypassLogin = () => {
+			handleClose();
+			userStore.updateLoginStatus(true);
+
+			router.goTo("mainpage");
+
+		}
+
 		return (
 			<div>
 				<Box textAlign='center' sx={{ p: 1 }}>
@@ -50,7 +60,7 @@ export const NewRegistrationMenu = observer(() => {
 					Already have an account? Login here!
 				</Button> </Box>
 
-				<Box textAlign='center'>
+				<Box textAlign='center' sx={{ marginBottom: 1 }}>
 				<Button
 					id="basic-demo-button"
 					aria-controls={open ? 'basic-menu' : undefined}
@@ -62,6 +72,20 @@ export const NewRegistrationMenu = observer(() => {
 				>
 					Register for MoneyBorgs! 
 				</Button> </Box>
+
+				<Box textAlign='center'>
+					<Button
+						id="basic-demo-button"
+						aria-controls={open ? 'basic-menu' : undefined}
+						aria-haspopup="true"
+						aria-expanded={open ? 'true' : undefined}
+						variant="outlined"
+						color="neutral"
+						onClick={bypassLogin}
+					>
+						Bypass login
+					</Button> </Box>
+
 				<RegisterCreateModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
 				<LoginCreateModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 			</div>

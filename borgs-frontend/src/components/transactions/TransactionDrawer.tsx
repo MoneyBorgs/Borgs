@@ -69,7 +69,7 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
                                         <Typography variant={"subtitle2"}>
                                             {
                                                 (
-                                                    accountsStore.availablePhysicalAccounts.
+                                                    accountsStore.currentPhysicalAccountsData.
                                                     find((account) => account.account_id === props.transaction?.physical_account)
                                                 )?.name
                                             }

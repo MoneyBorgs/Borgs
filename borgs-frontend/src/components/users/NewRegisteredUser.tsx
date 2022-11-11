@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import { useState } from 'react';
 import User from '../../model/User';
 
+
 const style = {
 	position: 'absolute' as 'absolute',
 	top: '50%',

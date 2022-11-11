@@ -24,7 +24,7 @@ export const TransactionListItem = observer((props: TransactionListItemProps) =>
         // TODO optimize; use set? I think this can be a computed
         const findPhysicalAccountName = (account_id) => {
             return (
-                accountsStore.availablePhysicalAccounts.find((account) => account.account_id === account_id)
+                accountsStore.currentPhysicalAccountsData.find((account) => account.account_id === account_id)
             )?.name;
         }
 

@@ -24,11 +24,12 @@ def gen_users(num_users):
             if uid % 1000 == 0:
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
-            email = profile['mail']
             password = f'pass{uid}'
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
+            email = name_components[0] + "." + name_components[-1] + "@" + fake.domain_name(1)
+
             # signalling that this uid can be used in other tables
             available_uids.append(uid) 
             writer.writerow([uid, email, password, firstname, lastname])
@@ -41,9 +42,9 @@ def gen_logins(available_uids):
         num_logins = 0
         print('Logins..', end=' ', flush=True)
         for uid in available_uids:
-            for i in range(randrange(1,10,1)): # person can have [1:10] logins
+            for i in range(randrange(35,70,1)): # person can have [35,70] logins
                 login_dates = []
-                login_date = randrange(1642231501, 1647325501, 1)
+                login_date = randrange(1388534400, 1577836800, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
                 
                 if login_date not in login_dates:
                     login_dates.append(login_date)
@@ -60,9 +61,10 @@ def gen_virtual_accounts(available_uids):
         account_id = 0
         for uid in available_uids:
             virtual_account_relations[uid] = []
-            for i in range(randrange(1,10,1)): # person can have [1:10] VAs
+            for i in range(randrange(3,5,1)): # person can have [3,5] VAs
+                name_options = ["General", "Long-term", "Short-term", "Medium-term", "Emergencies", "Food", "Duke Tuition"]
                 names = []
-                name = fake.city()
+                name = choice(name_options) + " " + fake.city_suffix() + " account"
                 
                 if name not in names:
                     names.append(name)
@@ -80,7 +82,7 @@ def gen_physical_accounts(available_uids):
         account_id = 0
         for uid in available_uids:
             physical_account_relations[uid] = []
-            for i in range(randrange(1,4,1)): # person can have [1:4] PAs
+            for i in range(randrange(1,3,1)): # person can have [1,3] PAs
                 names = []
                 name = fake.credit_card_provider()
                 
@@ -95,13 +97,15 @@ def gen_physical_accounts(available_uids):
 
 def gen_transaction_categories(available_uids):
     category_relations = {}
+    category_types = {}
     with open(f'{path}/TransactionsCategories.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Categories...', end=' ', flush=True)
         category_id = 0
         for uid in available_uids:
             category_relations[uid] = []
-            for i in range(randrange(1,4,1)): # person can have [1:4] categories
+            for i in range(randrange(1,10,1)): # person can have [1,10] categories
+                category_types[category_id] = []
                 names = []
                 name = fake.color_name()
                 
@@ -110,6 +114,7 @@ def gen_transaction_categories(available_uids):
                 if name not in names:
                     names.append(name)
                     category_relations[uid].append(category_id)
+                    category_types[category_id].append(category_type)
 
                     if i > 0 and fake.pybool():
                         parent_category = category_id - 1
@@ -120,9 +125,9 @@ def gen_transaction_categories(available_uids):
                     category_id += 1
 
     print(f'{category_id} categories generated')
-    return category_relations
+    return category_relations, category_types
 
-def gen_transactions(virtual_account_relations, physical_account_relations, category_relations, available_uids):
+def gen_transactions(virtual_account_relations, physical_account_relations, category_relations, category_types, available_uids):
     transaction_ids_relations = {}
     with open(f'{path}/Transactions.csv', 'w') as f:
         writer = get_csv_writer(f)
@@ -130,13 +135,18 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
         transaction_id = 0
         for uid in available_uids:
             transaction_ids_relations[uid] = []
-            for i in range(randrange(1,50,1)): # person can have [0:50] transactions
+            for i in range(randrange(500,10000,1)): # person can have [500,10000] transactions
                 
                 virtual_account_id = choice(virtual_account_relations[uid])
                 physical_account_id = choice(physical_account_relations[uid])
-                value = f'{str(fake.random_int(max=50000, min = -50000))}.{fake.random_int(max=99):02}'
+                value = f'{str(fake.random_int(max=10000, min = 1))}.{fake.random_int(max=99):02}'
                 category = choice(category_relations[uid])
-                timestamp =  randrange(1647325502, 1663223101, 1) #Tue Mar 15 2022 to Thu Sep 15 2022 
+                category_type = category_types[category][0]
+
+                if category_type == "EXPENSE":
+                    value = f'{str(fake.random_int(max=-1, min = -1000))}.{fake.random_int(max=99):02}'
+
+                timestamp =  randrange(1388534400, 1577836800, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
                 description = fake.bs()
                 note = fake.paragraph(nb_sentences=2)
 
@@ -181,8 +191,8 @@ virtual_account_relations = gen_virtual_accounts(available_uids)
 
 physical_account_relations = gen_physical_accounts(available_uids)
 
-category_relations = gen_transaction_categories(available_uids)
+category_relations, category_types = gen_transaction_categories(available_uids)
 
-transaction_ids_relations = gen_transactions(virtual_account_relations, physical_account_relations, category_relations, available_uids)
+transaction_ids_relations = gen_transactions(virtual_account_relations, physical_account_relations, category_relations, category_types, available_uids)
 
 gen_tags(transaction_ids_relations)
