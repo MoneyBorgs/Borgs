@@ -48,6 +48,22 @@ export default class UserStore {
             ));
     }
 
+	@action
+    usersWithName() {
+		console.log(this.firstname);
+        console.log("Updating users with first name");
+		
+        axiosRequest.get(`/user/${this.firstname}`)
+            .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
+    }
+
+    @action
+    updateFirstName(new_name) {
+        this.firstname = new_name
+		console.log(this.firstname)
+		console.log(new_name)
+    }
+
     @action
     userWithEmail() {
         console.log(this.email);
@@ -64,22 +80,6 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithPassWord = res.data));
     }
 
-	@action
-    usersWithName() {
-		console.log(this.firstname);
-        console.log("Updating users with first name");
-		
-        axiosRequest.get(`/user/${this.firstname}`)
-            .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
-        
-    }
-
-    @action
-    updateFirstName(new_name) {
-        this.firstname = new_name
-		console.log(this.firstname)
-		console.log(new_name)
-    }
 
     @action
     updateEmail(new_email) {
