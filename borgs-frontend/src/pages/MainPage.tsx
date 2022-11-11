@@ -24,17 +24,29 @@ export const MainPage = observer(() => {
 				Total Balance = <strong>$ {dashboardStore.currentTotalBalance.toFixed(2)}</strong>
 			</Typography>
 
-			<div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+			<div style={{ 
+				width: '100%', 
+				display: 'flex', 
+				justifyContent: 'space-between', 
+				alignItems: 'center',
+				paddingLeft: '5%',
+				paddingTop: '5%'}}>
 
 			{accountCard(dashboardStore)}
+			</div>
+
+			<div style={{ 
+				width: '100%', 
+				display: 'flex', 
+				justifyContent: 'space-between', 
+				alignItems: 'center',
+				padding: '5%'}}>
 
 			{categoryCard(dashboardStore)}
 
 			{incomesAndExpensesCard(dashboardStore)}
-
-			
-
 			</div>
+
 		</div>
 	)
 });

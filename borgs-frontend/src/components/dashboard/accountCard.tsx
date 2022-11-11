@@ -9,16 +9,29 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 
 const {Column, HeaderCell, Cell} = Table;
-	const BoldCell = ({rowData, dataKey, ...props }) => (
-		<Cell {...props}>
-		  <b>{rowData[dataKey]}</b>
-		</Cell>
-	  );
-	const CurrencyCell = ({rowData, dataKey, ...props }) => (
-		<Cell {...props}>
-		  $ {rowData[dataKey].toFixed(2)}
-		</Cell>
-	  );
+const BoldCell = ({rowData, dataKey, ...props }) => (
+	<Cell {...props}>
+		<b>{rowData[dataKey]}</b>
+	</Cell>
+	);
+function conditionalColor(data) {
+	var color = "black";
+	if (data < 0) {
+		color = "red";
+	}
+	else if (data > 0) {
+		color = "green";
+	}
+	return color;
+}
+const CurrencyCell = ({rowData, dataKey, ...props }) => (
+	<Cell {...props}>
+		<Typography color={conditionalColor(rowData[dataKey])}>
+		$ {rowData[dataKey].toFixed(2)}
+		</Typography>
+		
+	</Cell>
+	);
 
 export default function accountCard(dashboardStore) {
   	return (
@@ -38,12 +51,12 @@ export default function accountCard(dashboardStore) {
 				console.log(data);
 			}}
 			>	
-				<Column width={300} align="center" fixed>
+				<Column width={250} align="center" fixed>
 					<HeaderCell><b>Physical Account</b></HeaderCell>
 					<BoldCell dataKey="name" rowData={undefined} />
 				</Column>
 
-				<Column width={150} align="center">
+				<Column width={250} align="center">
 					<HeaderCell><b>Balance</b></HeaderCell>
 					<CurrencyCell dataKey="balance" rowData={undefined}/>
 				</Column>
@@ -76,12 +89,12 @@ export function categoryCard(dashboardStore) {
 					console.log(data);
 				}}
 				>
-					<Column width={300} align="center" fixed>
+					<Column width={250} align="center" fixed>
 						<HeaderCell><b>Category</b></HeaderCell>
 						<BoldCell dataKey="category" rowData={undefined} />
 					</Column>
 
-					<Column width={150} align="center">
+					<Column width={250} align="center">
 						<HeaderCell><b>Balance</b></HeaderCell>
 						<CurrencyCell dataKey="balance" rowData={undefined}/>
 					</Column>
@@ -113,12 +126,12 @@ export function incomesAndExpensesCard(dashboardStore) {
 					console.log(data);
 				}}
 				>
-					<Column width={300} align="center" fixed>
+					<Column width={250} align="center" fixed>
 						<HeaderCell><b>Total Incomes</b></HeaderCell>
 						<CurrencyCell dataKey="total_incomes" rowData={undefined}/>
 					</Column>
 
-					<Column width={150} align="center">
+					<Column width={250} align="center">
 						<HeaderCell><b>Total Expenses</b></HeaderCell>
 						<CurrencyCell dataKey="total_expenses" rowData={undefined}/>
 					</Column>
