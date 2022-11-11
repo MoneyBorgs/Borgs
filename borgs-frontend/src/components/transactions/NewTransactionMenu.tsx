@@ -56,7 +56,7 @@ export const NewTransactionMenu = observer(() => {
 			t.timestampepochseconds = dayjs().unix();
 			t.virtual_account = accountsStore.currentVirtualAccountsData[0].account_id;
 			console.log(t.category);
-			t.physical_account = accountsStore.availablePhysicalAccounts[0].account_id;
+			t.physical_account = accountsStore.currentPhysicalAccountsData[0].account_id;
 			t.tags = [transactionsStore.availableTags[0]];
 
 			setLoadedTransaction(t);

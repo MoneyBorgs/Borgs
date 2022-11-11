@@ -129,9 +129,9 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 									inputName="virtual-account-picker"
 								/>
 								<AccountPicker
-									options={accountsStore.availablePhysicalAccounts}
+									options={accountsStore.currentPhysicalAccountsData}
 									label={"Physical Account"}
-									defaultValue={accountsStore.availablePhysicalAccounts.find(account => account.account_id === preFilledTransaction.physical_account)}
+									defaultValue={accountsStore.currentPhysicalAccountsData.find(account => account.account_id === preFilledTransaction.physical_account)}
 									onChange={((event, account) => { handleOnValueChange("physical_account", account.account_id) })}
 									inputName="physical-account-picker"
 								/>
