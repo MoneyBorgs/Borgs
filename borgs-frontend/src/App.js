@@ -10,6 +10,7 @@ import {
   CssVarsProvider,
   useColorScheme,
 } from '@mui/joy/styles';
+import {useStores} from "./hooks/useStores";
 
 const muiTheme = extendMuiTheme({
   // This is required to point to `var(--joy-*)` because we are using `CssVarsProvider` from Joy UI.
@@ -85,11 +86,16 @@ const theme = deepmerge(muiTheme, joyTheme);
 function App() {
   const routerStore = initRouter();
 
+  const { userStore } = useStores();
+
   const viewMap = getMappingFromRoutes(routes);
+
+  if(!userStore.loggedInUser) {
+    routerStore.goTo("register")
+  }
 
   return (
     <RouterContext.Provider value={routerStore}>
-        {routerStore.getCurrentRoute() && routerStore.getCurrentRoute().showNavBar ? <NavBar/> : null}
       {/* <CssVarsProvider theme={theme}> */}
         <RouterView viewMap={viewMap} />
       {/* </CssVarsProvider> */}
@@ -103,7 +109,12 @@ function getMappingFromRoutes(routes) {
   map['notFound'] = <NotFoundPage/>;
 
   for(const route of routes) {
-    map[route.name] = route.container;
+    map[route.name] = (
+        <>
+          {route.showNavBar ? <NavBar/> : null}
+          {route.container}
+        </>
+    );
   }
 
   return map;

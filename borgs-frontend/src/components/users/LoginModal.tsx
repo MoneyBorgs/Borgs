@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
+import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
@@ -9,8 +10,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
-
+import {useRouterStore} from "mobx-state-router";
+import Alert from '@mui/material/Alert';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -26,16 +29,19 @@ const style = {
 	pb: 3,
 };
 
-export interface RegisterCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface LoginCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const RegisterCreateModal = observer((props : RegisterCreateModalProps) => {
+export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 	
 		const { userStore } = useStores();
+		const router = useRouterStore();
 
 		// TODO get default user and make values consistent across usages
-		const [ userState, setUserState ] = useState(new User());
+		const [ emailAddress, setEmailAddress ] = useState('');
+		const [ passWord, setPassWord ] = useState('');
+
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -43,13 +49,21 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
-		const handleOnValueChange = (field, value) => {
-			setUserState({...userState, [field] : value})
-		}
 
 		const handleOnSubmitForm = (event) => {			
-			userStore.createNewUser(userState);
-			props.onClose();
+			userStore.updateEmail(emailAddress);
+			userStore.updatePassWord(passWord);
+			userStore.userWithPassWord();
+			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
+			console.log('Printing' + passWord);
+			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
+				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
+				userStore.updateLoginStatus(true);
+
+				router.goTo("mainpage");
+
+				props.onClose();
+			}
 		}
 
 		return (
@@ -77,7 +91,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 							fontSize="1.25em"
 							mb="1em"
 						>
-							Register an account
+							Login to your account
 						</Typography>
 						<form
 							onSubmit={(event) => {
@@ -90,25 +104,17 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 								<TextField
 									required
 									label="Email Address" autoFocus
-									onChange={(email) => { handleOnValueChange("email", email.target.value) }}
+									onChange={(event) => setEmailAddress(event.target.value)}
+									value = {emailAddress}
 								/>
 								<TextField
 									required
+									type='password'
 									label="Password" autoFocus
-									type = "password"
-									onChange={(password) => { handleOnValueChange("password", password.target.value) }}
-								/>
-								<TextField
-									required
-									label="First Name" autoFocus
-									onChange={(firstname) => { handleOnValueChange("firstname", firstname.target.value) }}
-								/>
-								<TextField
-									required
-									label="Last Name" autoFocus
-									onChange={(lastname) => { handleOnValueChange("lastname", lastname.target.value) }}
-								/>																								
-								<Button type="submit">Register!</Button>
+									onChange={(event) => setPassWord(event.target.value)}
+									value = {passWord}
+								/>																				
+								<Button type="submit">Login!</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>

@@ -1,11 +1,12 @@
 import { AxiosResponse } from "axios";
-import { action, makeAutoObservable, makeObservable, observable } from "mobx"
+import { action, makeAutoObservable, observable } from "mobx"
 import { axiosRequest } from "../api/api";
 import Transaction from "../model/Transaction";
 import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 import Category from "../model/Category";
 import Tag from "../model/Tag";
+import dayjs from "dayjs";
 
 export default class TransactionsStore {
 
@@ -35,6 +36,15 @@ export default class TransactionsStore {
     }
 
     @action
+    updateTransactionsForDateRange(startDate : dayjs.Dayjs, endDate : dayjs.Dayjs) {
+        console.log("Updating transactions");
+
+        axiosRequest.get(`/transaction/${this.userStore.uid}?startDate=${startDate.unix()}&endDate=${endDate.unix()}`)
+            .then(action((res) : AxiosResponse<Transaction[], any> => this.currentTransactionsData = res.data));
+    }
+
+    // TODO build proper TransactionDTO from Transaction i.e. missing convert category to category id
+    @action
     createNewTransaction(transaction: Transaction) {
         console.log(`Creating new transaction`);
 
@@ -58,6 +68,14 @@ export default class TransactionsStore {
                     this.availableCategories = res.data;
             }));
         }
+    }
+
+    @action
+    updateAvailableTags() {
+        console.log("Updating avaiable tags");
+
+        axiosRequest.get(`/tag/${this.userStore.uid}`)
+            .then(action((res): AxiosResponse<Tag[], any> => this.availableTags = res.data));
     }
 
     @action

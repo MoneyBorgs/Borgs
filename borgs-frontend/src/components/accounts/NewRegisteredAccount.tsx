@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
+import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
@@ -9,8 +10,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import UserStore from '../../stores/UserStore';
+import AccountsStore from '../../stores/AccountsStore';
 import User from '../../model/User';
-
+import Account from '../../model/Account';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -26,16 +29,16 @@ const style = {
 	pb: 3,
 };
 
-export interface RegisterCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface AccountCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const RegisterCreateModal = observer((props : RegisterCreateModalProps) => {
+export const AccountCreateModal = observer((props : AccountCreateModalProps) => {
 	
-		const { userStore } = useStores();
-
+		const { userStore, accountsStore } = useStores();
+    	const rootStore = useStores();
 		// TODO get default user and make values consistent across usages
-		const [ userState, setUserState ] = useState(new User());
+		const [ accountState, setAccountState ] = useState(new Account());
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -44,11 +47,16 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		 * @param value the value 
 		 */
 		const handleOnValueChange = (field, value) => {
-			setUserState({...userState, [field] : value})
+			setAccountState({...accountState, [field] : value})
 		}
 
-		const handleOnSubmitForm = (event) => {			
-			userStore.createNewUser(userState);
+		const handleOnSubmitForm = (event) => {
+			if (accountsStore.adding_account=="virtual"){
+				accountsStore.createNewVirtualAccount(accountState);
+			} 			
+			else{
+				accountsStore.createNewPhysicalAccount(accountState);
+			}
 			props.onClose();
 		}
 
@@ -89,26 +97,12 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 							<Stack spacing={2}>
 								<TextField
 									required
-									label="Email Address" autoFocus
-									onChange={(email) => { handleOnValueChange("email", email.target.value) }}
-								/>
-								<TextField
-									required
-									label="Password" autoFocus
-									type = "password"
-									onChange={(password) => { handleOnValueChange("password", password.target.value) }}
-								/>
-								<TextField
-									required
-									label="First Name" autoFocus
-									onChange={(firstname) => { handleOnValueChange("firstname", firstname.target.value) }}
-								/>
-								<TextField
-									required
-									label="Last Name" autoFocus
-									onChange={(lastname) => { handleOnValueChange("lastname", lastname.target.value) }}
-								/>																								
-								<Button type="submit">Register!</Button>
+									label="Account Name" autoFocus
+									onChange={(accountName) => {
+										handleOnValueChange("name", accountName.target.value);
+									}}
+								/>														
+								<Button type="submit">Create!</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>
