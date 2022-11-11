@@ -135,7 +135,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
         transaction_id = 0
         for uid in available_uids:
             transaction_ids_relations[uid] = []
-            for i in range(randrange(500,10000,1)): # person can have [500,10000] transactions
+            for i in range(randrange(1000,10000,1)): # person can have [1000,10000] transactions
                 
                 virtual_account_id = choice(virtual_account_relations[uid])
                 physical_account_id = choice(physical_account_relations[uid])
@@ -146,7 +146,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 if category_type == "EXPENSE":
                     value = f'{str(fake.random_int(max=-1, min = -1000))}.{fake.random_int(max=99):02}'
 
-                timestamp =  randrange(1388534400, 1577836800, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
+                timestamp =  randrange(1388534400, 1668197014, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
                 description = fake.bs()
                 note = fake.paragraph(nb_sentences=2)
 
