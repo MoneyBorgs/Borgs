@@ -74,6 +74,9 @@ def gen_virtual_accounts(available_uids):
     print(f'{account_id} virtual accounts generated')
     return virtual_account_relations
 
+def gen_virtual_accounts_co_owners(available_uids):
+
+
 def gen_physical_accounts(available_uids):
     physical_account_relations = {}
     with open(f'{path}/PhysicalAccounts.csv', 'w') as f:
