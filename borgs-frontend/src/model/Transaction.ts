@@ -11,25 +11,4 @@ export default class Transaction {
 	description!: String;
 	notes!: String;
 	tags!: Tag[];
-
-	static getDefaultTransaction() : Transaction {
-		const t = new Transaction();
-		return t;
-	}
-
-	// clone() {
-	// 	let t = new Transaction();
-	// 	t.transaction_id = this.transaction_id;
-	// 	t.virtual_account = this.virtual_account;
-	// 	t.physical_account = this.physical_account;
-	// 	t.value = this.value;
-	// 	t.category = this.category;
-	// 	timestampEpochSeconds!: number;
-	// 	description!: String;
-	// 	notes!: String;
-	// 	tags!: Tag[];
-	//
-	//
-	// 	return undefined;
-	// }
 }
