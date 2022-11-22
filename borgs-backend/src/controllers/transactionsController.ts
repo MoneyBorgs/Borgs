@@ -1,10 +1,9 @@
-import { Controller, Get, Params, Patch, Post, Put, Query, Response } from '@decorators/express';
+import { Controller, Get, Post, Put} from '@decorators/express';
 import dbPool from '../db/dbPool';
-import { updateTransactionById } from '../util/queryBuilder';
 import format from 'pg-format';
-import { ClientBase, PoolClient } from 'pg';
-import Transaction from '../model/Transaction';
+import { ClientBase} from 'pg';
 import TransactionsRepository from "../repository/transactionsRepository";
+import Transaction from "../model/Transaction";
 
 @Controller('/')
 export default class TransactionsController {
@@ -210,13 +209,13 @@ export default class TransactionsController {
 		res.send(availableTags);
 	}
 
-	@Get("/transaction_per_day/:userId/:transactionId")
+	@Get("/transaction_per_day/:userId")
 	async getTransactionsGroupedPerDay(req, res) {
 		const userId = req.params.userId;
 		const startDate = req.query.startDate;
 		const endDate = req.query.endDate;
 
-		const { rows } = await this.transactionsRepo.getTransactionsForUserInPeriod(userId, startDate, endDate);
+		const { rows } = await this.transactionsRepo.getTransactionsGroupedPerDay(userId, startDate, endDate);
 
 		res.send(rows);
 	}
