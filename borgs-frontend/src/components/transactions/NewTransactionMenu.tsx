@@ -4,7 +4,7 @@ import Menu from '@mui/joy/Menu';
 import MenuItem from '@mui/joy/MenuItem';
 import {useStores} from '../../hooks/useStores';
 import {observer} from 'mobx-react-lite';
-import {ExpenseCreateOrEditModal} from './NewExpenseModal';
+import {ExpenseCreateOrEditModal} from './ExpenseCreateOrEditModal';
 import Transaction from '../../model/Transaction';
 import dayjs from "dayjs";
 import {CategoryType} from "../../model/Category";

@@ -7,9 +7,9 @@ import dayjs from "dayjs";
 
 export const Transactions = observer(() => {
 
-	let { transactionsStore, accountsStore, dashboardStore } = useStores();
+	let { transactionsStore} = useStores();
 
-	transactionsStore.updateTransactionsForDateRange(dayjs().startOf("month"), dayjs().endOf("month"));
+	transactionsStore.updateDailyTransactionsForDateRange(dayjs().startOf("month"), dayjs().endOf("month"));
 
 	return (
 		<div

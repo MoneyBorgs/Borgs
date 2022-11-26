@@ -5,7 +5,7 @@ import EditIcon from '@rsuite/icons/Edit';
 import Transaction from "../../model/Transaction";
 import {useStores} from "../../hooks/useStores";
 import {useState} from "react";
-import {ExpenseCreateOrEditModal} from "./NewExpenseModal";
+import {ExpenseCreateOrEditModal} from "./ExpenseCreateOrEditModal";
 import TrashIcon from '@rsuite/icons/Trash';
 import {Typography} from "@mui/material";
 import dayjs from "dayjs";

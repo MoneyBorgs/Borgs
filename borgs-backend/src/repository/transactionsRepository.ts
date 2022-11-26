@@ -48,7 +48,7 @@ export default class TransactionsRepository {
             `
                 SELECT
                        json_agg(q) AS transactions,
-                       extract(epoch from date_trunc('day', to_timestamp(timestampepochseconds))::timestamp::date) as date,
+                       extract(epoch from date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC')::timestamp::date) as date,
                        min(ending_balance) filter(where nth_transaction = n_transactions) AS day_ending_balance
                 FROM (
                   SELECT
@@ -67,15 +67,17 @@ export default class TransactionsRepository {
                         notes,
                         array_agg(Tags.tag) AS tags,
                         sum(value) OVER (ORDER BY timestampepochseconds ASC) AS ending_balance,
-                        count(*) OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds))) AS n_transactions,
-                        row_number() OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds)) ORDER BY timestampepochseconds) AS nth_transaction
+                        count(*) OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC')) AS n_transactions,
+                        row_number() OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC') ORDER BY timestampepochseconds) AS nth_transaction
                     FROM borgs.public.Transactions T
                     INNER JOIN borgs.public.VirtualAccounts VA ON T.virtual_account = VA.account_id 
                     INNER JOIN borgs.public.Tags ON Tags.transaction_id = T.transaction_id
-                    WHERE VA.user_id = $1 AND timestampepochseconds BETWEEN $2 AND $3
+                    WHERE VA.user_id = $1
                     GROUP BY T.transaction_id, va_user_id
                 ) q
-                GROUP BY date_trunc('day', to_timestamp(timestampepochseconds))
+                WHERE timestampepochseconds BETWEEN $2 AND $3
+                GROUP BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC')
+                ORDER BY date DESC
 			`, [userId, startDate, endDate]
         )
 
