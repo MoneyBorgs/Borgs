@@ -67,6 +67,28 @@ export default class TransactionsRepository {
                         description,
                         notes,
                         array_agg(Tags.tag) AS tags,
+                        from_transfer_transaction,
+                        to_transfer_transaction,
+                        (
+                            SELECT virtual_account
+                            FROM borgs.public.transactions
+                            WHERE transaction_id = T.from_transfer_transaction
+                        ) AS from_virtual_account,
+                        (
+                            SELECT virtual_account
+                            FROM borgs.public.transactions
+                            WHERE transaction_id = T.to_transfer_transaction
+                        ) AS to_virtual_account,
+                        (
+                            SELECT physical_account
+                            FROM borgs.public.transactions
+                            WHERE transaction_id = T.from_transfer_transaction
+                        ) AS from_physical_account,
+                        (
+                            SELECT physical_account
+                            FROM borgs.public.transactions
+                            WHERE transaction_id = T.to_transfer_transaction
+                        ) AS to_physical_account,
                         sum(value) OVER (ORDER BY timestampepochseconds ASC) AS ending_balance,
                         count(*) OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC')) AS n_transactions,
                         row_number() OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC') ORDER BY timestampepochseconds) AS nth_transaction
@@ -115,7 +137,8 @@ export default class TransactionsRepository {
                 `
 					UPDATE borgs.public.Transactions
 					SET
-						sister_transfer_transaction = $1
+					    from_transfer_transaction = $2,
+						to_transfer_transaction = $1
 					WHERE transaction_id = $2;
 				`,
                 [toAccountTransaction.transaction_id, fromAccountTransaction.transaction_id]
@@ -125,13 +148,14 @@ export default class TransactionsRepository {
                 `
 					UPDATE borgs.public.Transactions
 					SET
-						sister_transfer_transaction = $1
+						from_transfer_transaction = $1,
+						to_transfer_transaction = $2
 					WHERE transaction_id = $2;
 				`,
                 [fromAccountTransaction.transaction_id, toAccountTransaction.transaction_id,]
             );
 
-            fromAccountTransaction.sister_transfer_transaction = toAccountTransaction.transaction_id;
+            fromAccountTransaction.to_transfer_transaction = toAccountTransaction.transaction_id;
 
             await client.query('COMMIT')
             return fromAccountTransaction;

@@ -4,7 +4,10 @@ import format from 'pg-format';
 import { ClientBase} from 'pg';
 import TransactionsRepository from "../repository/transactionsRepository";
 import Transaction from "../model/Transaction";
-import TransferTransaction from "../model/TransferTransaction";
+import TransferTransaction, {
+	getToAccountTransaction,
+	getToTransactionFromFromTransaction, getFromTransactionFromToTransaction
+} from "../model/TransferTransaction";
 
 @Controller('/')
 export default class TransactionsController {
@@ -66,15 +69,35 @@ export default class TransactionsController {
 	@Put("/transaction/:userId/:transactionId")
 	async updateTransaction(req, res) {
 		const userId = req.params.userId;
-		const transactionId: number = req.params.transactionId
+		const transactionId: number = parseInt(req.params.transactionId);
 
-		const t : Transaction = req.body;
+		const t : TransferTransaction = req.body;
 		const tags = req.body.tags;
 
 		const client = await dbPool.connect()
 
 		try {
-			await client.query(
+			await client.query('BEGIN')
+
+			let from_transfer_transaction;
+			let to_transfer_transaction;
+			let transactionsToUpdate;
+
+			if(transactionId === t.from_transfer_transaction) {
+				from_transfer_transaction = t;
+				to_transfer_transaction = getToTransactionFromFromTransaction(t);
+				transactionsToUpdate = [from_transfer_transaction, to_transfer_transaction];
+			} else if (transactionId === t.to_transfer_transaction) {
+				to_transfer_transaction = t;
+				from_transfer_transaction = getFromTransactionFromToTransaction(t);
+				transactionsToUpdate = [from_transfer_transaction, to_transfer_transaction];
+			} else {
+				transactionsToUpdate = [t];
+			}
+
+			for(const transaction of transactionsToUpdate) {
+
+				await client.query(
 				`
 					UPDATE Transactions
 					SET
@@ -84,60 +107,51 @@ export default class TransactionsController {
 						category = $4,
 						timestampEpochSeconds = $5,
 						description = $6,
-						notes = $7
-					WHERE transaction_id = $8
+						notes = $7,
+						from_transfer_transaction = $8,
+						to_transfer_transaction = $9
+					WHERE transaction_id = $10
 				`,
-				[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampepochseconds, t.description, t.notes, transactionId]
-			)
+					[
+						transaction.virtual_account,
+						transaction.physical_account,
+						transaction.value,
+						transaction.category.category_id,
+						transaction.timestampepochseconds,
+						transaction.description,
+						transaction.notes,
+						transaction.from_transfer_transaction,
+						transaction.to_transfer_transaction,
+						transaction.transaction_id
+					]
+				)
 
-			if (tags) {
-				await client.query(
-					format("DELETE FROM Tags WHERE transaction_id = %L", transactionId)
-				);
-
-				for (const tag of tags) {
+				if (tags) {
 					await client.query(
-						`
+						format("DELETE FROM Tags WHERE transaction_id = %L", transaction.transaction_id)
+					);
+
+					for (const tag of tags) {
+						await client.query(
+							`
 							INSERT INTO Tags(
 								tag,
 								transaction_id
 							) VALUES ($1,$2);
 						`,
-						[tag, transactionId]
-					);
+							[tag, transaction.transaction_id]
+						);
+					}
 				}
 			}
-
-			// Handle transfer transaction
-			// TODO test
-
-			const transactionCategory = await this.getTransactionType(client, transactionId);
-
-			if (transactionCategory === "TRANSFER") {
-				client.query(format(
-						`
-					UPDATE Transactions
-					SET value = %L
-					WHERE sister_transfer_transaction = %L
-					`,
-						-t.value, // Negative needed for transfer
-						transactionId
-					)
-				)
+				await client.query('COMMIT')
+				res.send(req.body);
+			} catch (e) {
+				await client.query('ROLLBACK')
+				throw (e);
+			} finally {
+				client.release();
 			}
-
-			const returnObject = req.body;
-			returnObject.tags = tags;
-			returnObject.transaction_id = transactionId;
-			res.send(req.body);
-
-			await client.query('COMMIT');
-		} catch (e) {
-			await client.query('ROLLBACK')
-			throw (e);
-		} finally {
-			client.release();
-		}
 	}
 
 	@Post("/transaction/transfer/:userId")
@@ -183,7 +197,7 @@ export default class TransactionsController {
 			)
 		).rows;
 
-		res.send(availableCategories);		
+		res.send(availableCategories);
 	}
 
 	@Get("/tag/:userId")

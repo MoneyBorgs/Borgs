@@ -8,7 +8,8 @@ import _ from "lodash";
 export default class TransferTransaction extends Transaction {
     to_virtual_account!: number;
     to_physical_account!: number;
-    sister_transfer_transaction!: number;
+    from_transfer_transaction!: number;
+    to_transfer_transaction!: number;
 }
 
 export function getFromAccountTransaction(originalTransaction : TransferTransaction) : TransferTransaction {
@@ -23,6 +24,28 @@ export function getToAccountTransaction(originalTransaction : TransferTransactio
 
     t.virtual_account = t.to_virtual_account;
     t.physical_account = t.to_physical_account;
+
+    return t;
+}
+
+export function getToTransactionFromFromTransaction(originalTransaction : TransferTransaction) {
+    const t = _.cloneDeep(originalTransaction);
+
+    t.transaction_id = t.to_transfer_transaction;
+    t.virtual_account = t.to_virtual_account;
+    t.physical_account = t.to_physical_account;
+    t.value = -t.value;
+
+    return t;
+}
+
+export function getFromTransactionFromToTransaction(originalTransaction : TransferTransaction) {
+    const t = _.cloneDeep(originalTransaction);
+
+    t.transaction_id = t.from_transfer_transaction;
+    t.virtual_account = t.from_virtual_account;
+    t.physical_account = t.from_physical_account;
+    t.value = -t.value;
 
     return t;
 }

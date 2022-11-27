@@ -11,4 +11,6 @@ export default class Transaction {
 	description!: String;
 	notes!: String;
 	tags!: Tag[];
+	from_transfer_transaction!: number;
+	to_transfer_transaction!: number;
 }

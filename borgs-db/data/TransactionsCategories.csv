@@ -1,90 +1,774 @@
-0,,Purple,0,EXPENSE
-1,0,CadetBlue,0,INCOME
-2,1,DarkCyan,0,INCOME
-3,,MediumSeaGreen,0,EXPENSE
-4,3,Tan,0,EXPENSE
-5,4,BlueViolet,0,EXPENSE
-6,5,DarkKhaki,0,INCOME
-7,,Tan,1,EXPENSE
-8,7,SlateGray,1,EXPENSE
-9,8,Sienna,1,INCOME
-10,,Gainsboro,1,EXPENSE
-11,10,Yellow,1,INCOME
-12,11,DimGray,1,EXPENSE
-13,,DarkTurquoise,2,EXPENSE
-14,,SaddleBrown,2,EXPENSE
-15,14,CornflowerBlue,2,EXPENSE
-16,15,OrangeRed,2,INCOME
-17,16,DarkGoldenRod,2,INCOME
-18,,SkyBlue,3,EXPENSE
-19,,Khaki,3,EXPENSE
-20,,LightYellow,4,EXPENSE
-21,20,DarkTurquoise,4,INCOME
-22,,DarkGray,4,INCOME
-23,,Chartreuse,4,EXPENSE
-24,,Gray,4,INCOME
-25,,BlanchedAlmond,5,INCOME
-26,25,PaleGreen,5,EXPENSE
-27,,DarkMagenta,6,EXPENSE
-28,27,Sienna,6,EXPENSE
-29,,MediumSpringGreen,6,INCOME
-30,,AntiqueWhite,6,EXPENSE
-31,30,Khaki,6,INCOME
-32,31,Magenta,6,EXPENSE
-33,,Ivory,6,EXPENSE
-34,33,Snow,6,EXPENSE
-35,,Teal,7,EXPENSE
-36,,MediumSpringGreen,8,EXPENSE
-37,,DarkGoldenRod,8,EXPENSE
-38,37,Linen,8,EXPENSE
-39,38,Ivory,8,EXPENSE
-40,,Olive,8,INCOME
-41,,Lavender,9,EXPENSE
-42,,LightSlateGray,9,EXPENSE
-43,42,SkyBlue,9,INCOME
-44,43,LightSkyBlue,9,EXPENSE
-45,,DarkSeaGreen,10,EXPENSE
-46,,DarkOrchid,11,INCOME
-47,46,PaleGoldenRod,11,INCOME
-48,,SteelBlue,12,INCOME
-49,,SeaShell,13,INCOME
-50,49,Khaki,13,EXPENSE
-51,50,MintCream,13,EXPENSE
-52,51,LightSeaGreen,13,EXPENSE
-53,52,PaleGoldenRod,13,INCOME
-54,53,DarkKhaki,13,EXPENSE
-55,,LightSteelBlue,13,EXPENSE
-56,,RosyBrown,14,INCOME
-57,56,DeepSkyBlue,14,EXPENSE
-58,,LemonChiffon,14,INCOME
-59,58,MediumSlateBlue,14,EXPENSE
-60,,Khaki,14,INCOME
-61,60,OliveDrab,14,EXPENSE
-62,61,SandyBrown,14,EXPENSE
-63,,Indigo,15,EXPENSE
-64,63,PaleGoldenRod,15,INCOME
-65,,SlateBlue,15,EXPENSE
-66,,Maroon,15,INCOME
-67,66,DarkGoldenRod,15,EXPENSE
-68,67,MediumAquaMarine,15,EXPENSE
-69,68,Khaki,15,EXPENSE
-70,,BurlyWood,15,EXPENSE
-71,,PaleTurquoise,16,EXPENSE
-72,71,DarkGoldenRod,16,INCOME
-73,72,Green,16,EXPENSE
-74,,Fuchsia,16,INCOME
-75,74,Gainsboro,16,INCOME
-76,,Black,17,EXPENSE
-77,,Lavender,17,EXPENSE
-78,77,Aqua,17,INCOME
-79,,White,17,INCOME
-80,,DarkSeaGreen,17,EXPENSE
-81,,Green,18,INCOME
-82,81,Cyan,18,INCOME
-83,,Gray,18,INCOME
-84,83,Turquoise,18,INCOME
-85,,CornflowerBlue,18,INCOME
-86,,Lavender,18,INCOME
-87,86,PapayaWhip,18,EXPENSE
-88,,Sienna,19,INCOME
-89,88,AliceBlue,19,INCOME
+0,,Transfer between accounts,0,TRANSFER
+1,,Other expenses,0,EXPENSE
+2,,Other income,0,INCOME
+3,,Silver,0,INCOME
+4,3,Aqua,0,INCOME
+5,4,Turquoise,0,INCOME
+6,,LightPink,0,EXPENSE
+7,,Purple,0,EXPENSE
+8,,SlateBlue,0,EXPENSE
+9,,Cornsilk,0,EXPENSE
+10,,Transfer between accounts,1,TRANSFER
+11,,Other expenses,1,EXPENSE
+12,,Other income,1,INCOME
+13,,SandyBrown,1,EXPENSE
+14,13,Black,1,EXPENSE
+15,,OliveDrab,1,EXPENSE
+16,,Orchid,1,INCOME
+17,16,OliveDrab,1,EXPENSE
+18,,Magenta,1,EXPENSE
+19,18,PaleVioletRed,1,INCOME
+20,,Violet,1,EXPENSE
+21,,Transfer between accounts,2,TRANSFER
+22,,Other expenses,2,EXPENSE
+23,,Other income,2,INCOME
+24,,PapayaWhip,2,EXPENSE
+25,,Transfer between accounts,3,TRANSFER
+26,,Other expenses,3,EXPENSE
+27,,Other income,3,INCOME
+28,,DarkCyan,3,INCOME
+29,,MediumVioletRed,3,INCOME
+30,29,Yellow,3,INCOME
+31,30,LightYellow,3,EXPENSE
+32,31,Red,3,EXPENSE
+33,32,MintCream,3,INCOME
+34,,Tan,3,EXPENSE
+35,,Transfer between accounts,4,TRANSFER
+36,,Other expenses,4,EXPENSE
+37,,Other income,4,INCOME
+38,,Bisque,4,INCOME
+39,,Transfer between accounts,5,TRANSFER
+40,,Other expenses,5,EXPENSE
+41,,Other income,5,INCOME
+42,,MistyRose,5,EXPENSE
+43,,Khaki,5,EXPENSE
+44,,Transfer between accounts,6,TRANSFER
+45,,Other expenses,6,EXPENSE
+46,,Other income,6,INCOME
+47,,Linen,6,EXPENSE
+48,47,LightCoral,6,EXPENSE
+49,48,PowderBlue,6,EXPENSE
+50,,Transfer between accounts,7,TRANSFER
+51,,Other expenses,7,EXPENSE
+52,,Other income,7,INCOME
+53,,LightSkyBlue,7,EXPENSE
+54,,DarkSalmon,7,INCOME
+55,,Transfer between accounts,8,TRANSFER
+56,,Other expenses,8,EXPENSE
+57,,Other income,8,INCOME
+58,,LawnGreen,8,EXPENSE
+59,58,DarkSlateBlue,8,EXPENSE
+60,59,GreenYellow,8,EXPENSE
+61,,Transfer between accounts,9,TRANSFER
+62,,Other expenses,9,EXPENSE
+63,,Other income,9,INCOME
+64,,SpringGreen,9,EXPENSE
+65,64,Chartreuse,9,INCOME
+66,,Brown,9,EXPENSE
+67,,DarkGreen,9,INCOME
+68,,Transfer between accounts,10,TRANSFER
+69,,Other expenses,10,EXPENSE
+70,,Other income,10,INCOME
+71,,Crimson,10,INCOME
+72,,Yellow,10,EXPENSE
+73,72,DeepPink,10,EXPENSE
+74,,Transfer between accounts,11,TRANSFER
+75,,Other expenses,11,EXPENSE
+76,,Other income,11,INCOME
+77,,LimeGreen,11,INCOME
+78,,DarkTurquoise,11,INCOME
+79,78,LightGoldenRodYellow,11,EXPENSE
+80,79,LightYellow,11,INCOME
+81,,Transfer between accounts,12,TRANSFER
+82,,Other expenses,12,EXPENSE
+83,,Other income,12,INCOME
+84,,DarkViolet,12,EXPENSE
+85,,LightCyan,12,EXPENSE
+86,,PapayaWhip,12,INCOME
+87,,LemonChiffon,12,EXPENSE
+88,,Transfer between accounts,13,TRANSFER
+89,,Other expenses,13,EXPENSE
+90,,Other income,13,INCOME
+91,,Teal,13,EXPENSE
+92,,Transfer between accounts,14,TRANSFER
+93,,Other expenses,14,EXPENSE
+94,,Other income,14,INCOME
+95,,DarkSlateBlue,14,INCOME
+96,95,LightSalmon,14,EXPENSE
+97,96,Indigo,14,EXPENSE
+98,,Indigo,14,EXPENSE
+99,,Violet,14,EXPENSE
+100,,Transfer between accounts,15,TRANSFER
+101,,Other expenses,15,EXPENSE
+102,,Other income,15,INCOME
+103,,Snow,15,EXPENSE
+104,,Transfer between accounts,16,TRANSFER
+105,,Other expenses,16,EXPENSE
+106,,Other income,16,INCOME
+107,,LightGreen,16,EXPENSE
+108,,Yellow,16,EXPENSE
+109,108,Black,16,EXPENSE
+110,109,OldLace,16,EXPENSE
+111,,Transfer between accounts,17,TRANSFER
+112,,Other expenses,17,EXPENSE
+113,,Other income,17,INCOME
+114,,Purple,17,EXPENSE
+115,114,Navy,17,INCOME
+116,,Transfer between accounts,18,TRANSFER
+117,,Other expenses,18,EXPENSE
+118,,Other income,18,INCOME
+119,,LightGoldenRodYellow,18,INCOME
+120,119,LightSeaGreen,18,INCOME
+121,120,MediumSlateBlue,18,EXPENSE
+122,,AliceBlue,18,EXPENSE
+123,,Moccasin,18,EXPENSE
+124,123,OldLace,18,EXPENSE
+125,124,SpringGreen,18,EXPENSE
+126,,Moccasin,18,EXPENSE
+127,,DimGray,18,EXPENSE
+128,,Transfer between accounts,19,TRANSFER
+129,,Other expenses,19,EXPENSE
+130,,Other income,19,INCOME
+131,,Orchid,19,INCOME
+132,,LemonChiffon,19,INCOME
+133,,DarkSlateGray,19,INCOME
+134,133,LimeGreen,19,INCOME
+135,134,SeaGreen,19,INCOME
+136,,Transfer between accounts,20,TRANSFER
+137,,Other expenses,20,EXPENSE
+138,,Other income,20,INCOME
+139,,Ivory,20,EXPENSE
+140,,LimeGreen,20,INCOME
+141,,Tomato,20,EXPENSE
+142,,Transfer between accounts,21,TRANSFER
+143,,Other expenses,21,EXPENSE
+144,,Other income,21,INCOME
+145,,Khaki,21,INCOME
+146,145,MidnightBlue,21,EXPENSE
+147,,Transfer between accounts,22,TRANSFER
+148,,Other expenses,22,EXPENSE
+149,,Other income,22,INCOME
+150,,Green,22,INCOME
+151,,SkyBlue,22,EXPENSE
+152,151,SpringGreen,22,EXPENSE
+153,152,Green,22,INCOME
+154,,PaleTurquoise,22,EXPENSE
+155,,PowderBlue,22,INCOME
+156,,Olive,22,INCOME
+157,,SandyBrown,22,INCOME
+158,,Transfer between accounts,23,TRANSFER
+159,,Other expenses,23,EXPENSE
+160,,Other income,23,INCOME
+161,,MediumOrchid,23,EXPENSE
+162,,Beige,23,EXPENSE
+163,162,Red,23,EXPENSE
+164,,PeachPuff,23,EXPENSE
+165,,Transfer between accounts,24,TRANSFER
+166,,Other expenses,24,EXPENSE
+167,,Other income,24,INCOME
+168,,DarkSeaGreen,24,EXPENSE
+169,,DeepPink,24,INCOME
+170,,SlateGray,24,EXPENSE
+171,,Brown,24,INCOME
+172,,WhiteSmoke,24,INCOME
+173,172,AliceBlue,24,INCOME
+174,,Transfer between accounts,25,TRANSFER
+175,,Other expenses,25,EXPENSE
+176,,Other income,25,INCOME
+177,,Coral,25,INCOME
+178,,MistyRose,25,INCOME
+179,178,IndianRed,25,INCOME
+180,,Cornsilk,25,INCOME
+181,180,Magenta,25,INCOME
+182,,Transfer between accounts,26,TRANSFER
+183,,Other expenses,26,EXPENSE
+184,,Other income,26,INCOME
+185,,Black,26,EXPENSE
+186,185,Indigo,26,EXPENSE
+187,,Transfer between accounts,27,TRANSFER
+188,,Other expenses,27,EXPENSE
+189,,Other income,27,INCOME
+190,,Fuchsia,27,INCOME
+191,190,LavenderBlush,27,EXPENSE
+192,,CadetBlue,27,INCOME
+193,192,RoyalBlue,27,INCOME
+194,193,WhiteSmoke,27,INCOME
+195,,Brown,27,EXPENSE
+196,,Tomato,27,EXPENSE
+197,,GhostWhite,27,INCOME
+198,,Transfer between accounts,28,TRANSFER
+199,,Other expenses,28,EXPENSE
+200,,Other income,28,INCOME
+201,,LawnGreen,28,INCOME
+202,,SlateBlue,28,INCOME
+203,,Chocolate,28,EXPENSE
+204,,Red,28,INCOME
+205,,DarkSalmon,28,INCOME
+206,205,FloralWhite,28,EXPENSE
+207,206,LavenderBlush,28,EXPENSE
+208,207,DarkGray,28,INCOME
+209,208,White,28,INCOME
+210,,Transfer between accounts,29,TRANSFER
+211,,Other expenses,29,EXPENSE
+212,,Other income,29,INCOME
+213,,Red,29,INCOME
+214,,LawnGreen,29,EXPENSE
+215,,Transfer between accounts,30,TRANSFER
+216,,Other expenses,30,EXPENSE
+217,,Other income,30,INCOME
+218,,CornflowerBlue,30,INCOME
+219,218,LightGreen,30,INCOME
+220,219,SkyBlue,30,EXPENSE
+221,220,Gainsboro,30,INCOME
+222,221,LightSteelBlue,30,EXPENSE
+223,,Transfer between accounts,31,TRANSFER
+224,,Other expenses,31,EXPENSE
+225,,Other income,31,INCOME
+226,,AntiqueWhite,31,EXPENSE
+227,,HotPink,31,EXPENSE
+228,,Transfer between accounts,32,TRANSFER
+229,,Other expenses,32,EXPENSE
+230,,Other income,32,INCOME
+231,,Lavender,32,EXPENSE
+232,,SeaGreen,32,INCOME
+233,232,DarkCyan,32,EXPENSE
+234,,Transfer between accounts,33,TRANSFER
+235,,Other expenses,33,EXPENSE
+236,,Other income,33,INCOME
+237,,MediumBlue,33,INCOME
+238,237,CornflowerBlue,33,INCOME
+239,,Transfer between accounts,34,TRANSFER
+240,,Other expenses,34,EXPENSE
+241,,Other income,34,INCOME
+242,,Aqua,34,INCOME
+243,,Transfer between accounts,35,TRANSFER
+244,,Other expenses,35,EXPENSE
+245,,Other income,35,INCOME
+246,,Moccasin,35,EXPENSE
+247,,Transfer between accounts,36,TRANSFER
+248,,Other expenses,36,EXPENSE
+249,,Other income,36,INCOME
+250,,RoyalBlue,36,EXPENSE
+251,,Snow,36,EXPENSE
+252,,Transfer between accounts,37,TRANSFER
+253,,Other expenses,37,EXPENSE
+254,,Other income,37,INCOME
+255,,LightSalmon,37,INCOME
+256,,LightPink,37,EXPENSE
+257,,Transfer between accounts,38,TRANSFER
+258,,Other expenses,38,EXPENSE
+259,,Other income,38,INCOME
+260,,ForestGreen,38,INCOME
+261,260,LightCoral,38,INCOME
+262,,Thistle,38,INCOME
+263,,Transfer between accounts,39,TRANSFER
+264,,Other expenses,39,EXPENSE
+265,,Other income,39,INCOME
+266,,DarkMagenta,39,EXPENSE
+267,266,PaleTurquoise,39,EXPENSE
+268,,Transfer between accounts,40,TRANSFER
+269,,Other expenses,40,EXPENSE
+270,,Other income,40,INCOME
+271,,Wheat,40,EXPENSE
+272,271,Coral,40,INCOME
+273,272,LightGray,40,INCOME
+274,273,Pink,40,INCOME
+275,274,RosyBrown,40,INCOME
+276,275,PaleTurquoise,40,INCOME
+277,,LightCoral,40,EXPENSE
+278,277,DeepPink,40,EXPENSE
+279,,Transfer between accounts,41,TRANSFER
+280,,Other expenses,41,EXPENSE
+281,,Other income,41,INCOME
+282,,Azure,41,INCOME
+283,,Transfer between accounts,42,TRANSFER
+284,,Other expenses,42,EXPENSE
+285,,Other income,42,INCOME
+286,,MediumAquaMarine,42,EXPENSE
+287,286,Gainsboro,42,INCOME
+288,287,Violet,42,EXPENSE
+289,288,Blue,42,INCOME
+290,,Aquamarine,42,EXPENSE
+291,,Aquamarine,42,EXPENSE
+292,,Moccasin,42,INCOME
+293,,Crimson,42,EXPENSE
+294,,BlueViolet,42,INCOME
+295,,Transfer between accounts,43,TRANSFER
+296,,Other expenses,43,EXPENSE
+297,,Other income,43,INCOME
+298,,GhostWhite,43,INCOME
+299,,Transfer between accounts,44,TRANSFER
+300,,Other expenses,44,EXPENSE
+301,,Other income,44,INCOME
+302,,MediumTurquoise,44,INCOME
+303,302,Yellow,44,EXPENSE
+304,,PeachPuff,44,INCOME
+305,,Transfer between accounts,45,TRANSFER
+306,,Other expenses,45,EXPENSE
+307,,Other income,45,INCOME
+308,,Snow,45,INCOME
+309,308,DeepPink,45,EXPENSE
+310,,Transfer between accounts,46,TRANSFER
+311,,Other expenses,46,EXPENSE
+312,,Other income,46,INCOME
+313,,AntiqueWhite,46,INCOME
+314,,MintCream,46,INCOME
+315,314,Silver,46,INCOME
+316,,AntiqueWhite,46,EXPENSE
+317,,LightGreen,46,INCOME
+318,,Transfer between accounts,47,TRANSFER
+319,,Other expenses,47,EXPENSE
+320,,Other income,47,INCOME
+321,,Violet,47,EXPENSE
+322,321,Fuchsia,47,EXPENSE
+323,322,Sienna,47,EXPENSE
+324,,Green,47,INCOME
+325,324,NavajoWhite,47,EXPENSE
+326,325,MistyRose,47,EXPENSE
+327,326,Turquoise,47,EXPENSE
+328,327,PowderBlue,47,INCOME
+329,328,LightSkyBlue,47,EXPENSE
+330,,Transfer between accounts,48,TRANSFER
+331,,Other expenses,48,EXPENSE
+332,,Other income,48,INCOME
+333,,DarkGray,48,EXPENSE
+334,,BurlyWood,48,EXPENSE
+335,334,LightGreen,48,EXPENSE
+336,335,Turquoise,48,EXPENSE
+337,,Transfer between accounts,49,TRANSFER
+338,,Other expenses,49,EXPENSE
+339,,Other income,49,INCOME
+340,,GoldenRod,49,EXPENSE
+341,340,Chartreuse,49,INCOME
+342,,Violet,49,INCOME
+343,342,MediumOrchid,49,EXPENSE
+344,343,LightBlue,49,INCOME
+345,344,WhiteSmoke,49,INCOME
+346,,Chocolate,49,INCOME
+347,346,Indigo,49,EXPENSE
+348,347,PaleTurquoise,49,INCOME
+349,,Transfer between accounts,50,TRANSFER
+350,,Other expenses,50,EXPENSE
+351,,Other income,50,INCOME
+352,,LightSalmon,50,EXPENSE
+353,,LightSkyBlue,50,EXPENSE
+354,353,Azure,50,INCOME
+355,,Transfer between accounts,51,TRANSFER
+356,,Other expenses,51,EXPENSE
+357,,Other income,51,INCOME
+358,,DarkGoldenRod,51,EXPENSE
+359,,DarkMagenta,51,INCOME
+360,359,White,51,EXPENSE
+361,,Transfer between accounts,52,TRANSFER
+362,,Other expenses,52,EXPENSE
+363,,Other income,52,INCOME
+364,,Khaki,52,EXPENSE
+365,364,FireBrick,52,INCOME
+366,,PaleVioletRed,52,EXPENSE
+367,,MidnightBlue,52,EXPENSE
+368,,DarkGoldenRod,52,EXPENSE
+369,,DarkRed,52,INCOME
+370,369,OliveDrab,52,INCOME
+371,,OliveDrab,52,EXPENSE
+372,,Transfer between accounts,53,TRANSFER
+373,,Other expenses,53,EXPENSE
+374,,Other income,53,INCOME
+375,,MediumAquaMarine,53,INCOME
+376,,Snow,53,INCOME
+377,,White,53,INCOME
+378,377,Magenta,53,INCOME
+379,,LawnGreen,53,EXPENSE
+380,379,OliveDrab,53,INCOME
+381,,LightGreen,53,EXPENSE
+382,381,Orange,53,INCOME
+383,,Transfer between accounts,54,TRANSFER
+384,,Other expenses,54,EXPENSE
+385,,Other income,54,INCOME
+386,,Cyan,54,EXPENSE
+387,386,LightGray,54,INCOME
+388,387,HoneyDew,54,EXPENSE
+389,,MediumTurquoise,54,INCOME
+390,389,AliceBlue,54,EXPENSE
+391,,Bisque,54,INCOME
+392,391,Cornsilk,54,EXPENSE
+393,,Transfer between accounts,55,TRANSFER
+394,,Other expenses,55,EXPENSE
+395,,Other income,55,INCOME
+396,,DarkOliveGreen,55,EXPENSE
+397,396,LightCoral,55,EXPENSE
+398,397,CadetBlue,55,EXPENSE
+399,398,DarkMagenta,55,EXPENSE
+400,399,HoneyDew,55,EXPENSE
+401,,HoneyDew,55,EXPENSE
+402,,Transfer between accounts,56,TRANSFER
+403,,Other expenses,56,EXPENSE
+404,,Other income,56,INCOME
+405,,Salmon,56,INCOME
+406,405,CornflowerBlue,56,INCOME
+407,,DarkRed,56,INCOME
+408,,Tomato,56,EXPENSE
+409,,RosyBrown,56,INCOME
+410,,Transfer between accounts,57,TRANSFER
+411,,Other expenses,57,EXPENSE
+412,,Other income,57,INCOME
+413,,ForestGreen,57,INCOME
+414,,Maroon,57,INCOME
+415,414,AntiqueWhite,57,EXPENSE
+416,415,PowderBlue,57,INCOME
+417,,Brown,57,EXPENSE
+418,417,Cornsilk,57,EXPENSE
+419,,Transfer between accounts,58,TRANSFER
+420,,Other expenses,58,EXPENSE
+421,,Other income,58,INCOME
+422,,Fuchsia,58,INCOME
+423,422,Khaki,58,EXPENSE
+424,,SandyBrown,58,EXPENSE
+425,,OrangeRed,58,INCOME
+426,,LightGray,58,EXPENSE
+427,,OliveDrab,58,INCOME
+428,,DarkCyan,58,INCOME
+429,428,DarkOrchid,58,EXPENSE
+430,,Transfer between accounts,59,TRANSFER
+431,,Other expenses,59,EXPENSE
+432,,Other income,59,INCOME
+433,,HoneyDew,59,EXPENSE
+434,,Magenta,59,INCOME
+435,434,DarkOrange,59,INCOME
+436,,Wheat,59,EXPENSE
+437,436,Black,59,INCOME
+438,,Blue,59,INCOME
+439,,DarkKhaki,59,EXPENSE
+440,439,Crimson,59,INCOME
+441,,Transfer between accounts,60,TRANSFER
+442,,Other expenses,60,EXPENSE
+443,,Other income,60,INCOME
+444,,NavajoWhite,60,INCOME
+445,,IndianRed,60,EXPENSE
+446,,LightGreen,60,INCOME
+447,446,PapayaWhip,60,EXPENSE
+448,447,LightSteelBlue,60,INCOME
+449,,DarkOrange,60,INCOME
+450,,Transfer between accounts,61,TRANSFER
+451,,Other expenses,61,EXPENSE
+452,,Other income,61,INCOME
+453,,Gold,61,EXPENSE
+454,,Transfer between accounts,62,TRANSFER
+455,,Other expenses,62,EXPENSE
+456,,Other income,62,INCOME
+457,,PaleGreen,62,EXPENSE
+458,,PaleTurquoise,62,EXPENSE
+459,,Crimson,62,EXPENSE
+460,459,Ivory,62,INCOME
+461,460,PowderBlue,62,EXPENSE
+462,,Transfer between accounts,63,TRANSFER
+463,,Other expenses,63,EXPENSE
+464,,Other income,63,INCOME
+465,,PaleTurquoise,63,EXPENSE
+466,,BurlyWood,63,INCOME
+467,466,OrangeRed,63,INCOME
+468,,Transfer between accounts,64,TRANSFER
+469,,Other expenses,64,EXPENSE
+470,,Other income,64,INCOME
+471,,LightSeaGreen,64,EXPENSE
+472,471,Bisque,64,EXPENSE
+473,,DarkKhaki,64,EXPENSE
+474,,DarkOliveGreen,64,EXPENSE
+475,,Transfer between accounts,65,TRANSFER
+476,,Other expenses,65,EXPENSE
+477,,Other income,65,INCOME
+478,,LightSlateGray,65,INCOME
+479,,Brown,65,INCOME
+480,,OliveDrab,65,INCOME
+481,,SlateBlue,65,INCOME
+482,,DarkGoldenRod,65,INCOME
+483,,PaleTurquoise,65,EXPENSE
+484,,LightBlue,65,EXPENSE
+485,,AliceBlue,65,INCOME
+486,,Transfer between accounts,66,TRANSFER
+487,,Other expenses,66,EXPENSE
+488,,Other income,66,INCOME
+489,,DarkGray,66,INCOME
+490,,IndianRed,66,INCOME
+491,490,Purple,66,INCOME
+492,491,WhiteSmoke,66,EXPENSE
+493,,MediumVioletRed,66,EXPENSE
+494,493,PowderBlue,66,INCOME
+495,,Transfer between accounts,67,TRANSFER
+496,,Other expenses,67,EXPENSE
+497,,Other income,67,INCOME
+498,,Olive,67,EXPENSE
+499,498,SkyBlue,67,INCOME
+500,,MediumOrchid,67,INCOME
+501,,AntiqueWhite,67,EXPENSE
+502,501,HoneyDew,67,INCOME
+503,,Orchid,67,EXPENSE
+504,503,SlateGray,67,INCOME
+505,,Yellow,67,EXPENSE
+506,505,PapayaWhip,67,EXPENSE
+507,,Transfer between accounts,68,TRANSFER
+508,,Other expenses,68,EXPENSE
+509,,Other income,68,INCOME
+510,,Gold,68,INCOME
+511,,Transfer between accounts,69,TRANSFER
+512,,Other expenses,69,EXPENSE
+513,,Other income,69,INCOME
+514,,Azure,69,INCOME
+515,514,PapayaWhip,69,INCOME
+516,,Fuchsia,69,EXPENSE
+517,516,LawnGreen,69,EXPENSE
+518,517,Orchid,69,INCOME
+519,,MediumAquaMarine,69,INCOME
+520,,Transfer between accounts,70,TRANSFER
+521,,Other expenses,70,EXPENSE
+522,,Other income,70,INCOME
+523,,GoldenRod,70,EXPENSE
+524,,Transfer between accounts,71,TRANSFER
+525,,Other expenses,71,EXPENSE
+526,,Other income,71,INCOME
+527,,LightBlue,71,INCOME
+528,,OldLace,71,INCOME
+529,,OliveDrab,71,INCOME
+530,,Lime,71,EXPENSE
+531,530,Gainsboro,71,INCOME
+532,531,MistyRose,71,EXPENSE
+533,,Transfer between accounts,72,TRANSFER
+534,,Other expenses,72,EXPENSE
+535,,Other income,72,INCOME
+536,,Teal,72,EXPENSE
+537,536,MediumSlateBlue,72,EXPENSE
+538,,Red,72,EXPENSE
+539,,MediumVioletRed,72,INCOME
+540,539,LightBlue,72,INCOME
+541,,MistyRose,72,EXPENSE
+542,541,Blue,72,INCOME
+543,,Thistle,72,INCOME
+544,543,Navy,72,EXPENSE
+545,,Transfer between accounts,73,TRANSFER
+546,,Other expenses,73,EXPENSE
+547,,Other income,73,INCOME
+548,,Bisque,73,EXPENSE
+549,548,DarkBlue,73,INCOME
+550,,Transfer between accounts,74,TRANSFER
+551,,Other expenses,74,EXPENSE
+552,,Other income,74,INCOME
+553,,DarkSlateBlue,74,EXPENSE
+554,553,Purple,74,INCOME
+555,,Transfer between accounts,75,TRANSFER
+556,,Other expenses,75,EXPENSE
+557,,Other income,75,INCOME
+558,,LightYellow,75,EXPENSE
+559,,Cornsilk,75,INCOME
+560,,DarkSlateGray,75,EXPENSE
+561,,Coral,75,EXPENSE
+562,,Chartreuse,75,EXPENSE
+563,,MediumSlateBlue,75,INCOME
+564,,Crimson,75,INCOME
+565,564,ForestGreen,75,EXPENSE
+566,,Transfer between accounts,76,TRANSFER
+567,,Other expenses,76,EXPENSE
+568,,Other income,76,INCOME
+569,,DarkSlateBlue,76,EXPENSE
+570,569,LightGoldenRodYellow,76,EXPENSE
+571,,LightSeaGreen,76,EXPENSE
+572,,WhiteSmoke,76,EXPENSE
+573,,LightYellow,76,EXPENSE
+574,,MediumVioletRed,76,EXPENSE
+575,574,Olive,76,INCOME
+576,575,MediumOrchid,76,INCOME
+577,,Transfer between accounts,77,TRANSFER
+578,,Other expenses,77,EXPENSE
+579,,Other income,77,INCOME
+580,,Aquamarine,77,INCOME
+581,580,DarkViolet,77,EXPENSE
+582,,Transfer between accounts,78,TRANSFER
+583,,Other expenses,78,EXPENSE
+584,,Other income,78,INCOME
+585,,Khaki,78,INCOME
+586,585,LimeGreen,78,EXPENSE
+587,,Transfer between accounts,79,TRANSFER
+588,,Other expenses,79,EXPENSE
+589,,Other income,79,INCOME
+590,,DarkSlateGray,79,INCOME
+591,590,LightBlue,79,INCOME
+592,,DeepPink,79,EXPENSE
+593,592,DarkMagenta,79,EXPENSE
+594,,MediumSlateBlue,79,EXPENSE
+595,594,Lavender,79,EXPENSE
+596,,Transfer between accounts,80,TRANSFER
+597,,Other expenses,80,EXPENSE
+598,,Other income,80,INCOME
+599,,DodgerBlue,80,INCOME
+600,599,BlueViolet,80,INCOME
+601,,Aquamarine,80,INCOME
+602,601,Cyan,80,INCOME
+603,602,LightGoldenRodYellow,80,INCOME
+604,603,Pink,80,EXPENSE
+605,,DarkSlateBlue,80,INCOME
+606,605,PapayaWhip,80,EXPENSE
+607,606,MintCream,80,EXPENSE
+608,,Transfer between accounts,81,TRANSFER
+609,,Other expenses,81,EXPENSE
+610,,Other income,81,INCOME
+611,,Sienna,81,INCOME
+612,611,DarkKhaki,81,INCOME
+613,,Pink,81,INCOME
+614,,PowderBlue,81,EXPENSE
+615,614,Linen,81,INCOME
+616,,LightGray,81,INCOME
+617,,OrangeRed,81,INCOME
+618,,PaleTurquoise,81,INCOME
+619,,Transfer between accounts,82,TRANSFER
+620,,Other expenses,82,EXPENSE
+621,,Other income,82,INCOME
+622,,DarkSlateGray,82,EXPENSE
+623,,DodgerBlue,82,EXPENSE
+624,,Khaki,82,INCOME
+625,624,Moccasin,82,INCOME
+626,,Transfer between accounts,83,TRANSFER
+627,,Other expenses,83,EXPENSE
+628,,Other income,83,INCOME
+629,,LightYellow,83,EXPENSE
+630,,Transfer between accounts,84,TRANSFER
+631,,Other expenses,84,EXPENSE
+632,,Other income,84,INCOME
+633,,Salmon,84,EXPENSE
+634,,SlateGray,84,EXPENSE
+635,634,MediumSpringGreen,84,EXPENSE
+636,635,LightYellow,84,EXPENSE
+637,,SpringGreen,84,EXPENSE
+638,637,LightSkyBlue,84,EXPENSE
+639,,Azure,84,INCOME
+640,,Cyan,84,EXPENSE
+641,,LightSlateGray,84,EXPENSE
+642,,Transfer between accounts,85,TRANSFER
+643,,Other expenses,85,EXPENSE
+644,,Other income,85,INCOME
+645,,Beige,85,INCOME
+646,,PapayaWhip,85,INCOME
+647,,Wheat,85,EXPENSE
+648,647,DarkBlue,85,INCOME
+649,,Transfer between accounts,86,TRANSFER
+650,,Other expenses,86,EXPENSE
+651,,Other income,86,INCOME
+652,,DarkGreen,86,EXPENSE
+653,652,Olive,86,EXPENSE
+654,653,DarkRed,86,EXPENSE
+655,,DarkCyan,86,EXPENSE
+656,,LightGreen,86,INCOME
+657,,Transfer between accounts,87,TRANSFER
+658,,Other expenses,87,EXPENSE
+659,,Other income,87,INCOME
+660,,MintCream,87,INCOME
+661,,SpringGreen,87,EXPENSE
+662,661,HotPink,87,INCOME
+663,,MidnightBlue,87,EXPENSE
+664,,DeepPink,87,EXPENSE
+665,,SpringGreen,87,INCOME
+666,,Snow,87,INCOME
+667,666,DeepSkyBlue,87,INCOME
+668,,Transfer between accounts,88,TRANSFER
+669,,Other expenses,88,EXPENSE
+670,,Other income,88,INCOME
+671,,LightSalmon,88,EXPENSE
+672,,Aquamarine,88,INCOME
+673,,LightGoldenRodYellow,88,EXPENSE
+674,,Purple,88,INCOME
+675,,Peru,88,INCOME
+676,,RosyBrown,88,EXPENSE
+677,,NavajoWhite,88,INCOME
+678,677,Pink,88,INCOME
+679,678,Coral,88,INCOME
+680,,Transfer between accounts,89,TRANSFER
+681,,Other expenses,89,EXPENSE
+682,,Other income,89,INCOME
+683,,MediumVioletRed,89,EXPENSE
+684,,Gold,89,EXPENSE
+685,,GhostWhite,89,EXPENSE
+686,685,Black,89,EXPENSE
+687,686,DarkRed,89,INCOME
+688,,MediumBlue,89,INCOME
+689,688,DimGray,89,INCOME
+690,,Lime,89,INCOME
+691,,YellowGreen,89,EXPENSE
+692,,Transfer between accounts,90,TRANSFER
+693,,Other expenses,90,EXPENSE
+694,,Other income,90,INCOME
+695,,MediumSpringGreen,90,EXPENSE
+696,,PaleVioletRed,90,INCOME
+697,,DarkViolet,90,EXPENSE
+698,697,MediumSlateBlue,90,EXPENSE
+699,,Green,90,INCOME
+700,699,LightSlateGray,90,EXPENSE
+701,700,AntiqueWhite,90,INCOME
+702,,White,90,INCOME
+703,,Transfer between accounts,91,TRANSFER
+704,,Other expenses,91,EXPENSE
+705,,Other income,91,INCOME
+706,,Aquamarine,91,EXPENSE
+707,,HoneyDew,91,EXPENSE
+708,,PaleTurquoise,91,INCOME
+709,708,DarkSeaGreen,91,INCOME
+710,709,PaleGreen,91,INCOME
+711,710,Teal,91,EXPENSE
+712,711,MediumAquaMarine,91,EXPENSE
+713,,SkyBlue,91,INCOME
+714,,Transfer between accounts,92,TRANSFER
+715,,Other expenses,92,EXPENSE
+716,,Other income,92,INCOME
+717,,LightPink,92,INCOME
+718,717,Coral,92,EXPENSE
+719,,Transfer between accounts,93,TRANSFER
+720,,Other expenses,93,EXPENSE
+721,,Other income,93,INCOME
+722,,Gray,93,EXPENSE
+723,,Cyan,93,EXPENSE
+724,,MediumVioletRed,93,INCOME
+725,724,OliveDrab,93,EXPENSE
+726,,PapayaWhip,93,EXPENSE
+727,726,MediumSpringGreen,93,EXPENSE
+728,,Transfer between accounts,94,TRANSFER
+729,,Other expenses,94,EXPENSE
+730,,Other income,94,INCOME
+731,,BlueViolet,94,EXPENSE
+732,,Maroon,94,INCOME
+733,732,Linen,94,EXPENSE
+734,,Aqua,94,INCOME
+735,,Transfer between accounts,95,TRANSFER
+736,,Other expenses,95,EXPENSE
+737,,Other income,95,INCOME
+738,,Chartreuse,95,INCOME
+739,738,FireBrick,95,EXPENSE
+740,,Transfer between accounts,96,TRANSFER
+741,,Other expenses,96,EXPENSE
+742,,Other income,96,INCOME
+743,,MediumBlue,96,EXPENSE
+744,743,PaleGreen,96,EXPENSE
+745,,PaleGreen,96,INCOME
+746,745,Gray,96,EXPENSE
+747,746,SkyBlue,96,INCOME
+748,,Fuchsia,96,EXPENSE
+749,,Transfer between accounts,97,TRANSFER
+750,,Other expenses,97,EXPENSE
+751,,Other income,97,INCOME
+752,,LightPink,97,INCOME
+753,,Transfer between accounts,98,TRANSFER
+754,,Other expenses,98,EXPENSE
+755,,Other income,98,INCOME
+756,,DarkViolet,98,INCOME
+757,,LightPink,98,INCOME
+758,757,Thistle,98,EXPENSE
+759,758,DarkRed,98,EXPENSE
+760,759,Salmon,98,EXPENSE
+761,760,PaleTurquoise,98,EXPENSE
+762,,Transfer between accounts,99,TRANSFER
+763,,Other expenses,99,EXPENSE
+764,,Other income,99,INCOME
+765,,DarkCyan,99,EXPENSE
+766,,Aqua,99,EXPENSE
+767,,Magenta,99,INCOME
+768,,Khaki,99,EXPENSE
+769,768,Gainsboro,99,EXPENSE
+770,,FloralWhite,99,EXPENSE
+771,,Peru,99,INCOME
+772,,Fuchsia,99,EXPENSE
+773,,BlanchedAlmond,99,INCOME

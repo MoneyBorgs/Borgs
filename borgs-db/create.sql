@@ -59,8 +59,8 @@ CREATE TABLE Transactions (
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
 	description TEXT,
 	notes TEXT,
-	sister_transfer_transaction INT REFERENCES Transactions(transaction_id),
-	user_id INT NOT NULL REFERENCES Users(uid)
+    from_transfer_transaction INT REFERENCES Transactions(transaction_id),
+	to_transfer_transaction INT REFERENCES Transactions(transaction_id)
 );
 
 -- Create tags
@@ -69,3 +69,10 @@ CREATE TABLE Tags (
 	transaction_id INT NOT NULL REFERENCES Transactions(transaction_id) DEFERRABLE,
 	PRIMARY KEY (transaction_id, tag)
 );
+
+-- Create indexes
+CREATE INDEX transactions_virtual_account_timestampepochseconds_index
+    ON transactions (virtual_account ASC, timestampepochseconds DESC);
+
+create index virtualaccounts_user_id_index
+    on virtualaccounts (user_id);

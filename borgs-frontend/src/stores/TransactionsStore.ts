@@ -82,12 +82,7 @@ export default class TransactionsStore {
 
         axiosRequest.put(`/transaction/${this.userStore.uid}/${transaction.transaction_id}`, transaction)
             .then(action((res: AxiosResponse<Transaction, any>) => {
-                const index = this.currentTransactionsData.indexOf(transaction);
-                this.currentTransactionsData.splice(
-                    index,
-                    1,
-                    res.data,
-                )
+                this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
             }));
     }
 

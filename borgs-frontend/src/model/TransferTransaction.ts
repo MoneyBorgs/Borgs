@@ -8,5 +8,4 @@ import _ from "lodash";
 export default class TransferTransaction extends Transaction {
     to_virtual_account!: number;
     to_physical_account!: number;
-    sister_transfer_transaction!: number;
 }
