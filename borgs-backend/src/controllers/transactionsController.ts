@@ -4,6 +4,7 @@ import format from 'pg-format';
 import { ClientBase} from 'pg';
 import TransactionsRepository from "../repository/transactionsRepository";
 import Transaction from "../model/Transaction";
+import TransferTransaction from "../model/TransferTransaction";
 
 @Controller('/')
 export default class TransactionsController {
@@ -57,21 +58,9 @@ export default class TransactionsController {
 		const t : Transaction = req.body;
 
 		// TODO Validate virtual and physical accounts belong to user
-
-		const client = await dbPool.connect()
-		try {
-			await client.query('BEGIN')
-
-			await this.insertTransaction(client, t);
-
-			await client.query('COMMIT')
-			res.send(t);
-		} catch (e) {
-			await client.query('ROLLBACK')
-			throw (e);
-		} finally {
-			client.release();
-		}
+		this.transactionsRepo.createTransaction(t)
+			.then(() => res.send(t))
+			.catch((e) => {throw(e)})
 	}
 
 	@Put("/transaction/:userId/:transactionId")
@@ -153,7 +142,11 @@ export default class TransactionsController {
 
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
+		const t : TransferTransaction = req.body;
 
+		this.transactionsRepo.createTransferTransaction(t)
+			.then(() => res.send(t))
+			.catch((e) => {throw(e)})
 	}
 
 	@Get("/category/:userId")
@@ -230,37 +223,5 @@ export default class TransactionsController {
 		))).rows[0].category_type;
 
 		return transactionCategory;
-	}
-
-	async insertTransaction(client: ClientBase, t: Transaction) {
-		const result = await client.query(
-			`
-					INSERT INTO Transactions(
-						virtual_account,
-						physical_account,
-						value,
-						category,
-						timestampEpochSeconds,
-						description,
-						notes
-					) VALUES ($1,$2,$3,$4,$5,$6,$7)
-					RETURNING transaction_id;
-				`,
-			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampepochseconds, t.description, t.notes]
-		);
-
-		t.transaction_id = result.rows[0].transaction_id;
-		if(t.tags) {
-			for (const tag of t.tags) {
-				await client.query( // TODO: Do within single transaction
-					`
-						INSERT INTO Tags(tag,
-										 transaction_id)
-						VALUES ($1, $2);
-					`,
-					[tag, t.transaction_id]
-				);
-			}
-		}
 	}
 }

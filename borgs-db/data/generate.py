@@ -74,9 +74,6 @@ def gen_virtual_accounts(available_uids):
     print(f'{account_id} virtual accounts generated')
     return virtual_account_relations
 
-def gen_virtual_accounts_co_owners(available_uids):
-
-
 def gen_physical_accounts(available_uids):
     physical_account_relations = {}
     with open(f'{path}/PhysicalAccounts.csv', 'w') as f:
@@ -107,6 +104,12 @@ def gen_transaction_categories(available_uids):
         category_id = 0
         for uid in available_uids:
             category_relations[uid] = []
+            writer.writerow([category_id, None, 'Transfer between accounts', uid, 'TRANSFER'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other expenses', uid, 'EXPENSE'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other income', uid, 'INCOME'])
+            category_id += 1
             for i in range(randrange(1,10,1)): # person can have [1,10] categories
                 category_types[category_id] = []
                 names = []
@@ -142,14 +145,14 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 
                 virtual_account_id = choice(virtual_account_relations[uid])
                 physical_account_id = choice(physical_account_relations[uid])
-                value = f'{str(fake.random_int(max=10000, min = 1))}.{fake.random_int(max=99):02}'
+                value = f'{str(fake.random_int(max=1000, min = 1))}.{fake.random_int(max=99):02}'
                 category = choice(category_relations[uid])
                 category_type = category_types[category][0]
 
                 if category_type == "EXPENSE":
                     value = f'{str(fake.random_int(max=-1, min = -1000))}.{fake.random_int(max=99):02}'
 
-                timestamp =  randrange(1388534400, 1577836800, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
+                timestamp =  randrange(1388534400, 1669521501, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
                 description = fake.bs()
                 note = fake.paragraph(nb_sentences=2)
 

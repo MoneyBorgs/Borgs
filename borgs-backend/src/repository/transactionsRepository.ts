@@ -1,7 +1,8 @@
 import dbPool from "../db/dbPool";
-import {QueryResult} from "pg";
+import {ClientBase, QueryResult} from "pg";
 import Transaction from "../model/Transaction";
 import DailyTransactions from "../model/DailyTransactions";
+import TransferTransaction, { getFromAccountTransaction, getToAccountTransaction } from "../model/TransferTransaction";
 
 export default class TransactionsRepository {
 
@@ -81,6 +82,105 @@ export default class TransactionsRepository {
 			`, [userId, startDate, endDate]
         )
 
+    }
+
+    async createTransaction(t: Transaction) {
+        const client = await dbPool.connect()
+        try {
+            await client.query('BEGIN')
+
+            await this.insertTransactionNested(client, t);
+
+            await client.query('COMMIT')
+        } catch (e) {
+            await client.query('ROLLBACK')
+            throw (e);
+        } finally {
+            client.release();
+        }
+    }
+
+    async createTransferTransaction(t: TransferTransaction) {
+        const client = await dbPool.connect()
+        try {
+            await client.query('BEGIN')
+
+            const fromAccountTransaction = getFromAccountTransaction(t);
+            fromAccountTransaction.transaction_id = (await this.insertTransactionNested(client, fromAccountTransaction)).transaction_id;
+
+            const toAccountTransaction = getToAccountTransaction(t);
+            toAccountTransaction.transaction_id = (await this.insertTransactionNested(client, toAccountTransaction)).transaction_id;
+
+            await client.query(
+                `
+					UPDATE borgs.public.Transactions
+					SET
+						sister_transfer_transaction = $1
+					WHERE transaction_id = $2;
+				`,
+                [toAccountTransaction.transaction_id, fromAccountTransaction.transaction_id]
+            );
+
+            await client.query(
+                `
+					UPDATE borgs.public.Transactions
+					SET
+						sister_transfer_transaction = $1
+					WHERE transaction_id = $2;
+				`,
+                [fromAccountTransaction.transaction_id, toAccountTransaction.transaction_id,]
+            );
+
+            fromAccountTransaction.sister_transfer_transaction = toAccountTransaction.transaction_id;
+
+            await client.query('COMMIT')
+            return fromAccountTransaction;
+        } catch (e) {
+            await client.query('ROLLBACK')
+            throw (e);
+        } finally {
+            client.release();
+        }
+    }
+
+    /**
+     * Routine for inserting a transaction with its tags.
+     * Should be preferably called within a SQL Transaction
+     * @param client Base client where queries will be sent to; can be in a Transaction state
+     * @param t The Borgs transaction to insert
+     */
+    private async insertTransactionNested(client: ClientBase, t: Transaction) {
+        const result = await client.query(
+            `
+					INSERT INTO Transactions(
+						virtual_account,
+						physical_account,
+						value,
+						category,
+						timestampEpochSeconds,
+						description,
+						notes
+					) VALUES ($1,$2,$3,$4,$5,$6,$7)
+					RETURNING transaction_id;
+				`,
+            [t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampepochseconds, t.description, t.notes]
+        );
+
+        t.transaction_id = result.rows[0].transaction_id;
+        if(t.tags) {
+            for (const tag of t.tags) {
+                await client.query( // TODO: Do within single transaction
+                    `
+						INSERT INTO Tags(tag,
+										 transaction_id)
+						VALUES ($1, $2);
+					`,
+                    [tag, t.transaction_id]
+                );
+            }
+        }
+
+        return t;
     }
 
 }

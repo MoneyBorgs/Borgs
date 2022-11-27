@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import AccountsStore from './AccountsStore';
 import AllocationsStore from './AllocationsStore';
 import DashboardStore from './DashboardStore';
@@ -33,5 +34,6 @@ export default class RootStore {
 		this.dashboardStore.updateTotalBalance();
 		this.dashboardStore.updateTopCategories();
 		this.dashboardStore.updateIncomesExpenses();
+		this.transactionsStore.updateDailyTransactionsForDateRange(dayjs().startOf("month"), dayjs().endOf("month"));
 	}
 }

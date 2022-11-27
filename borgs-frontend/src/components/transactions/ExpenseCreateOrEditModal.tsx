@@ -16,7 +16,7 @@ import Transaction from '../../model/Transaction';
 import { useState } from 'react';
 import { TagsPicker } from '../fields/TagsPicker';
 import Tag from '../../model/Tag';
-import {CategoryType} from "../../model/Category";
+import {CategoryTypes} from "../../model/Category";
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -34,8 +34,9 @@ const style = {
 
 export interface ExpenseEditCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void;
-	transactionType? : CategoryType;
+	transactionType? : CategoryTypes;
 	preFilledTransaction? : Transaction;
+	isEditingMode? : boolean;
 }
 
 export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModalProps) => {
@@ -59,10 +60,16 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 
 		// TODO have base TransactionModal that can be extended with different behavior.
 		const handleOnSubmitForm = (event) => {
-			transactionsStore.createNewTransaction(transactionState);
+			if(props.transactionType !== CategoryTypes.TRANSFER) {
+				transactionsStore.createNewTransaction(transactionState);
+			} else {
+				transactionsStore.createNewTransferTransaction(transactionState);
+			}
 			props.onClose();
 			// transactionsStore.setIsExpenseModalOpen(false);
 		}
+
+
 
 		return (
 				<Modal {...props}>
@@ -89,7 +96,7 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 							fontSize="1.25em"
 							mb="1em"
 						>
-							Create new {props.transactionType?.displayName}
+							{(props.isEditingMode ? "Edit " : "Create new ") + props.transactionType?.toLowerCase()}
 						</Typography>
 						<form
 							onSubmit={(event) => {
@@ -108,7 +115,7 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 								<CurrencyField
 									label="Value"
 									defaultValue={preFilledTransaction.value}
-									onChange={(newValue) => { handleOnValueChange("value", newValue) }}
+									onChange={(newValue) => { handleOnValueChange("value", props.transactionType === CategoryTypes.EXPENSE ? -newValue : newValue) }}
 								/>
 								<DatePickerField
 									label="Transaction date"
@@ -116,31 +123,24 @@ export const ExpenseCreateOrEditModal = observer((props : ExpenseEditCreateModal
 									onChange={(newDate) => { handleOnValueChange("timestampepochseconds", newDate?.unix())}}
 								/>
 								<CategoryPicker
-									options={transactionsStore.availableCategories}
+									options={transactionsStore.availableCategories.filter((category) => {return category.category_type === props.transactionType})}
 									defaultValue={preFilledTransaction.category}
 									onChange={((event, category) => {handleOnValueChange("category", category)})}
 									inputName={"category"}
 								/>
-								<AccountPicker
-									options={accountsStore.currentVirtualAccountsData}
-									label={"Virtual Account"}
-									defaultValue={accountsStore.currentVirtualAccountsData.find(account => account.account_id === preFilledTransaction.virtual_account)}
-									onChange={((event, account) => { handleOnValueChange("virtual_account", account.account_id) })}
-									inputName="virtual-account-picker"
-								/>
-								<AccountPicker
-									options={accountsStore.currentPhysicalAccountsData}
-									label={"Physical Account"}
-									defaultValue={accountsStore.currentPhysicalAccountsData.find(account => account.account_id === preFilledTransaction.physical_account)}
-									onChange={((event, account) => { handleOnValueChange("physical_account", account.account_id) })}
-									inputName="physical-account-picker"
-								/>
+
+								{props.transactionType !== CategoryTypes.TRANSFER ?
+									renderAccountSelectorsForExpenseOrIncome(accountsStore.currentVirtualAccountsData,
+										accountsStore.currentPhysicalAccountsData, handleOnValueChange, preFilledTransaction) :
+									renderTransferAccountSelectors(accountsStore.currentVirtualAccountsData,
+										accountsStore.currentPhysicalAccountsData, handleOnValueChange, preFilledTransaction)}
+
 								<TagsPicker
 									tags={tagObjectsToStrings(transactionsStore.availableTags)}
 									defaultTags={preFilledTransaction.tags ? tagObjectsToStrings(preFilledTransaction.tags) : undefined}
 									onChange={ (newTags) => { handleOnValueChange("tags", newTags) }}
 								/>
-								<Button type="submit">Create</Button>
+								<Button type="submit">{props.isEditingMode ? "Edit" : "Create"}</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>
@@ -160,4 +160,66 @@ function tagObjectsToStrings(tags : (Tag | string)[]) {
 		}
 	}
 	return ret;
+}
+
+function renderAccountSelectorsForExpenseOrIncome(currentVirtualAccountsData,
+												  currentPhysicalAccountsData,
+												  handleOnValueChange,
+												  preFilledTransaction) {
+	return (
+		<>
+			<AccountPicker
+				options={currentVirtualAccountsData}
+				label={"Virtual Account"}
+				defaultValue={currentVirtualAccountsData.find(account => account.account_id === preFilledTransaction.virtual_account)}
+				onChange={((event, account) => { handleOnValueChange("virtual_account", account.account_id) })}
+				inputName="virtual-account-picker"
+			/>
+			<AccountPicker
+				options={currentPhysicalAccountsData}
+				label={"Physical Account"}
+				defaultValue={currentPhysicalAccountsData.find(account => account.account_id === preFilledTransaction.physical_account)}
+				onChange={((event, account) => { handleOnValueChange("physical_account", account.account_id) })}
+				inputName="physical-account-picker"
+			/>
+		</>
+	);
+}
+
+function renderTransferAccountSelectors(currentVirtualAccountsData,
+										  currentPhysicalAccountsData,
+										  handleOnValueChange,
+										  preFilledTransaction) {
+	return (
+		<>
+			<AccountPicker
+				options={currentVirtualAccountsData}
+				label={"From Virtual Account"}
+				defaultValue={currentVirtualAccountsData.find(account => account.account_id === preFilledTransaction.virtual_account)}
+				onChange={((event, account) => { handleOnValueChange("virtual_account", account.account_id) })}
+				inputName="virtual-account-picker"
+			/>
+			<AccountPicker
+				options={currentPhysicalAccountsData}
+				label={"From Physical Account"}
+				defaultValue={currentPhysicalAccountsData.find(account => account.account_id === preFilledTransaction.physical_account)}
+				onChange={((event, account) => { handleOnValueChange("physical_account", account.account_id) })}
+				inputName="physical-account-picker"
+			/>
+			<AccountPicker
+				options={currentVirtualAccountsData}
+				label={"To Virtual Account"}
+				defaultValue={currentVirtualAccountsData.find(account => account.account_id === preFilledTransaction.virtual_account)}
+				onChange={((event, account) => { handleOnValueChange("to_virtual_account", account.account_id) })}
+				inputName="virtual-account-picker"
+			/>
+			<AccountPicker
+				options={currentPhysicalAccountsData}
+				label={"To Physical Account"}
+				defaultValue={currentPhysicalAccountsData.find(account => account.account_id === preFilledTransaction.physical_account)}
+				onChange={((event, account) => { handleOnValueChange("to_physical_account", account.account_id) })}
+				inputName="physical-account-picker"
+			/>
+		</>
+	);
 }

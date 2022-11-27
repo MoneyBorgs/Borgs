@@ -7,16 +7,19 @@ import {observer} from 'mobx-react-lite';
 import {ExpenseCreateOrEditModal} from './ExpenseCreateOrEditModal';
 import Transaction from '../../model/Transaction';
 import dayjs from "dayjs";
-import {CategoryType} from "../../model/Category";
+import {CategoryTypes} from "../../model/Category";
+
+interface IModalState  {
+	isModalOpen : boolean;
+	transactionType?: CategoryTypes | undefined;
+}
 
 export const NewTransactionMenu = observer(() => {
 		const { transactionsStore, accountsStore } = useStores();
 
 		const [anchorEl, setAnchorEl] = React.useState(null);
 
-		const [isModalOpen, setIsModalOpen] = React.useState(false);
-		const [newTransactionType, setTransactionType] = React.useState<CategoryType | undefined>(undefined);
-		const [loadedTransaction, setLoadedTransaction] = React.useState<Transaction | undefined>();
+		const [modalState, setModalState] = React.useState<IModalState>({isModalOpen: false});
 
 		const open = Boolean(anchorEl);
 		const handleClick = (event) => {
@@ -28,40 +31,26 @@ export const NewTransactionMenu = observer(() => {
 
 		const handleNewExpense = (event) => {
 			handleClose();
-			// TODO Replace by single state object
-			setLoadedTransaction(undefined);
-			setTransactionType(CategoryType.EXPENSE);
-			setIsModalOpen(true);
+			setModalState({
+				isModalOpen: true,
+				transactionType: CategoryTypes.EXPENSE
+			})
 		}
 
 		const handleNewIncome = () => {
 			handleClose();
-			setLoadedTransaction(undefined);
-			setTransactionType(CategoryType.INCOME);
-			setIsModalOpen(true)
+			setModalState({
+				isModalOpen: true,
+				transactionType: CategoryTypes.INCOME
+			})
 		}
 
-		const handleSimulateEdit = () => {
+		function handleNewTransfer() {
 			handleClose();
-			const t = new Transaction();
-			t.description = "Teste";
-			t.value = 10000;
-			t.category = {
-				"category_id": 1,
-				"category_type": CategoryType.EXPENSE,
-				"children": null,
-				"displayname": "Olive",
-				"user_id": 1
-			};
-			t.timestampepochseconds = dayjs().unix();
-			t.virtual_account = accountsStore.currentVirtualAccountsData[0].account_id;
-			console.log(t.category);
-			t.physical_account = accountsStore.currentPhysicalAccountsData[0].account_id;
-			t.tags = [transactionsStore.availableTags[0]];
-
-			setLoadedTransaction(t);
-
-			setIsModalOpen(true);
+			setModalState({
+				isModalOpen: true,
+				transactionType: CategoryTypes.TRANSFER
+			})
 		}
 
 		return (
@@ -87,13 +76,12 @@ export const NewTransactionMenu = observer(() => {
 				>
 					<MenuItem onClick={handleNewExpense}>Expense</MenuItem>
 					<MenuItem onClick={handleNewIncome}>Income</MenuItem>
-					<MenuItem onClick={handleSimulateEdit}>SimulateEdit</MenuItem>
+					<MenuItem onClick={handleNewTransfer}>Transfer</MenuItem>
 				</Menu>
 				<ExpenseCreateOrEditModal
-					open={isModalOpen}
-					onClose={() => {setIsModalOpen(false)}}
-					preFilledTransaction={loadedTransaction}
-					transactionType={newTransactionType}
+					open={modalState.isModalOpen}
+					onClose={() => {setModalState({isModalOpen: false})}}
+					transactionType={modalState.transactionType}
 				/>
 			</div>
 		);
