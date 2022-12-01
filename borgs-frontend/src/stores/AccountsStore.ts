@@ -52,7 +52,7 @@ export default class AccountsStore {
 
 		console.log("Getting virtual id monthly balances");
 
-        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
+        axiosRequest.get(`/monthly_balance/${account_id}/${year}`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;
@@ -71,7 +71,7 @@ export default class AccountsStore {
 
 		console.log("Getting physical id monthly balances");
 
-        axiosRequest.get(`/monthly_physical_balance/${account_id}/${year}/`)
+        axiosRequest.get(`/monthly_physical_balance/${account_id}/${year}`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;
@@ -108,5 +108,29 @@ export default class AccountsStore {
 		
     }
 	
+	@action
+    deleteVirtualAccount(account: Account) {
+        console.log(`Deleting new virtual account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.patch(`/delete_virtualaccount/${userStore.uid}`, account)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.currentVirtualAccountsData.push(res.data)
+                }
+            ));
+		
+    }
+	@action
+    deletePhysicalAccount(account: Account) {
+        console.log(`Deleting new physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.patch(`/delete_physicalaccount/${userStore.uid}`, account)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.currentVirtualAccountsData.push(res.data)
+                }
+            ));
+		
+    }
 
 }
