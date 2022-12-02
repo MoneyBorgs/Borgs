@@ -29,11 +29,11 @@ const style = {
 	pb: 3,
 };
 
-export interface LoginCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface ChangeNameModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
+export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 	
 		const { userStore } = useStores();
 		const router = useRouterStore();
@@ -42,6 +42,14 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const [ emailAddress, setEmailAddress ] = useState('');
 		const [ passWord, setPassWord ] = useState('');
 
+		const [open, setOpen] = React.useState(false);
+		const handleOpen = () => {
+		  setOpen(true);
+		};
+
+		const handleClose = () => {
+			setOpen(false);
+		  };		
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -51,25 +59,30 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		 */
 
 		const handleOnSubmitForm = (event) => {			
-			userStore.updateEmail(emailAddress);
-			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
-			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log('Printing' + passWord);
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
-				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
-				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
-				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
-				userStore.updateLoginStatus(true);
-
-				router.goTo("reports");
-
-				props.onClose();
-			}
+            props.onClose();
 		}
 
 		return (
-				<Modal {...props}>
+			<React.Fragment>
+				<Box textAlign='center' sx={{ p: 1 }}>
+				<Button 
+				id="basic-demo-button"
+				aria-controls={open ? 'basic-menu' : undefined}
+				aria-haspopup="true"
+				aria-expanded={open ? 'true' : undefined}
+				variant="outlined"
+				color="primary"
+				style={{ fontWeight: 'bold' }}
+				onClick={handleOpen}>Change Display Name</Button>
+				</Box>
+
+				<Modal
+        			hideBackdrop
+        			open={open}
+        			onClose={handleClose}
+        			aria-labelledby="child-modal-title"
+        			aria-describedby="child-modal-description"
+     			>
 					<Box
 						aria-labelledby="basic-modal-dialog-title"
 						aria-describedby="basic-modal-dialog-description"
@@ -84,17 +97,43 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 							borderRadius: '50%',
 							bgcolor: 'background.body',
 						}}
-						onClick={() => {props.onClose()}}
+						onClick={handleClose}
 					/>
 						<Typography
 							id="basic-modal-dialog-title"
 							component="h2"
 							level="inherit"
-							fontSize="1.25em"
+							fontSize="2em"
 							mb="1em"
+							lineHeight="2"
+							textAlign = 'center'
 						>
-							Login to your account
+							Change Display Name
 						</Typography>
+                        <Typography
+							id="basic-modal-dialog-title"
+							component="h2"
+							level="inherit"
+							fontSize="1em"
+							mb="1em"
+							lineHeight="0.5"
+							textAlign = 'center'
+						>
+							Your Current Display Name Is:
+						</Typography>
+						<Box sx={{ pb: 2 }}>
+						<Typography
+							id="basic-modal-dialog-title"
+							component="h2"
+							level="inherit"
+							fontSize="1em"
+							mb="1em"
+							lineHeight="0.5"
+							textAlign = 'center'
+						>
+							{userStore.firstname} {userStore.lastname}
+						</Typography>
+						</Box>
 						<form
 							onSubmit={(event) => {
 								event.preventDefault();
@@ -122,6 +161,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 						</form>
 					</Box>
 				</Modal>
+				</React.Fragment>
 		);
 	}
 )

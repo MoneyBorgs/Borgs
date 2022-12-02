@@ -12,6 +12,7 @@ export default class UserStore {
     @observable currentUserWithPassWord: User[] = [];
 	@observable uid = 1
     @observable firstname = 'Ryan'
+    @observable lastname = 'Mitchell'
     @observable email = 'rtm40@duke.edu'
     @observable password = 'ryan'
     @observable loggedInUser: boolean = false;
@@ -61,6 +62,13 @@ export default class UserStore {
     updateFirstName(new_name) {
         this.firstname = new_name
 		console.log(this.firstname)
+		console.log(new_name)
+    }
+
+    @action
+    updateLastName(new_name) {
+        this.lastname = new_name
+		console.log(this.lastname)
 		console.log(new_name)
     }
 

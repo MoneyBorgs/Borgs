@@ -14,6 +14,8 @@ import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
 import Alert from '@mui/material/Alert';
+import { ChangeNameModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ChangeNameModal"
+import { ResetPassModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ResetPassModal"
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -29,14 +31,33 @@ const style = {
 	pb: 3,
 };
 
-export interface LoginCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface SettingsModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
+export const SettingsModal = observer((props : SettingsModalProps) => {
 	
 		const { userStore } = useStores();
 		const router = useRouterStore();
+
+        const [isModal1Open, setIsModen1Open] = React.useState(false);
+		const [isModal2Open, setIsModen2Open] = React.useState(false);
+		const [anchorEl, setAnchorEl] = React.useState(null);
+		const open = Boolean(anchorEl);
+
+		const handleClose = () => {
+			setAnchorEl(null);
+		};
+
+        const handleNameChange = (event) => {
+			handleClose();
+			setIsModen1Open(true);
+		}
+
+		const handleResetPass = (event) => {
+			handleClose();
+			setIsModen2Open(true);
+		}
 
 		// TODO get default user and make values consistent across usages
 		const [ emailAddress, setEmailAddress ] = useState('');
@@ -51,21 +72,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		 */
 
 		const handleOnSubmitForm = (event) => {			
-			userStore.updateEmail(emailAddress);
-			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
-			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log('Printing' + passWord);
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
-				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
-				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
-				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
-				userStore.updateLoginStatus(true);
-
-				router.goTo("reports");
-
-				props.onClose();
-			}
+            props.onClose();
 		}
 
 		return (
@@ -92,34 +99,12 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 							level="inherit"
 							fontSize="1.25em"
 							mb="1em"
+							textAlign = 'center'
 						>
-							Login to your account
+							Settings for {userStore.firstname} {userStore.lastname}
 						</Typography>
-						<form
-							onSubmit={(event) => {
-								event.preventDefault();
-								handleOnSubmitForm(event);
-							}}
-						>
-						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<Stack spacing={2}>
-								<TextField
-									required
-									label="Email Address" autoFocus
-									onChange={(event) => setEmailAddress(event.target.value)}
-									value = {emailAddress}
-								/>
-								<TextField
-									required
-									type='password'
-									label="Password" autoFocus
-									onChange={(event) => setPassWord(event.target.value)}
-									value = {passWord}
-								/>																				
-								<Button type="submit">Login!</Button>
-							</Stack>
-						</LocalizationProvider>
-						</form>
+						<ChangeNameModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
+						<ResetPassModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 					</Box>
 				</Modal>
 		);

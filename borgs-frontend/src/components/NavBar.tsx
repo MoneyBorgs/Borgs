@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStores } from '../hooks/useStores';
 import UserStore from '../stores/UserStore';
+import { SettingsModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/SettingsModal"
 
 let routerStore;
 
@@ -67,6 +68,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const ResponsiveAppBar = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
+	const [isModal1Open, setIsModen1Open] = React.useState(false);
 
 	routerStore = useRouterStore()
 
@@ -88,6 +90,11 @@ const ResponsiveAppBar = () => {
 		routerStore.goTo("register");
 		setAnchorElUser(null);
 	};
+
+	const handleSettingsMenu = (event) => {
+		setAnchorElUser(null);
+		setIsModen1Open(true);
+	}
 
 	return (
 		<AppBar position="static">
@@ -204,12 +211,11 @@ const ResponsiveAppBar = () => {
 							<MenuItem onClick={handleCloseUserMenu}>
 								<Typography textAlign="center">Logout</Typography>
 							</MenuItem>
-							{/* {settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">{setting}</Typography>
-								</MenuItem>
-							))} */}
+							<MenuItem onClick={handleSettingsMenu}>
+								<Typography textAlign="center">Settings</Typography>
+							</MenuItem>
 						</Menu>
+						<SettingsModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
 					</Box>
 				</Toolbar>
 			</Container>

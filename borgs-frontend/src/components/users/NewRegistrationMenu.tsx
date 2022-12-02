@@ -28,13 +28,11 @@ export const NewRegistrationMenu = observer(() => {
 		const handleNewUser = (event) => {
 			handleClose();
 			setIsModen1Open(true);
-			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
 		}
 
 		const handleNewLogin = (event) => {
 			handleClose();
 			setIsModen2Open(true);
-			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
 		}
 
 		const bypassLogin = () => {
