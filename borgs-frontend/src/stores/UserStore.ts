@@ -80,12 +80,33 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
     }
 
+    // @action
+    // userWithEmail() {
+    //     console.log(this.email);
+    //     console.log('Retrieving user with given email');
+    //     axiosRequest.get(`/user/${this.email}`)
+    //         .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
+    // }
+
     @action
     userWithPassWord() {
         console.log('Current UserStore password is: ' + this.password);
         console.log('Retrieving user with given password: ' + this.password);
         axiosRequest.get(`/user/${this.email}/${this.password}`)
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithPassWord = res.data));
+    }
+
+    @action
+    changeDisplayName() {
+        console.log('New first name is: ' + this.firstname);
+        console.log('New last name is: ' + this.lastname);
+        axiosRequest.put(`/user/${this.email}/${this.firstname}/${this.lastname}`);
+    }
+
+    @action
+    changePassWord() {
+        console.log('New password is: ' + this.password);
+        axiosRequest.put(`/user/${this.email}/${this.password}`);
     }
 
 

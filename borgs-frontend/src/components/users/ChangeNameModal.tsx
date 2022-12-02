@@ -39,17 +39,20 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 		const router = useRouterStore();
 
 		// TODO get default user and make values consistent across usages
-		const [ emailAddress, setEmailAddress ] = useState('');
-		const [ passWord, setPassWord ] = useState('');
+		const [ firstName, setFirstName ] = useState('');
+		const [ lastName, setLastName ] = useState('');
+		const [ alert, setAlert ] = useState(false);
+		const [ alertContent, setAlertContent ] = useState('');
 
 		const [open, setOpen] = React.useState(false);
 		const handleOpen = () => {
-		  setOpen(true);
+			setOpen(true);
 		};
 
 		const handleClose = () => {
+			setAlert(false);
 			setOpen(false);
-		  };		
+		};		
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -58,8 +61,12 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 		 * @param value the value 
 		 */
 
-		const handleOnSubmitForm = (event) => {			
-            props.onClose();
+		const handleOnSubmitForm = (event) => {	
+			userStore.updateFirstName(firstName);
+			userStore.updateLastName(lastName);
+			userStore.changeDisplayName();
+			setAlert(true);
+            setAlertContent('Display name successfully changed. You may now close the window.')
 		}
 
 		return (
@@ -144,18 +151,26 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 							<Stack spacing={2}>
 								<TextField
 									required
-									label="Email Address" autoFocus
-									onChange={(event) => setEmailAddress(event.target.value)}
-									value = {emailAddress}
+									label="New First Name" autoFocus
+									onChange={(event) => setFirstName(event.target.value)}
+									value = {firstName}
 								/>
 								<TextField
 									required
-									type='password'
-									label="Password" autoFocus
-									onChange={(event) => setPassWord(event.target.value)}
-									value = {passWord}
-								/>																				
-								<Button type="submit">Login!</Button>
+									label="New Last Name" autoFocus
+									onChange={(event) => setLastName(event.target.value)}
+									value = {lastName}
+								/>
+								{alert ? <Alert severity='success'>{alertContent}</Alert> : <></> }																				
+								<Button
+								type="submit"
+								id="basic-demo-button"
+								aria-controls={open ? 'basic-menu' : undefined}
+								aria-haspopup="true"
+								aria-expanded={open ? 'true' : undefined}
+								variant="contained"
+								color="primary"
+								style={{ fontWeight: 'bold' }}>Change Display Name</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>

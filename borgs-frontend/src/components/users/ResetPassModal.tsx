@@ -14,6 +14,12 @@ import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
 import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -39,15 +45,20 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 		const router = useRouterStore();
 
 		// TODO get default user and make values consistent across usages
-		const [ emailAddress, setEmailAddress ] = useState('');
-		const [ passWord, setPassWord ] = useState('');
+		const [ oldPass, setOldPass ] = useState('');
+		const [ newPass, setNewPass ] = useState('');
+		const [ alert1, setAlert1 ] = useState(false);
+		const [ alert2, setAlert2 ] = useState(false);
+		const [ alertContent, setAlertContent ] = useState('');
 
 		const [open, setOpen] = React.useState(false);
 		const handleOpen = () => {
-		  setOpen(true);
+			setOpen(true);
 		};
 
 		const handleClose = () => {
+			setAlert1(false);
+			setAlert2(false);
 			setOpen(false);
 		};		
 
@@ -58,8 +69,20 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 		 * @param value the value 
 		 */
 
-		const handleOnSubmitForm = (event) => {			
-            props.onClose();
+		const handleOnSubmitForm = (event) => {		
+			if (userStore.password == oldPass) {
+				userStore.updatePassWord(newPass);
+				userStore.changePassWord();
+				setAlert2(false);
+				setAlert1(true);
+				setAlertContent('Password successfully changed. You may close the window.')
+			}
+
+			else {
+				setAlert1(false);
+				setAlert2(true);
+				setAlertContent('Incorrect password. Please try again.');
+			}
 		}
 
 		return (
@@ -121,18 +144,29 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 							<Stack spacing={2}>
 								<TextField
 									required
-									label="Email Address" autoFocus
-									onChange={(event) => setEmailAddress(event.target.value)}
-									value = {emailAddress}
+									type='password'
+									label="Old Password" autoFocus
+									onChange={(event) => setOldPass(event.target.value)}
+									value = {oldPass}
 								/>
+								{alert2 ? <Alert severity='error'>{alertContent}</Alert> : <></> }
 								<TextField
 									required
 									type='password'
-									label="Password" autoFocus
-									onChange={(event) => setPassWord(event.target.value)}
-									value = {passWord}
-								/>																				
-								<Button type="submit">Login!</Button>
+									label="New Password" autoFocus
+									onChange={(event) => setNewPass(event.target.value)}
+									value = {newPass}
+								/>
+								{alert1 ? <Alert severity='success'>{alertContent}</Alert> : <></> }																				
+								<Button
+								type="submit"
+								id="basic-demo-button"
+								aria-controls={open ? 'basic-menu' : undefined}
+								aria-haspopup="true"
+								aria-expanded={open ? 'true' : undefined}
+								variant="contained"
+								color="warning"
+								style={{ fontWeight: 'bold' }}>Reset Password</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>
