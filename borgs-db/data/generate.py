@@ -104,6 +104,12 @@ def gen_transaction_categories(available_uids):
         category_id = 0
         for uid in available_uids:
             category_relations[uid] = []
+            writer.writerow([category_id, None, 'Transfer between accounts', uid, 'TRANSFER'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other expenses', uid, 'EXPENSE'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other income', uid, 'INCOME'])
+            category_id += 1
             for i in range(randrange(1,10,1)): # person can have [1,10] categories
                 category_types[category_id] = []
                 names = []
@@ -152,7 +158,7 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                 note = fake.paragraph(nb_sentences=2)
 
                 writer.writerow([transaction_id, virtual_account_id, physical_account_id,
-                    value, category, timestamp, description, note, None])
+                    value, category, timestamp, description, note, None, None])
                 transaction_ids_relations[uid].append(transaction_id)
                 transaction_id += 1
 

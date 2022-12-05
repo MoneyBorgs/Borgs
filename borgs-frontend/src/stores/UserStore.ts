@@ -10,7 +10,7 @@ export default class UserStore {
     @observable currentUsersWithName : User[] = [];
     @observable currentUserWithEmail: User[] = [];
     @observable currentUserWithPassWord: User[] = [];
-	@observable uid = 1
+	@observable uid = 3
     @observable firstname = 'Ryan'
     @observable lastname = 'Mitchell'
     @observable email = 'rtm40@duke.edu'

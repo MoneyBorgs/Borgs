@@ -11,6 +11,7 @@ import {RangeType} from "rsuite/DateRangePicker";
 import {DateRange} from "rsuite/esm/DateRangePicker/types";
 import {TransactionDrawer} from "../TransactionDrawer";
 import {useState} from "react";
+import {DayTransactionsListItem} from "./DayTransactionsListItem";
 
 interface TransactionDrawerState {
     isOpen: boolean,
@@ -22,50 +23,12 @@ export const TransactionList = observer(() => {
 
         const [transactionDrawerState, setDrawerState] = useState<TransactionDrawerState>({isOpen: false, loadedTransaction: undefined});
 
-        let sortedTransactions = transactionsStore.currentTransactionsData.slice().sort((t1, t2) => {
-            return t2.timestampepochseconds - t1.timestampepochseconds
-        });
-
         const handleOnCloseDatePicker = (date: DateRange, event: React.SyntheticEvent) => {
-            transactionsStore.updateTransactionsForDateRange(dayjs(date[0]), dayjs(date[1]));
+            transactionsStore.updateDailyTransactionsForDateRange(dayjs(date[0]), dayjs(date[1]));
         };
 
-        const renderListItems = (sortedTransactions : Transaction[]) : JSX.Element[] => {
-            const elements : JSX.Element[] = [];
-
-            if(sortedTransactions?.length === 0) return elements;
-
-            let currentDay: dayjs.Dayjs = dayjs();
-
-            for (let i = 0; i < sortedTransactions.length; i++){
-                const transaction = sortedTransactions[i];
-                const transactionDate = dayjs.unix(transaction.timestampepochseconds);
-
-                if(i === 0 || !transactionDate.isSame(currentDay, "day")) {
-                    currentDay = transactionDate;
-                    elements.push(
-                        <>
-                            {i !== 0 ? <Divider light sx={{marginLeft: 1.5, marginRight: 1.5}} /> : null}
-                            <Typography variant="subtitle2" sx={{fontWeight: 'bold', paddingLeft: 2, paddingTop: 2}}>
-                                {dayjs.unix(transaction.timestampepochseconds).format("MMMM D, YYYY")}
-                            </Typography>
-                        </>
-                    )
-                }
-
-                elements.push(
-                    <TransactionListItem
-                        transaction={transaction}
-                        onClick={() => {setDrawerState({isOpen: true, loadedTransaction: transaction})}}
-                    />
-                );
-            }
-
-            return elements
-        }
-
         return (
-            <>
+            <>x
                 <Paper sx={{padding: 1.5, paddingTop: 3}}>
                     <Box justifyContent="center" sx={{display: 'flex'}}>
                         <DateRangePicker
@@ -78,7 +41,11 @@ export const TransactionList = observer(() => {
                             ]}/>
                     </Box>
                     <List>
-                        {renderListItems(sortedTransactions)}
+                        {transactionsStore.currentDailyTransactionsData.map((dayTransactions) => {
+                            return <DayTransactionsListItem
+                                dayTransactions={dayTransactions}
+                                onClickTransaction={(transaction) => {setDrawerState({isOpen: true, loadedTransaction: transaction})}}/>
+                        })}
                     </List>
                 </Paper>
                 <TransactionDrawer
