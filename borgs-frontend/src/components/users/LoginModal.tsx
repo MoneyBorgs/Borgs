@@ -37,6 +37,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 	
 		const { userStore } = useStores();
 		const router = useRouterStore();
+		const bcrypt = require("bcryptjs");
 
 		// TODO get default user and make values consistent across usages
 		const [ emailAddress, setEmailAddress ] = useState('');
@@ -46,26 +47,41 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
 
+		function compareHash() {
+			bcrypt.compare(userStore.password, userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][1], function(err, result) {
+				if (result) {
+				  console.log("It matches!");
+				  console.log('Printing' + userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][1]);
+				  console.log('Printing' + passWord);
+				  userStore.updateUser(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][2]);
+				  userStore.updateFirstName(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
+				  userStore.updateLastName(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
+				  userStore.updatePassWord(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][1]);
+				  userStore.updateLoginStatus(true);
+				  setAlert1(false);
+				  setAlert2(true);
+				  setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
+  
+				  setTimeout(() => {  router.goTo("reports"); }, 3000);
+				  setTimeout(() => {  props.onClose(); }, 3000);
+				}
+				else {
+				  	console.log("Invalid password!");
+				  	setAlert2(false);
+					setAlert1(true);
+					setAlertContent('Invalid password');
+				}
+			  });
+		}
+
 		function loginActions() {
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0] !== undefined) {
-				console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-				console.log('Printing' + passWord);
-				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
-				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
-				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
-				userStore.updateLoginStatus(true);
-				setAlert1(false);
-				setAlert2(true);
-				setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
-
-				setTimeout(() => {  router.goTo("reports"); }, 3000);
-				setTimeout(() => {  props.onClose(); }, 3000);
-
+			if (userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0] !== undefined) {
+				compareHash();
 			}
 			else {
 				setAlert2(false);
 				setAlert1(true);
-				setAlertContent('Incorrect username or password');
+				setAlertContent('There is no MoneyBorgs account associated with this email address');
 			}
 		}
 
@@ -80,7 +96,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const handleOnSubmitForm = (event) => {			
 			userStore.updateEmail(emailAddress);
 			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
+			userStore.userWithEmail();
 			setTimeout(() => { loginActions() }, 1000);
 		}
 

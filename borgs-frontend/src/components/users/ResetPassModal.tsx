@@ -44,12 +44,12 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 		const { userStore } = useStores();
 		const router = useRouterStore();
 
-		// TODO get default user and make values consistent across usages
 		const [ oldPass, setOldPass ] = useState('');
 		const [ newPass, setNewPass ] = useState('');
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
+		const bcrypt = require("bcryptjs");
 
 		const [open, setOpen] = React.useState(false);
 		const handleOpen = () => {
@@ -70,20 +70,28 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 		 */
 
 		const handleOnSubmitForm = (event) => {		
-			if (userStore.password == oldPass) {
-				userStore.updatePassWord(newPass);
-				userStore.changePassWord();
-				setAlert2(false);
-				setAlert1(true);
-				setAlertContent('Password successfully changed. You may close the window.')
-			}
 
-			else {
-				setAlert1(false);
-				setAlert2(true);
-				setAlertContent('Incorrect password. Please try again.');
+			bcrypt.compare(oldPass, userStore.password, function(err, result) {
+				if (result) {
+				  console.log("It matches!");
+				  bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(newPass, salt, function(err, hash) {
+						userStore.updatePassWord(hash);
+						userStore.changePassWord();
+					});
+					})
+				  setAlert2(false);
+				  setAlert1(true);
+				  setAlertContent('Password successfully changed. You may close the window.')				  
+				}
+				else {
+				  	console.log("Invalid password!");
+					setAlert1(false);
+					setAlert2(true);
+					setAlertContent('Incorrect password. Please try again.');					
+				}
+			  });
 			}
-		}
 
 		return (
 			<React.Fragment>

@@ -37,6 +37,8 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 	
 		const { userStore } = useStores();
 
+		const bcrypt = require("bcryptjs");
+
 		// TODO get default user and make values consistent across usages
 		const [ userState, setUserState ] = useState(new User());
 		const [ emailAddress, setEmailAddress ] = useState(new User());
@@ -62,7 +64,13 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 				setAlert1(false);
 				setAlert2(true);
 				setAlertContent('You have successfully registered to MoneyBorgs! You may now close this window and login.')
-				userStore.createNewUser(userState);
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(userState.password, salt, function(err, hash) {
+					// Store hash in the database
+					userState.password = hash;
+					userStore.createNewUser(userState);
+					});
+					})
 			}
 			else {
 				setAlert2(false);

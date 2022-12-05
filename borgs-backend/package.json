@@ -14,6 +14,7 @@
     "@decorators/socket": "^3.2.0",
     "@mui/material": "^5.10.10",
     "@mui/x-data-grid": "^5.17.8",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "dayjs": "^1.11.6",
