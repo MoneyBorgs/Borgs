@@ -9,8 +9,38 @@ import 'rsuite/dist/rsuite.min.css';
 import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 import {formatCurrencyText} from "../utils/TextUtils";
+import { Typography } from '@mui/material';
 
 const { Column, HeaderCell, Cell } = Table;
+
+function conditionalColor(data) {
+	var color = "black";
+	if (data < 0) {
+		color = "red";
+	}
+	else if (data > 0) {
+		color = "green";
+	}
+	return color;
+}
+
+const CurrencyCell = ({rowData, dataKey, ...props }) => (
+	<Cell {...props}>
+		<Typography color={conditionalColor(rowData[dataKey])}>
+		{formatCurrencyText(rowData[dataKey])}
+		</Typography>
+		
+	</Cell>
+	);
+
+const PercentCell = ({rowData, dataKey, ...props }) => (
+	<Cell {...props}>
+		<Typography>
+		{rowData[dataKey].toFixed(2)}%
+		</Typography>
+		
+	</Cell>
+	);
 
 export const Reports = observer(() => {
 
@@ -62,14 +92,7 @@ export const Reports = observer(() => {
 			</ComposedChart>
 
 			<br></br> 
-
-			The change in balance of account: <strong>{accountsStore.currentVirtualAccountsData[0]['name']}</strong>  throughout {year} is: {formatCurrencyText(reportsStore.totalAccountBalance)}
-
-			<br></br>
-			<br></br>
-
-			<h2>General virtual account reports</h2>
-
+			rowData={undefined}
 			<br></br>
 
 			<Button variant="contained" onClick={() => {reportsStore.getTableData()}}>Update table</Button>
@@ -91,22 +114,22 @@ export const Reports = observer(() => {
 
 				<Column width={150}>
 					<HeaderCell>Account expenses</HeaderCell>
-					<Cell dataKey="total_va_expenses"/>
+					<CurrencyCell dataKey="total_va_expenses" rowData={undefined}/>
 				</Column>
 
 				<Column width={150}>
 					<HeaderCell>Account income</HeaderCell>
-					<Cell dataKey="total_va_incomes" />
+					<CurrencyCell dataKey="total_va_incomes" rowData={undefined} />
 				</Column>
 
 				<Column width={100}>
-					<HeaderCell>% of total expenses</HeaderCell>
-					<Cell dataKey="percent_total_expenses" />
+					<HeaderCell>% of expenses</HeaderCell>
+					<PercentCell dataKey="percent_total_expenses" rowData={undefined} />
 				</Column>
 
 				<Column width={100}>
-					<HeaderCell>% of total income</HeaderCell>
-					<Cell dataKey="percent_total_incomes" />
+					<HeaderCell>% of income</HeaderCell>
+					<PercentCell dataKey="percent_total_incomes" rowData={undefined} />
 				</Column>
 			</Table>
 
