@@ -1,8 +1,8 @@
 export default class MonthlyBalance {
-	virtual_account!: number;
+	account!: number;
 	month!: number;
-	total_va_expenses!: number;
-	total_va_incomes!: number;
+	total_expenses!: number;
+	total_incomes!: number;
 	net_result!: number;
 	number_of_transactions!: string;
 }

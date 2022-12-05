@@ -16,7 +16,7 @@ const BoldCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
 		<b>{rowData[dataKey]}</b>
 	</Cell>
-	);
+		);
 function conditionalColor(data) {
 	var color = "black";
 	if (data < 0) {
