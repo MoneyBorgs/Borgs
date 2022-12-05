@@ -10,8 +10,8 @@ import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 import {formatCurrencyText} from "../utils/TextUtils";
 import { Typography } from '@mui/material';
-import { vaTableCard, paTableCard } from '../components/reports/tableCard';
-import { vaChartCard, paChartCard } from '../components/reports/chartCard';
+import { vaTableCard, paTableCard, vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
+import { vaChartCard, paChartCard, vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -56,50 +56,50 @@ export const Reports = observer(() => {
 	return (
 		<div>
 			<div style={{ 
-				width: '75%', 
+				width: '100%', 
 				display: 'flex', 
 				justifyContent: 'space-between', 
 				alignItems: 'center',
-				paddingLeft: '15%',
+				paddingLeft: '10%',
 				paddingTop: '5%'}}>
 			
-			{vaChartCard(reportsStore, accountsStore)}
+			{vaChartAccordion(reportsStore, accountsStore)}
+
+			</div>
+
+			<div style={{ 
+				width: '100%', 
+				display: 'flex', 
+				justifyContent: 'space-between', 
+				alignItems: 'center',
+				paddingLeft: '10%',
+				paddingTop: '2.5%'}}>
+			
+			{paChartAccordion(reportsStore, accountsStore)}
 			
 			</div>
 
 			<div style={{ 
-				width: '75%', 
+				width: '100%', 
 				display: 'flex', 
 				justifyContent: 'space-between', 
 				alignItems: 'center',
-				paddingLeft: '15%',
-				paddingTop: '5%'}}>
+				paddingLeft: '10%',
+				paddingTop: '2.5%'}}>
 			
-			{paChartCard(reportsStore, accountsStore)}
+			{vaTableAccordion(reportsStore)}
 			
 			</div>
 
 			<div style={{ 
-				width: '75%', 
+				width: '100%', 
 				display: 'flex', 
 				justifyContent: 'space-between', 
 				alignItems: 'center',
-				paddingLeft: '15%',
-				paddingTop: '5%'}}>
-			
-			{vaTableCard(reportsStore)}
-			
-			</div>
+				paddingLeft: '10%',
+				paddingTop: '2.5%'}}>
 
-			<div style={{ 
-				width: '75%', 
-				display: 'flex', 
-				justifyContent: 'space-between', 
-				alignItems: 'center',
-				paddingLeft: '15%',
-				paddingTop: '5%'}}>
-
-			{paTableCard(reportsStore)}
+			{paTableAccordion(reportsStore)}
 			
 			</div>
 
