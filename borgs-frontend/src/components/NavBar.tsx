@@ -79,6 +79,10 @@ const ResponsiveAppBar = () => {
 	};
 
 	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
+
+	const handleLogout = () => {
 		userStore.updateLoginStatus(false);
 		routerStore.goTo("register");
 		setAnchorElUser(null);
@@ -201,7 +205,7 @@ const ResponsiveAppBar = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<MenuItem onClick={handleCloseUserMenu}>
+							<MenuItem onClick={handleLogout}>
 								<Typography textAlign="center">Logout</Typography>
 							</MenuItem>
 							<MenuItem onClick={handleSettingsMenu}>
