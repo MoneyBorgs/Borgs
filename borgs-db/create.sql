@@ -59,14 +59,14 @@ CREATE TABLE Transactions (
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
 	description TEXT,
 	notes TEXT,
-    from_transfer_transaction INT REFERENCES Transactions(transaction_id),
-	to_transfer_transaction INT REFERENCES Transactions(transaction_id)
+    from_transfer_transaction INT REFERENCES Transactions(transaction_id) ON DELETE CASCADE,
+	to_transfer_transaction INT REFERENCES Transactions(transaction_id) ON DELETE CASCADE
 );
 
 -- Create tags
 CREATE TABLE Tags (
 	tag TEXT NOT NULL,
-	transaction_id INT NOT NULL REFERENCES Transactions(transaction_id) DEFERRABLE,
+	transaction_id INT NOT NULL REFERENCES Transactions(transaction_id) ON DELETE CASCADE DEFERRABLE,
 	PRIMARY KEY (transaction_id, tag)
 );
 

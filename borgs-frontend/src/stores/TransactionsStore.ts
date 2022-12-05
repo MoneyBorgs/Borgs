@@ -123,4 +123,12 @@ export default class TransactionsStore {
                 }));
         }
     }
+
+    @action
+    deleteTransaction(transactionId) {
+        axiosRequest.delete(`/transaction/${this.userStore.uid}/${transactionId}`)
+            .then(action((res: AxiosResponse<Transaction, any>) => {
+                this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
+            }));
+    }
 }

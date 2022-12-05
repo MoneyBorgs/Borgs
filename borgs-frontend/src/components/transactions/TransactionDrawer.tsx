@@ -23,7 +23,7 @@ interface IModalState  {
 
 export const TransactionDrawer = observer((props: TransactionDrawer) => {
 
-        const { accountsStore } = useStores();
+        const { accountsStore, transactionsStore } = useStores();
 
         const [modalState, setModalState] = React.useState<IModalState>({isModalOpen: false});
 
@@ -43,7 +43,10 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
                             </IconButton>
                             <IconButton
                                 icon={<TrashIcon />}
-                                onClick={() => {}} // TODO delete
+                                onClick={(event) => {
+                                    transactionsStore.deleteTransaction(props.transaction?.transaction_id);
+                                    if(props.onClose) props.onClose(event);
+                                }}
                                 appearance="subtle">
                             </IconButton>
                         </Drawer.Actions>

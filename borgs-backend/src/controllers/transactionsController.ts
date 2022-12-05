@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put} from '@decorators/express';
+import { Controller, Delete, Get, Post, Put} from '@decorators/express';
 import dbPool from '../db/dbPool';
 import format from 'pg-format';
 import { ClientBase} from 'pg';
@@ -152,6 +152,15 @@ export default class TransactionsController {
 			} finally {
 				client.release();
 			}
+	}
+
+	@Delete("/transaction/:userId/:transactionId")
+	async deleteTransaction(req, res) {
+		const transactionId: number = parseInt(req.params.transactionId);
+
+		this.transactionsRepo.deleteTransaction(transactionId)
+			.then(() => res.send())
+			.catch((e) => {console.log(e)});
 	}
 
 	@Post("/transaction/transfer/:userId")

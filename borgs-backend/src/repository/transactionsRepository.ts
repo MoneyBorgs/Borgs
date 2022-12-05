@@ -2,7 +2,7 @@ import dbPool from "../db/dbPool";
 import {ClientBase, QueryResult} from "pg";
 import Transaction from "../model/Transaction";
 import DailyTransactions from "../model/DailyTransactions";
-import TransferTransaction, { getFromAccountTransaction, getToAccountTransaction } from "../model/TransferTransaction";
+import TransferTransaction, {getFromAccountTransaction, getToAccountTransaction} from "../model/TransferTransaction";
 
 export default class TransactionsRepository {
 
@@ -165,6 +165,15 @@ export default class TransactionsRepository {
         } finally {
             client.release();
         }
+    }
+
+    async deleteTransaction(transactionId : number) {
+        return dbPool.query(
+            `
+                DELETE FROM borgs.public.Transactions
+                WHERE transaction_id = $1
+            `, [transactionId]
+        );
     }
 
     /**

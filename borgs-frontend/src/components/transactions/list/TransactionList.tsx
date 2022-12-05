@@ -28,7 +28,7 @@ export const TransactionList = observer(() => {
         };
 
         return (
-            <>x
+            <>
                 <Paper sx={{padding: 1.5, paddingTop: 3}}>
                     <Box justifyContent="center" sx={{display: 'flex'}}>
                         <DateRangePicker
