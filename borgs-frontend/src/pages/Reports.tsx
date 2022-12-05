@@ -107,7 +107,7 @@ export const Reports = observer(() => {
 			<br></br>
 			<br></br>
 			
-				to-do: reports with tags, reports with categories, maybe some math: mean, SD, median, percentiles, etc
+				to-do: change the graphs to have months instead of numbers and have better names when you hover over, reports with tags, reports with categories, maybe some math: mean, SD, median, percentiles, etc
 		</div>
 
 		
