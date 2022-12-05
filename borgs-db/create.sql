@@ -3,7 +3,7 @@
 
 CREATE TABLE Users (
 	uid SERIAL PRIMARY KEY,
-	email VARCHAR(48) NOT NULL,
+	email VARCHAR(48) NOT NULL UNIQUE,
 	password VARCHAR(512) NOT NULL, -- Hashed password
 	firstname VARCHAR(32),
 	lastname VARCHAR(32)

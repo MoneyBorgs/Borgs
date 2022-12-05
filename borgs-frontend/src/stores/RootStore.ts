@@ -35,5 +35,6 @@ export default class RootStore {
 		this.dashboardStore.updateTopCategories();
 		this.dashboardStore.updateIncomesExpenses();
 		this.transactionsStore.updateDailyTransactionsForDateRange(dayjs().startOf("month"), dayjs().endOf("month"));
+		this.reportsStore.updateReportsData();
 	}
 }

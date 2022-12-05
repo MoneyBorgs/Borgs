@@ -14,6 +14,12 @@ import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
 import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -29,23 +35,32 @@ const style = {
 	pb: 3,
 };
 
-export interface LoginCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface ResetPassModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
+export const ResetPassModal = observer((props : ResetPassModalProps) => {
 	
 		const { userStore } = useStores();
 		const router = useRouterStore();
 
 		// TODO get default user and make values consistent across usages
-		const [ emailAddress, setEmailAddress ] = useState('');
-		const [ passWord, setPassWord ] = useState('');
-
+		const [ oldPass, setOldPass ] = useState('');
+		const [ newPass, setNewPass ] = useState('');
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
 
+		const [open, setOpen] = React.useState(false);
+		const handleOpen = () => {
+			setOpen(true);
+		};
+
+		const handleClose = () => {
+			setAlert1(false);
+			setAlert2(false);
+			setOpen(false);
+		};		
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -54,34 +69,43 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		 * @param value the value 
 		 */
 
-		const handleOnSubmitForm = (event) => {			
-			userStore.updateEmail(emailAddress);
-			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
-			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log('Printing' + passWord);
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
-				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
-				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
-				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
-				userStore.updateLoginStatus(true);
-				setAlert1(false);
-				setAlert2(true);
-				setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
-
-				setTimeout(() => {  router.goTo("reports"); }, 3000);
-				setTimeout(() => {  props.onClose(); }, 3000);
-
-			}
-			else {
+		const handleOnSubmitForm = (event) => {		
+			if (userStore.password == oldPass) {
+				userStore.updatePassWord(newPass);
+				userStore.changePassWord();
 				setAlert2(false);
 				setAlert1(true);
-				setAlertContent('Incorrect username or password');
+				setAlertContent('Password successfully changed. You may close the window.')
+			}
+
+			else {
+				setAlert1(false);
+				setAlert2(true);
+				setAlertContent('Incorrect password. Please try again.');
 			}
 		}
 
 		return (
-				<Modal {...props}>
+			<React.Fragment>
+                <Box textAlign='center' sx={{ p: 1 }}>
+				<Button 
+				id="basic-demo-button"
+				aria-controls={open ? 'basic-menu' : undefined}
+				aria-haspopup="true"
+				aria-expanded={open ? 'true' : undefined}
+				variant="outlined"
+				color="warning"
+                style={{ fontWeight: 'bold' }}
+				onClick={handleOpen}>Reset Password</Button>
+                </Box>
+
+				<Modal
+        			hideBackdrop
+        			open={open}
+        			onClose={handleClose}
+        			aria-labelledby="child-modal-title"
+        			aria-describedby="child-modal-description"
+     			>
 					<Box
 						aria-labelledby="basic-modal-dialog-title"
 						aria-describedby="basic-modal-dialog-description"
@@ -96,17 +120,20 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 							borderRadius: '50%',
 							bgcolor: 'background.body',
 						}}
-						onClick={() => {props.onClose()}}
+						onClick={handleClose}
 					/>
 						<Typography
 							id="basic-modal-dialog-title"
 							component="h2"
 							level="inherit"
-							fontSize="1.25em"
+							fontSize="2em"
 							mb="1em"
+							lineHeight="2"
+							textAlign = 'center'
 						>
-							Login to your account
+							Reset Password
 						</Typography>
+                        
 						<form
 							onSubmit={(event) => {
 								event.preventDefault();
@@ -117,25 +144,35 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 							<Stack spacing={2}>
 								<TextField
 									required
-									label="Email Address" autoFocus
-									onChange={(event) => setEmailAddress(event.target.value)}
-									value = {emailAddress}
+									type='password'
+									label="Old Password" autoFocus
+									onChange={(event) => setOldPass(event.target.value)}
+									value = {oldPass}
 								/>
+								{alert2 ? <Alert severity='error'>{alertContent}</Alert> : <></> }
 								<TextField
 									required
 									type='password'
-									label="Password" autoFocus
-									onChange={(event) => setPassWord(event.target.value)}
-									value = {passWord}
+									label="New Password" autoFocus
+									onChange={(event) => setNewPass(event.target.value)}
+									value = {newPass}
 								/>
-								{alert1 ? <Alert severity='error'>{alertContent}</Alert> : <></> }	
-								{alert2 ? <Alert severity='success'>{alertContent}</Alert> : <></> }																			
-								<Button type="submit">Login!</Button>
+								{alert1 ? <Alert severity='success'>{alertContent}</Alert> : <></> }																				
+								<Button
+								type="submit"
+								id="basic-demo-button"
+								aria-controls={open ? 'basic-menu' : undefined}
+								aria-haspopup="true"
+								aria-expanded={open ? 'true' : undefined}
+								variant="contained"
+								color="warning"
+								style={{ fontWeight: 'bold' }}>Reset Password</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>
 					</Box>
 				</Modal>
+				</React.Fragment>
 		);
 	}
 )

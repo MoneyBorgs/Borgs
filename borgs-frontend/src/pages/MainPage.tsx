@@ -21,7 +21,7 @@ export const MainPage = observer(() => {
 	return (
 		<div>
 			<Typography variant='h5' paddingLeft='3%' paddingTop='3%'>
-				Welcome User {userStore.uid}!
+				Welcome {userStore.firstname} {userStore.lastname}!
 			</Typography>
 			<Typography variant='h2' align='center' padding='1%'>
 				Home
