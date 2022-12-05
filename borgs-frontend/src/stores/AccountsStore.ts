@@ -56,7 +56,7 @@ export default class AccountsStore {
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;
-
+ 
 				for (let i = 0; i < res.data.length; i++) {
 					total_balance += res.data[i]["net_result"]
 				}

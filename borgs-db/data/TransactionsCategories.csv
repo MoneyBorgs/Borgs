@@ -1,221 +1,83 @@
-0,,BurlyWood,0,INCOME
-1,,Green,1,EXPENSE
-2,1,MediumSlateBlue,1,INCOME
-3,,GhostWhite,2,INCOME
-4,,Gray,3,EXPENSE
-5,,HotPink,3,INCOME
-6,,Green,3,EXPENSE
-7,6,LightYellow,3,INCOME
-8,7,MediumPurple,3,EXPENSE
-9,,DarkTurquoise,3,EXPENSE
-10,9,PapayaWhip,3,INCOME
-11,,Chartreuse,4,EXPENSE
-12,,Olive,4,EXPENSE
-13,,SpringGreen,4,INCOME
-14,,Olive,4,INCOME
-15,14,PaleTurquoise,4,INCOME
-16,,DarkSalmon,5,INCOME
-17,16,Red,5,EXPENSE
-18,,Brown,5,INCOME
-19,18,IndianRed,5,EXPENSE
-20,,SlateBlue,5,EXPENSE
-21,,Cyan,5,EXPENSE
-22,,DeepSkyBlue,5,EXPENSE
-23,,LimeGreen,6,INCOME
-24,23,Black,6,INCOME
-25,,DarkOrange,6,INCOME
-26,,Wheat,6,INCOME
-27,26,YellowGreen,6,INCOME
-28,,LightCyan,7,EXPENSE
-29,28,Aquamarine,7,EXPENSE
-30,,DarkSlateGray,7,INCOME
-31,,Thistle,7,EXPENSE
-32,31,Red,7,EXPENSE
-33,,PapayaWhip,8,INCOME
-34,,Chocolate,8,INCOME
-35,,LightGreen,8,INCOME
-36,,MediumSlateBlue,8,INCOME
-37,36,LightGreen,8,INCOME
-38,37,Navy,8,INCOME
-39,38,Chartreuse,8,EXPENSE
-40,39,DarkMagenta,8,INCOME
-41,,LightSkyBlue,8,EXPENSE
-42,,MediumSpringGreen,9,EXPENSE
-43,,Lavender,9,INCOME
-44,,Green,10,INCOME
-45,44,Gold,10,INCOME
-46,45,DarkRed,10,EXPENSE
-47,46,FloralWhite,10,EXPENSE
-48,,OrangeRed,11,INCOME
-49,,Bisque,12,EXPENSE
-50,,White,12,EXPENSE
-51,50,White,12,EXPENSE
-52,51,DarkOliveGreen,12,EXPENSE
-53,52,Green,12,EXPENSE
-54,,DarkBlue,12,EXPENSE
-55,54,SteelBlue,12,EXPENSE
-56,,MidnightBlue,12,EXPENSE
-57,,DarkViolet,12,INCOME
-58,,LightSlateGray,13,INCOME
-59,,LightYellow,13,INCOME
-60,59,SlateBlue,13,EXPENSE
-61,,LightBlue,13,INCOME
-62,,Crimson,14,INCOME
-63,,Silver,14,INCOME
-64,63,MintCream,14,INCOME
-65,64,LightGreen,14,INCOME
-66,,DarkKhaki,14,INCOME
-67,66,SandyBrown,14,EXPENSE
-68,,Tan,14,INCOME
-69,68,Coral,14,EXPENSE
-70,,PaleGoldenRod,15,INCOME
-71,70,SkyBlue,15,EXPENSE
-72,,Magenta,16,EXPENSE
-73,,SkyBlue,16,INCOME
-74,,LightSkyBlue,16,INCOME
-75,,PaleVioletRed,16,EXPENSE
-76,,SandyBrown,16,INCOME
-77,,CornflowerBlue,16,EXPENSE
-78,,OrangeRed,16,EXPENSE
-79,,LightSteelBlue,17,EXPENSE
-80,79,DarkMagenta,17,EXPENSE
-81,,LightYellow,17,INCOME
-82,,BurlyWood,18,INCOME
-83,,PaleGreen,19,INCOME
-84,83,PaleVioletRed,19,INCOME
-85,,Khaki,19,INCOME
-86,,DodgerBlue,19,INCOME
-87,,DarkOrange,20,EXPENSE
-88,,WhiteSmoke,20,INCOME
-89,88,LightYellow,20,INCOME
-90,,SlateBlue,21,EXPENSE
-91,,Teal,21,INCOME
-92,,Plum,21,EXPENSE
-93,92,GhostWhite,21,EXPENSE
-94,,Gainsboro,21,INCOME
-95,,MediumSeaGreen,21,INCOME
-96,95,DarkKhaki,21,INCOME
-97,,LightBlue,21,INCOME
-98,97,DarkKhaki,21,INCOME
-99,,Turquoise,22,INCOME
-100,99,Snow,22,INCOME
-101,,MediumSeaGreen,23,INCOME
-102,,DarkGoldenRod,23,INCOME
-103,,BlueViolet,24,INCOME
-104,103,PaleGreen,24,INCOME
-105,104,Thistle,24,EXPENSE
-106,105,Indigo,24,INCOME
-107,,LightGoldenRodYellow,24,EXPENSE
-108,,RoyalBlue,24,EXPENSE
-109,,Blue,24,EXPENSE
-110,109,Purple,24,EXPENSE
-111,110,MediumSeaGreen,24,INCOME
-112,,Red,25,EXPENSE
-113,112,Azure,25,EXPENSE
-114,,MediumBlue,25,INCOME
-115,114,MidnightBlue,25,EXPENSE
-116,115,MintCream,25,INCOME
-117,,Green,25,INCOME
-118,117,OrangeRed,25,INCOME
-119,,PaleGoldenRod,25,EXPENSE
-120,,YellowGreen,26,INCOME
-121,120,DarkOrchid,26,EXPENSE
-122,121,Bisque,26,EXPENSE
-123,,DarkTurquoise,26,EXPENSE
-124,,DarkSalmon,26,EXPENSE
-125,,LightSteelBlue,26,EXPENSE
-126,,MistyRose,26,INCOME
-127,,DarkBlue,26,EXPENSE
-128,127,Plum,26,INCOME
-129,,LightSlateGray,27,EXPENSE
-130,,Beige,27,EXPENSE
-131,,Salmon,28,EXPENSE
-132,131,LightSalmon,28,EXPENSE
-133,,HotPink,28,INCOME
-134,,RoyalBlue,28,INCOME
-135,,DimGray,28,EXPENSE
-136,,FireBrick,28,EXPENSE
-137,136,DarkGoldenRod,28,EXPENSE
-138,,CadetBlue,29,EXPENSE
-139,,Ivory,29,INCOME
-140,139,SpringGreen,29,INCOME
-141,140,Magenta,29,EXPENSE
-142,141,WhiteSmoke,29,EXPENSE
-143,,SpringGreen,29,EXPENSE
-144,,LemonChiffon,29,INCOME
-145,,HotPink,29,EXPENSE
-146,,DarkGreen,30,INCOME
-147,,DarkSlateGray,30,EXPENSE
-148,,BlueViolet,30,INCOME
-149,148,PowderBlue,30,EXPENSE
-150,149,RoyalBlue,30,EXPENSE
-151,150,Aquamarine,30,INCOME
-152,,Turquoise,30,EXPENSE
-153,152,DarkSalmon,30,INCOME
-154,,LightYellow,31,EXPENSE
-155,,PaleGoldenRod,31,INCOME
-156,,Salmon,32,INCOME
-157,156,LightBlue,32,INCOME
-158,,LightGray,33,INCOME
-159,,Linen,33,EXPENSE
-160,159,Maroon,33,INCOME
-161,160,Thistle,33,EXPENSE
-162,161,RoyalBlue,33,INCOME
-163,162,DarkKhaki,33,INCOME
-164,,MediumBlue,33,INCOME
-165,164,PowderBlue,33,EXPENSE
-166,,AntiqueWhite,33,EXPENSE
-167,,MediumPurple,34,EXPENSE
-168,,DarkKhaki,34,INCOME
-169,,AntiqueWhite,35,INCOME
-170,,Azure,35,EXPENSE
-171,,Magenta,36,INCOME
-172,,SandyBrown,36,EXPENSE
-173,,Tomato,36,EXPENSE
-174,,SpringGreen,36,INCOME
-175,174,LightSalmon,36,EXPENSE
-176,,LightGray,36,EXPENSE
-177,176,PaleGoldenRod,36,EXPENSE
-178,177,Silver,36,INCOME
-179,,MediumPurple,37,INCOME
-180,179,Aquamarine,37,EXPENSE
-181,,DarkMagenta,38,INCOME
-182,,MediumSpringGreen,38,INCOME
-183,182,DeepSkyBlue,38,EXPENSE
-184,,SaddleBrown,39,EXPENSE
-185,184,LightGray,39,EXPENSE
-186,,LightSeaGreen,40,EXPENSE
-187,,Indigo,40,INCOME
-188,187,SaddleBrown,40,INCOME
-189,188,LightGoldenRodYellow,40,EXPENSE
-190,,DarkGray,40,EXPENSE
-191,,ForestGreen,40,INCOME
-192,,LightCoral,41,EXPENSE
-193,192,MistyRose,41,INCOME
-194,,MistyRose,41,EXPENSE
-195,194,OliveDrab,41,EXPENSE
-196,,ForestGreen,42,INCOME
-197,196,LightSkyBlue,42,INCOME
-198,197,Brown,42,EXPENSE
-199,198,MediumAquaMarine,42,INCOME
-200,,MediumAquaMarine,42,INCOME
-201,,MediumVioletRed,42,EXPENSE
-202,,RosyBrown,42,INCOME
-203,,MintCream,43,INCOME
-204,203,LightYellow,43,EXPENSE
-205,,SlateGray,43,EXPENSE
-206,,RosyBrown,43,INCOME
-207,,LemonChiffon,44,EXPENSE
-208,,MediumTurquoise,44,EXPENSE
-209,,DarkOrange,44,INCOME
-210,,Olive,45,EXPENSE
-211,210,Red,45,EXPENSE
-212,211,Blue,45,INCOME
-213,,Bisque,46,EXPENSE
-214,,Aquamarine,47,EXPENSE
-215,214,Salmon,47,EXPENSE
-216,,HotPink,47,INCOME
-217,,SeaGreen,48,EXPENSE
-218,217,DarkKhaki,48,EXPENSE
-219,218,Chartreuse,48,INCOME
-220,,DarkKhaki,49,EXPENSE
+0,,Transfer between accounts,0,TRANSFER
+1,,Other expenses,0,EXPENSE
+2,,Other income,0,INCOME
+3,,Lavender,0,EXPENSE
+4,,DarkBlue,0,INCOME
+5,,Moccasin,0,INCOME
+6,,ForestGreen,0,EXPENSE
+7,,Lime,0,EXPENSE
+8,,Transfer between accounts,1,TRANSFER
+9,,Other expenses,1,EXPENSE
+10,,Other income,1,INCOME
+11,,Thistle,1,EXPENSE
+12,11,LightSkyBlue,1,INCOME
+13,12,PaleVioletRed,1,INCOME
+14,13,CadetBlue,1,INCOME
+15,14,SaddleBrown,1,EXPENSE
+16,15,LightCyan,1,INCOME
+17,16,IndianRed,1,EXPENSE
+18,,LightGreen,1,INCOME
+19,,Transfer between accounts,2,TRANSFER
+20,,Other expenses,2,EXPENSE
+21,,Other income,2,INCOME
+22,,Brown,2,EXPENSE
+23,,Transfer between accounts,3,TRANSFER
+24,,Other expenses,3,EXPENSE
+25,,Other income,3,INCOME
+26,,CadetBlue,3,EXPENSE
+27,26,DodgerBlue,3,EXPENSE
+28,27,AliceBlue,3,INCOME
+29,,AntiqueWhite,3,EXPENSE
+30,29,Coral,3,EXPENSE
+31,,Transfer between accounts,4,TRANSFER
+32,,Other expenses,4,EXPENSE
+33,,Other income,4,INCOME
+34,,Indigo,4,INCOME
+35,,Orchid,4,EXPENSE
+36,,SaddleBrown,4,EXPENSE
+37,,MediumSlateBlue,4,INCOME
+38,37,DarkBlue,4,EXPENSE
+39,38,MediumBlue,4,INCOME
+40,39,MediumOrchid,4,INCOME
+41,,Transfer between accounts,5,TRANSFER
+42,,Other expenses,5,EXPENSE
+43,,Other income,5,INCOME
+44,,Black,5,INCOME
+45,,Turquoise,5,EXPENSE
+46,45,Gold,5,EXPENSE
+47,,Cyan,5,INCOME
+48,47,Violet,5,INCOME
+49,,Gold,5,EXPENSE
+50,,Transfer between accounts,6,TRANSFER
+51,,Other expenses,6,EXPENSE
+52,,Other income,6,INCOME
+53,,LightCoral,6,INCOME
+54,53,LimeGreen,6,INCOME
+55,54,Tomato,6,EXPENSE
+56,55,LightCyan,6,EXPENSE
+57,,MediumTurquoise,6,INCOME
+58,57,Brown,6,EXPENSE
+59,,Cornsilk,6,INCOME
+60,59,Salmon,6,EXPENSE
+61,,Purple,6,INCOME
+62,,Transfer between accounts,7,TRANSFER
+63,,Other expenses,7,EXPENSE
+64,,Other income,7,INCOME
+65,,PaleVioletRed,7,INCOME
+66,65,Snow,7,INCOME
+67,,Transfer between accounts,8,TRANSFER
+68,,Other expenses,8,EXPENSE
+69,,Other income,8,INCOME
+70,,Purple,8,INCOME
+71,,DarkOrchid,8,EXPENSE
+72,,Cyan,8,INCOME
+73,,DarkGreen,8,INCOME
+74,,Transfer between accounts,9,TRANSFER
+75,,Other expenses,9,EXPENSE
+76,,Other income,9,INCOME
+77,,PaleVioletRed,9,INCOME
+78,77,HotPink,9,EXPENSE
+79,78,Crimson,9,EXPENSE
+80,,OrangeRed,9,INCOME
+81,,Gainsboro,9,EXPENSE
+82,,SlateGray,9,EXPENSE

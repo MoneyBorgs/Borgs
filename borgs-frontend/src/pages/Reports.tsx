@@ -18,8 +18,8 @@ export const Reports = observer(() => {
 
 	const year = reportsStore.year;
 
-	const next_year = +year + 1
-	const last_year = +year - 1
+	const next_year = +year + 1;
+	const last_year = +year - 1;
 
 	return (
 		<div>
@@ -27,10 +27,11 @@ export const Reports = observer(() => {
 			<br></br>
 			
 			<AccountPicker
+				defaultValue = {accountsStore.currentVirtualAccountsData[0]}
 				options={accountsStore.currentVirtualAccountsData}
 				label={"Virtual Account"}
 				inputName="virtual-account-picker"
-				onChange={((event, account) => { reportsStore.updateVirtualAccount(account.account_id) })} //+ turns stringyear into int
+				onChange={((event, account) => {reportsStore.updateVirtualAccount(account.account_id)})} 
 			/>
 
 
@@ -62,7 +63,7 @@ export const Reports = observer(() => {
 
 			<br></br> 
 
-			The change in balance of {reportsStore.virtualAccount} throughout {year} is: {reportsStore.totalAccountBalance}
+			The change in balance of account: <strong>{accountsStore.currentVirtualAccountsData[0]['name']}</strong>  throughout {year} is: {formatCurrencyText(reportsStore.totalAccountBalance)}
 
 			<br></br>
 			<br></br>
