@@ -12,11 +12,14 @@ export default class UserStore {
     @observable currentUserWithPassWord: User[] = [];
 	@observable uid = 1
     @observable firstname = 'Ryan'
+    @observable lastname = 'Mitchell'
     @observable email = 'rtm40@duke.edu'
     @observable password = 'ryan'
     @observable loggedInUser: boolean = false;
     @observable isRegisterModalOpen: boolean = false;
     @observable currentRegisterModal : User = new User();
+    @observable emailCount = 0;
+    @observable errorStatus: boolean = false;
 
     rootStore: RootStore;
 
@@ -30,6 +33,7 @@ export default class UserStore {
         this.isRegisterModalOpen = shouldBeOpen;
     }
 
+    
     @action
     openRegisterModal(user : User) {
         this.currentRegisterModal = user;
@@ -45,7 +49,13 @@ export default class UserStore {
                 (res: AxiosResponse<User, any>) => {
                     this.currentUserData.push(res.data)
                 }
-            ));
+            ))
+    }
+
+    @action
+    countEmails() {
+        axiosRequest.get(`/user/count/${this.firstname}`)
+            .then(action((res) : AxiosResponse<User[], any> => this.emailCount = res.data));
     }
 
 	@action
@@ -65,6 +75,13 @@ export default class UserStore {
     }
 
     @action
+    updateLastName(new_name) {
+        this.lastname = new_name
+		console.log(this.lastname)
+		console.log(new_name)
+    }
+
+    @action
     userWithEmail() {
         console.log(this.email);
         console.log('Retrieving user with given email');
@@ -72,12 +89,33 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
     }
 
+    // @action
+    // userWithEmail() {
+    //     console.log(this.email);
+    //     console.log('Retrieving user with given email');
+    //     axiosRequest.get(`/user/${this.email}`)
+    //         .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
+    // }
+
     @action
     userWithPassWord() {
         console.log('Current UserStore password is: ' + this.password);
         console.log('Retrieving user with given password: ' + this.password);
         axiosRequest.get(`/user/${this.email}/${this.password}`)
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithPassWord = res.data));
+    }
+
+    @action
+    changeDisplayName() {
+        console.log('New first name is: ' + this.firstname);
+        console.log('New last name is: ' + this.lastname);
+        axiosRequest.put(`/user/${this.email}/${this.firstname}/${this.lastname}`);
+    }
+
+    @action
+    changePassWord() {
+        console.log('New password is: ' + this.password);
+        axiosRequest.put(`/user/${this.email}/${this.password}`);
     }
 
 

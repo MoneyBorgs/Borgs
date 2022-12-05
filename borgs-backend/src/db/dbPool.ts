@@ -7,4 +7,4 @@ import {builtins} from "pg-types";
 types.setTypeParser(builtins.NUMERIC, parseFloat);
 const dbPool = new Pool();
 
-export default dbPool;
+ export default dbPool;

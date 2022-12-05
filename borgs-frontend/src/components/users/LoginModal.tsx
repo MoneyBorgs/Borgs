@@ -42,6 +42,10 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const [ emailAddress, setEmailAddress ] = useState('');
 		const [ passWord, setPassWord ] = useState('');
 
+		const [ alert1, setAlert1 ] = useState(false);
+		const [ alert2, setAlert2 ] = useState(false);
+		const [ alertContent, setAlertContent ] = useState('');
+
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -58,11 +62,21 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 			console.log('Printing' + passWord);
 			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
 				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
+				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
+				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
 				userStore.updateLoginStatus(true);
+				setAlert1(false);
+				setAlert2(true);
+				setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
 
-				router.goTo("mainpage");
+				setTimeout(() => {  router.goTo("reports"); }, 3000);
+				setTimeout(() => {  props.onClose(); }, 3000);
 
-				props.onClose();
+			}
+			else {
+				setAlert2(false);
+				setAlert1(true);
+				setAlertContent('Incorrect username or password');
 			}
 		}
 
@@ -113,7 +127,9 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 									label="Password" autoFocus
 									onChange={(event) => setPassWord(event.target.value)}
 									value = {passWord}
-								/>																				
+								/>
+								{alert1 ? <Alert severity='error'>{alertContent}</Alert> : <></> }	
+								{alert2 ? <Alert severity='success'>{alertContent}</Alert> : <></> }																			
 								<Button type="submit">Login!</Button>
 							</Stack>
 						</LocalizationProvider>

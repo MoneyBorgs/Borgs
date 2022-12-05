@@ -37,6 +37,10 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		// TODO get default user and make values consistent across usages
 		const [ userState, setUserState ] = useState(new User());
 
+		const [ alert1, setAlert1 ] = useState(false);
+		const [ alert2, setAlert2 ] = useState(false);
+		const [ alertContent, setAlertContent ] = useState('');
+
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
 		 * on the userState with the recently chosen value
@@ -47,8 +51,11 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 			setUserState({...userState, [field] : value})
 		}
 
-		const handleOnSubmitForm = (event) => {			
+		const handleOnSubmitForm = (event) => {		
 			userStore.createNewUser(userState);
+			if (userStore.errorStatus) {
+				console.log('Dumb bitch');
+			}
 			props.onClose();
 		}
 
@@ -90,7 +97,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 								<TextField
 									required
 									label="Email Address" autoFocus
-									onChange={(email) => { handleOnValueChange("email", email.target.value) }}
+									onChange={(email) => { handleOnValueChange("email", email.target.value); }}
 								/>
 								<TextField
 									required
