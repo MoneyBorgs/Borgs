@@ -49,13 +49,6 @@ const pages : IPage[] = [
 		}
 	},
 	{
-		key: 'allocations',
-		displayName: 'Allocations',
-		onClick: () => {
-			routerStore.goTo('allocations');
-		}
-	},
-	{
 		key: 'reports',
 		displayName: 'Reports',
 		onClick: () => {

@@ -75,6 +75,19 @@ export default class UsersController {
             )
     }
 
+    @Get("/user/count/:emailAddress")
+    async getAccsWithEmail(req, res) {
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `SELECT COUNT(*)
+                FROM Users
+                WHERE email = $1
+                GROUP BY email`,
+                [emailAddress]
+            );
+            res.send(rows);
+        }
+
     @Get("/user/:firstName")
     async getUsersWithName(req, res) {
         const firstName = req.params.firstName;

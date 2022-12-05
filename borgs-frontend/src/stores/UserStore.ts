@@ -18,6 +18,8 @@ export default class UserStore {
     @observable loggedInUser: boolean = false;
     @observable isRegisterModalOpen: boolean = false;
     @observable currentRegisterModal : User = new User();
+    @observable emailCount = 0;
+    @observable errorStatus: boolean = false;
 
     rootStore: RootStore;
 
@@ -31,6 +33,7 @@ export default class UserStore {
         this.isRegisterModalOpen = shouldBeOpen;
     }
 
+    
     @action
     openRegisterModal(user : User) {
         this.currentRegisterModal = user;
@@ -46,7 +49,13 @@ export default class UserStore {
                 (res: AxiosResponse<User, any>) => {
                     this.currentUserData.push(res.data)
                 }
-            ));
+            ))
+    }
+
+    @action
+    countEmails() {
+        axiosRequest.get(`/user/count/${this.firstname}`)
+            .then(action((res) : AxiosResponse<User[], any> => this.emailCount = res.data));
     }
 
 	@action

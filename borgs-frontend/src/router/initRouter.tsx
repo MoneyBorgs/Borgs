@@ -47,12 +47,6 @@ export const routes : SuperRoute[] = [
 		container: <Transactions/>
 	},
 	{
-		name: 'allocations',
-		pattern: '/allocations',
-		showNavBar: true,
-		container: <Allocations/>
-	},
-	{
 		name: 'register',
 		pattern: '/register',
 		showNavBar: false,
