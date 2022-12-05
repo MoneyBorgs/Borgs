@@ -103,6 +103,11 @@ export const Reports = observer(() => {
 			
 			</div>
 
+			<br></br>
+			<br></br>
+			<br></br>
+			
+				to-do: reports with tags, reports with categories, maybe some math: mean, SD, median, percentiles, etc
 		</div>
 
 		
