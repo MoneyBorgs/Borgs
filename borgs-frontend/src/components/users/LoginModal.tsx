@@ -46,21 +46,10 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
 
-
-		/**
-		 * Handles the value change on the inputs by setting the respective field variable
-		 * on the userState with the recently chosen value
-		 * @param field the field of the User type to be set
-		 * @param value the value 
-		 */
-
-		const handleOnSubmitForm = (event) => {			
-			userStore.updateEmail(emailAddress);
-			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
-			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log('Printing' + passWord);
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
+		function loginActions() {
+			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0] !== undefined) {
+				console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
+				console.log('Printing' + passWord);
 				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
 				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
 				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
@@ -78,6 +67,21 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 				setAlert1(true);
 				setAlertContent('Incorrect username or password');
 			}
+		}
+
+
+		/**
+		 * Handles the value change on the inputs by setting the respective field variable
+		 * on the userState with the recently chosen value
+		 * @param field the field of the User type to be set
+		 * @param value the value 
+		 */
+
+		const handleOnSubmitForm = (event) => {			
+			userStore.updateEmail(emailAddress);
+			userStore.updatePassWord(passWord);
+			userStore.userWithPassWord();
+			setTimeout(() => { loginActions() }, 1000);
 		}
 
 		return (
