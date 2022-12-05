@@ -10,6 +10,7 @@ import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 import {formatCurrencyText} from "../utils/TextUtils";
 import { Typography } from '@mui/material';
+import vaTableCard from '../components/reports/tableCard';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -24,7 +25,7 @@ function conditionalColor(data) {
 	return color;
 }
 
-const CurrencyCell = ({rowData, dataKey, ...props }) => (
+export const CurrencyCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
 		<Typography color={conditionalColor(rowData[dataKey])}>
 		{formatCurrencyText(rowData[dataKey])}
@@ -33,7 +34,7 @@ const CurrencyCell = ({rowData, dataKey, ...props }) => (
 	</Cell>
 	);
 
-const PercentCell = ({rowData, dataKey, ...props }) => (
+export const PercentCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
 		<Typography>
 		{rowData[dataKey].toFixed(2)}%
@@ -92,7 +93,7 @@ export const Reports = observer(() => {
 			</ComposedChart>
 
 			<br></br> 
-			rowData={undefined}
+			The change in balance of account: <strong>{accountsStore.currentVirtualAccountsData[0]['name']}</strong>  throughout {year} is: {formatCurrencyText(reportsStore.totalAccountBalance)}
 			<br></br>
 
 			<Button variant="contained" onClick={() => {reportsStore.getTableData()}}>Update table</Button>
@@ -100,38 +101,7 @@ export const Reports = observer(() => {
 			<br></br>
 			<br></br>
 
-			<Table
-			virtualized height={1200}
-			data={reportsStore.tableBalance}
-			onRowClick={data => {
-				console.log(data);
-			  }}
-			>
-				<Column width={250} align="center" fixed>
-					<HeaderCell>Virtual Account</HeaderCell>
-					<Cell dataKey="name" />
-				</Column>
-
-				<Column width={150}>
-					<HeaderCell>Account expenses</HeaderCell>
-					<CurrencyCell dataKey="total_va_expenses" rowData={undefined}/>
-				</Column>
-
-				<Column width={150}>
-					<HeaderCell>Account income</HeaderCell>
-					<CurrencyCell dataKey="total_va_incomes" rowData={undefined} />
-				</Column>
-
-				<Column width={100}>
-					<HeaderCell>% of expenses</HeaderCell>
-					<PercentCell dataKey="percent_total_expenses" rowData={undefined} />
-				</Column>
-
-				<Column width={100}>
-					<HeaderCell>% of income</HeaderCell>
-					<PercentCell dataKey="percent_total_incomes" rowData={undefined} />
-				</Column>
-			</Table>
+			{vaTableCard(reportsStore)}
 
 			</div>
 

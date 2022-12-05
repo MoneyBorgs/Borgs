@@ -68,7 +68,7 @@ def gen_virtual_accounts(available_uids):
                 names = []
                 name = choice(name_options) + " " + fake.city_suffix()
                 
-                account_mu = fake.random_int(max=30, min = 2)**3
+                account_mu = fake.random_int(max=20, min = 2)**3
 
                 if name not in names:
                     names.append(name)
@@ -148,13 +148,19 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
 
             virtual_account_options = virtual_account_relations[uid]
 
+            lam_a = 0
+            lam_b = 9
+
             for account in virtual_account_options:
-                mu = account[1] # max of 30**3 min of 2**3
-                sd = np.sqrt(mu - 8) + 2 # max of 166.2 min of 2
+                mu = account[1] * lam_a + lam_b # max of 20**3 min of 2**3
+                lam_a = 1
+                lam_b = 0
+                #print("mu is " + str(mu) + "num_transactions is " + str(num_transactions) + " for account " + str(account[0]))
+                sd = np.sqrt(mu - 8) + 2
 
-                num_transactions_multiplier = -0.0008891523414344991*mu + 25.007113218731476
+                num_transactions_multiplier = max(50 - 0.25*mu, 1)
 
-                num_transactions = round(randrange(3, 10, 1) * num_transactions_multiplier) # account can have [3,250] transactions
+                num_transactions = round(randrange(12, 20, 1) * num_transactions_multiplier) # account can have [3,1000] transactions
 
                 for i in range(num_transactions): 
                     physical_account_id = choice(physical_account_relations[uid])
@@ -164,10 +170,10 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
                     category_type = category_types[category][0]
 
                     if category_type == "EXPENSE":
-                        value = -abs(value)
+                        value = -abs(value) * 0.95
                         #print("expense" + str(value))
                     else:
-                        value = abs(value)
+                        value = abs(value) * 1.05
                         #print("income" + str(value))
 
                     timestamp = randrange(1514782800, 1672203600, 1) # 2018-01-01 00:00:00 EST to 2022-12-28 00:00:00 EST

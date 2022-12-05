@@ -4,4 +4,5 @@ export default class MonthlyBalance {
 	total_va_expenses!: number;
 	total_va_incomes!: number;
 	net_result!: number;
+	number_of_transactions!: string;
 }

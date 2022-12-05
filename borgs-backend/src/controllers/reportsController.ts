@@ -31,6 +31,7 @@ export default class ReportsController {
 			)
 			SELECT
 				VA.name,
+				COUNT(*) AS number_of_transactions,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_VA_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_VA_incomes,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100 AS percent_total_expenses,
@@ -70,7 +71,8 @@ export default class ReportsController {
 				EXTRACT(MONTH FROM TO_TIMESTAMP(timestampepochseconds)) AS month,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_VA_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_VA_incomes,
-				SUM(value) AS net_result
+				SUM(value) AS net_result,
+				COUNT(*) AS number_of_transactions
 			FROM
 				Transactions T
 			JOIN
@@ -103,6 +105,7 @@ export default class ReportsController {
 					virtual_account: +va, // + operator turns strings to int
 					month: i,
 					net_result: 0,
+					number_of_transactions: '0',
 				}
 
 				ret.push(temp)
