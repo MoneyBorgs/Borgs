@@ -14,6 +14,7 @@ import UserStore from '../../stores/UserStore';
 import AccountsStore from '../../stores/AccountsStore';
 import User from '../../model/User';
 import Account from '../../model/Account';
+import { AccountPicker } from '../fields/AccountPicker';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -38,7 +39,7 @@ export const AccountDeleteModal = observer((props : AccountDeleteModalProps) => 
 		const { userStore, accountsStore } = useStores();
     	const rootStore = useStores();
 		// TODO get default user and make values consistent across usages
-		const [ accountState, setAccountState ] = useState(new Account());
+		const [ accountState, setAccountState ] = useState<Account>(new Account());
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -46,8 +47,8 @@ export const AccountDeleteModal = observer((props : AccountDeleteModalProps) => 
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
-		const handleOnValueChange = (field, value) => {
-			setAccountState({...accountState, [field] : value})
+		const handleOnValueChange = (account : Account) => {
+			setAccountState(account)
 		}
 
 		const handleOnSubmitForm = (event) => {
@@ -95,13 +96,19 @@ export const AccountDeleteModal = observer((props : AccountDeleteModalProps) => 
 						>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<Stack spacing={2}>
-								<TextField
+								{/* <TextField
 									required
 									label="Account Name" autoFocus
 									onChange={(accountName) => {
 										handleOnValueChange("name", accountName.target.value);
 									}}
-								/>														
+								/> */}
+								<AccountPicker
+									options={accountsStore.adding_account === "virtual" ? accountsStore.currentVirtualAccountsData : accountsStore.currentPhysicalAccountsData}
+									label="Pick account to delete"
+									inputName="account"
+									onChange={(event, account) => handleOnValueChange(account)}
+									/>														
 								<Button type="submit">Delete!</Button>
 							</Stack>
 						</LocalizationProvider>

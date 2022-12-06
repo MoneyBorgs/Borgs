@@ -74,30 +74,30 @@ export default class AccountsController {
 
 			res.send(a);
 		} 
-	@Delete("/delete_virtualaccount/:userId")
+	@Delete("/virtualaccount/:accountId")
 	async deleteVirtualAccount(req, res) {
 		console.log(`Deleting virtual account AccountsController`);
-		const userId = req.params.userId;
+		const accountId = req.params.accountId;
 		const a : Account = req.body;
             const result = await dbPool.query(
                 `DELETE FROM VirtualAccounts 
-				WHERE user_id = $1 and name = $2`,
-                [userId, a.name]
+				WHERE account_id = $1`,
+                [accountId]
             )
 
             a.account_id = result.rows[0].account_id;
 
 			res.send(a);
 	}
-	@Delete("/delete_physicalaccount/:userId")
+	@Delete("/physicalaccount/:accountId")
 	async deletePhysicalAccount(req, res) {
 		console.log(`Deleting physical account AccountsController`);
-		const userId = req.params.userId;
+		const accountId = req.params.accountId;
 		const a : Account = req.body;
             const result = await dbPool.query(
                 `DELETE FROM PhysicalAccounts 
-				WHERE user_id = $1 and name = $2`,
-                [userId, a.name]
+				WHERE account_id = $1`,
+                [accountId]
             )
 
             a.account_id = result.rows[0].account_id;
