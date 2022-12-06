@@ -128,9 +128,9 @@ def gen_transaction_categories(available_uids):
 
                     if i > 0 and fake.pybool():
                         parent_category = category_id - 1
-                        writer.writerow([category_id, parent_category, name + category_type, uid, category_type])
+                        writer.writerow([category_id, parent_category, name, uid, category_type])
                     else:
-                        writer.writerow([category_id, None, name + category_type, uid, category_type])
+                        writer.writerow([category_id, None, name, uid, category_type])
 
                     category_id += 1
 

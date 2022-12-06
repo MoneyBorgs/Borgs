@@ -32,26 +32,41 @@ export const MainPage = observer(() => {
 			</Typography>
 
 			<div style={{ 
-				width: '100%', 
-				display: 'flex', 
-				justifyContent: 'space-between', 
-				alignItems: 'center',
-				paddingLeft: '5%',
-				paddingTop: '5%'}}>
+					display: 'flex', 
+					flexDirection: 'row'}}>
 
-			{accountCard(dashboardStore, routerStore)}
-			</div>
+				<div style={{ 
+					width: '50%', 
+					paddingLeft: '8%',
+					paddingTop: '5%',
+					paddingRight: '4%',
+					paddingBottom: '8%'}}>
+					
+					<div style={{ 
+						paddingLeft: '8%',
+						paddingTop: '5%',
+						paddingRight: '4%',
+						paddingBottom: '8%'}}>
+							{accountCard(dashboardStore, routerStore)}
+						</div>
+					
+					{categoryCard(dashboardStore, routerStore)}
 
-			<div style={{ 
-				width: '100%', 
-				display: 'flex', 
-				justifyContent: 'space-between', 
-				alignItems: 'center',
-				padding: '5%'}}>
+				
 
-			{categoryCard(dashboardStore, routerStore)}
+				</div>
 
-			{incomesAndExpensesCard(dashboardStore, routerStore)}
+				<div style={{ 
+					width: '50%', 
+					paddingLeft: '4%',
+					paddingTop: '5%',
+					paddingRight: '8%',
+					paddingBottom: '8%'}}>
+
+					{incomesAndExpensesCard(dashboardStore, routerStore)}
+
+				</div>	
+
 			</div>
 
 		</div>

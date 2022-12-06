@@ -9,6 +9,9 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import { RouterStore } from 'mobx-state-router';
 import { useRouterStore } from 'mobx-state-router';
+import { CurrencyCell } from '../reports/tableCard';
+import { BarChart, YAxis, Bar } from 'recharts';
+import { formatCurrencyText } from '../../utils/TextUtils';
 
 let routerStore;
 const {Column, HeaderCell, Cell} = Table;
@@ -17,24 +20,6 @@ const BoldCell = ({rowData, dataKey, ...props }) => (
 		<b>{rowData[dataKey]}</b>
 	</Cell>
 		);
-function conditionalColor(data) {
-	var color = "black";
-	if (data < 0) {
-		color = "red";
-	}
-	else if (data > 0) {
-		color = "green";
-	}
-	return color;
-}
-const CurrencyCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography color={conditionalColor(rowData[dataKey])}>
-		$ {rowData[dataKey].toFixed(2)}
-		</Typography>
-		
-	</Cell>
-	);
 
 export default function accountCard(dashboardStore, routerStore) {
   	return (
@@ -116,7 +101,7 @@ export function incomesAndExpensesCard(dashboardStore, routerStore) {
   <Card>
 	<CardContent>
 	  <Typography sx={{ fontSize: 28 }} color="text.secondary" gutterBottom>
-		Incomes and Expenses Summary
+		Total Incomes and Expenses
 	  </Typography>
 
 	  <div style={{
@@ -140,6 +125,28 @@ export function incomesAndExpensesCard(dashboardStore, routerStore) {
 					</Column>
 				</Table>	
 			</div>
+
+		<br></br>
+		<br></br>
+		<br></br> 
+
+		<div style={{
+			display: 'block', width: 500
+			}}>
+				<BarChart width={500} height={250} data={dashboardStore.currentExpensesIncomes} margin={{ top: 5, right: 20, bottom: 5, left: 100 }}>
+					<YAxis
+						tickFormatter={(value) => {return formatCurrencyText(value)}}
+					/>
+					<Bar dataKey="total_expenses" fill="#F84F31" />
+					<Bar dataKey="total_incomes" fill="#23C552" />
+				</BarChart>
+
+
+				MISSING IF STATEMENT AND CORRECT SUBTRACTION OF BALANCES
+				<br></br> 
+				You have spent {formatCurrencyText(dashboardStore.currentExpensesIncomes)} more than you have deposited.
+				<br></br>
+        	</div>
 	</CardContent>
 	<CardActions>
 	  <Button size="small" onClick={() => { routerStore.goTo('reports'); }}>See Detailed Reports</Button>
