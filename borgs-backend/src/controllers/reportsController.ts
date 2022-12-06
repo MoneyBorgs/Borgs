@@ -4,7 +4,7 @@ import dbPool from '../db/dbPool';
 
 @Controller('/')
 export default class ReportsController {
-    @Get("/accounts_balance/:userId")
+    @Get("/reports_accounts_balance/:userId")
 	async getTotalBalanceUser(req, res) {
 		const userId = req.params.userId;
 
@@ -59,7 +59,7 @@ export default class ReportsController {
 		res.send(rows);
 	}
 
-	@Get("/monthly_balance/:va/:year")
+	@Get("/reports_monthly_balance/:va/:year")
 	async getMonthlyAccountBalance(req, res) {
 		const va = req.params.va;
 		const year = req.params.year;

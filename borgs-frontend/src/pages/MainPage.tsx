@@ -13,6 +13,7 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import accountCard, { categoryCard, incomesAndExpensesCard } from '../components/dashboard/accountCard';
 import { useRouterStore } from 'mobx-state-router';
+import {formatCurrencyText} from "../utils/TextUtils";
 
 export const MainPage = observer(() => {
 	const {dashboardStore, userStore} = useStores();
@@ -21,14 +22,14 @@ export const MainPage = observer(() => {
 	return (
 		<div>
 			<Typography variant='h5' paddingLeft='3%' paddingTop='3%'>
-				Welcome User {userStore.uid}!
+				Welcome {userStore.firstname} {userStore.lastname}!
 			</Typography>
 			<Typography variant='h2' align='center' padding='1%'>
 				Home
 			</Typography>
 
 			<Typography variant='h4' align='center'>
-				Total Balance = <strong>$ {dashboardStore.currentTotalBalance.toFixed(2)}</strong>
+				Total Balance = <strong>{formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
 			</Typography>
 
 			<div style={{ 

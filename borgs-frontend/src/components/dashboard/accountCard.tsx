@@ -9,6 +9,7 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import { RouterStore } from 'mobx-state-router';
 import { useRouterStore } from 'mobx-state-router';
+import {formatCurrencyText} from "../../utils/TextUtils";
 
 let routerStore;
 const {Column, HeaderCell, Cell} = Table;
@@ -30,9 +31,8 @@ function conditionalColor(data) {
 const CurrencyCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
 		<Typography color={conditionalColor(rowData[dataKey])}>
-		$ {rowData[dataKey].toFixed(2)}
+		{formatCurrencyText(rowData[dataKey])}
 		</Typography>
-		
 	</Cell>
 	);
 

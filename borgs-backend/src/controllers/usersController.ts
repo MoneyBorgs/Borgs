@@ -1,4 +1,4 @@
-import { Controller, Post, Get } from '@decorators/express';
+import { Controller, Post, Get, Put } from '@decorators/express';
 import dbPool from '../db/dbPool';
 import User from '../model/User';
 
@@ -49,6 +49,44 @@ export default class UsersController {
             )
             res.send(rows);
     }
+
+    @Put("/user/:emailAddress/:firstName/:lastName")
+    async updateDisplayName(req) {
+        const firstName = req.params.firstName;
+        const emailAddress = req.params.emailAddress;
+        const lastName = req.params.lastName;
+            const { rows } = await dbPool.query(
+                `UPDATE Users
+                SET firstname = $1, lastname = $2
+                WHERE email = $3`,
+                [firstName, lastName, emailAddress]
+            )
+    }
+
+    @Put("/user/:emailAddress/:passWord")
+    async resetPassword(req) {
+        const passWord = req.params.passWord;
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `UPDATE Users
+                SET password = $1
+                WHERE email = $2`,
+                [passWord, emailAddress]
+            )
+    }
+
+    @Get("/user/count/:emailAddress")
+    async getAccsWithEmail(req, res) {
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `SELECT COUNT(*)
+                FROM Users
+                WHERE email = $1
+                GROUP BY email`,
+                [emailAddress]
+            );
+            res.send(rows);
+        }
 
     @Get("/user/:firstName")
     async getUsersWithName(req, res) {

@@ -1,182 +1,36 @@
-0,0,Emergencies ville account
-1,0,General berg account
-2,0,General chester account
-3,0,Short-term ville account
-4,1,Medium-term borough account
-5,1,General berg account
-6,1,Food burgh account
-7,1,General view account
-8,2,Short-term view account
-9,2,Medium-term mouth account
-10,2,Short-term burgh account
-11,2,Food mouth account
-12,3,Emergencies mouth account
-13,3,Food side account
-14,3,Short-term ville account
-15,3,Medium-term land account
-16,4,General furt account
-17,4,Short-term town account
-18,4,Food ton account
-19,5,Emergencies borough account
-20,5,Medium-term mouth account
-21,5,Short-term chester account
-22,6,Medium-term bury account
-23,6,General mouth account
-24,6,Long-term chester account
-25,7,Duke Tuition shire account
-26,7,Food ville account
-27,7,Short-term mouth account
-28,8,Long-term land account
-29,8,Medium-term fort account
-30,8,Food fort account
-31,8,Long-term port account
-32,9,General bury account
-33,9,Duke Tuition furt account
-34,9,Long-term ton account
-35,10,General stad account
-36,10,Emergencies mouth account
-37,10,Short-term burgh account
-38,10,Long-term land account
-39,11,Emergencies side account
-40,11,Long-term view account
-41,11,General mouth account
-42,12,Emergencies town account
-43,12,Short-term burgh account
-44,12,Emergencies berg account
-45,12,Food side account
-46,13,Medium-term shire account
-47,13,Short-term mouth account
-48,13,Duke Tuition mouth account
-49,14,Emergencies land account
-50,14,General furt account
-51,14,Medium-term view account
-52,15,Emergencies mouth account
-53,15,Food port account
-54,15,Food town account
-55,16,Duke Tuition furt account
-56,16,Duke Tuition town account
-57,16,Long-term mouth account
-58,17,Emergencies ville account
-59,17,General berg account
-60,17,Medium-term port account
-61,17,Short-term mouth account
-62,18,Emergencies port account
-63,18,Emergencies berg account
-64,18,General fort account
-65,18,Medium-term mouth account
-66,19,Duke Tuition town account
-67,19,Food mouth account
-68,19,General berg account
-69,20,Medium-term chester account
-70,20,Long-term town account
-71,20,Food port account
-72,20,Duke Tuition burgh account
-73,21,Duke Tuition shire account
-74,21,Short-term burgh account
-75,21,Food land account
-76,21,Medium-term chester account
-77,22,Short-term haven account
-78,22,Food mouth account
-79,22,Duke Tuition side account
-80,23,Short-term berg account
-81,23,Medium-term chester account
-82,23,Short-term mouth account
-83,23,Food berg account
-84,24,Long-term side account
-85,24,Short-term stad account
-86,24,Food shire account
-87,24,Medium-term burgh account
-88,25,Short-term land account
-89,25,Short-term land account
-90,25,Long-term bury account
-91,25,Duke Tuition ville account
-92,26,General borough account
-93,26,Short-term fort account
-94,26,Emergencies borough account
-95,27,Duke Tuition town account
-96,27,Short-term furt account
-97,27,Duke Tuition mouth account
-98,27,Long-term view account
-99,28,Food stad account
-100,28,Duke Tuition shire account
-101,28,Short-term view account
-102,28,Food mouth account
-103,29,Short-term haven account
-104,29,General ton account
-105,29,Medium-term port account
-106,29,Long-term mouth account
-107,30,Emergencies chester account
-108,30,Emergencies bury account
-109,30,General fort account
-110,30,General town account
-111,31,Long-term haven account
-112,31,Short-term furt account
-113,31,General mouth account
-114,31,Long-term borough account
-115,32,Emergencies shire account
-116,32,General stad account
-117,32,Duke Tuition port account
-118,32,Food burgh account
-119,33,Long-term burgh account
-120,33,Short-term view account
-121,33,Long-term borough account
-122,34,Long-term ville account
-123,34,General stad account
-124,34,Medium-term furt account
-125,34,Long-term berg account
-126,35,Medium-term port account
-127,35,General view account
-128,35,General burgh account
-129,35,Long-term furt account
-130,36,Short-term town account
-131,36,Food land account
-132,36,Food burgh account
-133,36,Duke Tuition furt account
-134,37,General chester account
-135,37,Long-term land account
-136,37,Emergencies land account
-137,37,Duke Tuition shire account
-138,38,Long-term bury account
-139,38,Emergencies side account
-140,38,Duke Tuition land account
-141,39,Food borough account
-142,39,Long-term mouth account
-143,39,Duke Tuition mouth account
-144,39,Duke Tuition side account
-145,40,Food ville account
-146,40,General burgh account
-147,40,Long-term burgh account
-148,41,Long-term shire account
-149,41,Medium-term ton account
-150,41,Emergencies mouth account
-151,41,Short-term view account
-152,42,General borough account
-153,42,Food side account
-154,42,Long-term ton account
-155,43,Medium-term fort account
-156,43,Short-term land account
-157,43,Long-term town account
-158,43,Medium-term ton account
-159,44,Long-term borough account
-160,44,Food burgh account
-161,44,Long-term fort account
-162,44,General borough account
-163,45,Short-term haven account
-164,45,Emergencies port account
-165,45,Short-term shire account
-166,45,Medium-term shire account
-167,46,Duke Tuition land account
-168,46,Long-term berg account
-169,46,General stad account
-170,46,Medium-term side account
-171,47,Food town account
-172,47,Short-term mouth account
-173,47,General port account
-174,48,General side account
-175,48,Long-term bury account
-176,48,General shire account
-177,48,Medium-term port account
-178,49,Medium-term town account
-179,49,Food shire account
-180,49,Duke Tuition chester account
-181,49,Short-term stad account
+0,0,Long-term fort account
+1,0,Short-term furt account
+2,0,Duke Tuition town account
+3,0,Duke Tuition haven account
+4,1,Medium-term land account
+5,1,General land account
+6,1,Long-term furt account
+7,1,Medium-term town account
+8,2,Medium-term stad account
+9,2,Long-term ton account
+10,2,Medium-term ville account
+11,2,Duke Tuition town account
+12,3,Duke Tuition view account
+13,3,Food port account
+14,3,Food bury account
+15,4,General berg account
+16,4,Emergencies shire account
+17,4,Medium-term port account
+18,5,General borough account
+19,5,General ville account
+20,5,Duke Tuition chester account
+21,6,Long-term mouth account
+22,6,Food mouth account
+23,6,Duke Tuition furt account
+24,6,Duke Tuition burgh account
+25,7,Long-term mouth account
+26,7,Emergencies chester account
+27,7,Long-term chester account
+28,7,Short-term berg account
+29,8,Long-term mouth account
+30,8,Duke Tuition berg account
+31,8,General haven account
+32,8,General mouth account
+33,9,Medium-term berg account
+34,9,Long-term borough account
+35,9,Long-term burgh account

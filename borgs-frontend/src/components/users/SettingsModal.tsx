@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/joy/Stack';
+import Add from '@mui/icons-material/Add';
 import Typography from '@mui/joy/Typography';
 import { useStores } from '../../hooks/useStores';
 import { ModalClose } from '@mui/joy';
@@ -9,8 +10,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
-
+import {useRouterStore} from "mobx-state-router";
+import Alert from '@mui/material/Alert';
+import { ChangeNameModal } from "./ChangeNameModal"
+import { ResetPassModal } from "./ResetPassModal"
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -26,20 +31,38 @@ const style = {
 	pb: 3,
 };
 
-export interface RegisterCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface SettingsModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const RegisterCreateModal = observer((props : RegisterCreateModalProps) => {
+export const SettingsModal = observer((props : SettingsModalProps) => {
 	
 		const { userStore } = useStores();
+		const router = useRouterStore();
+
+        const [isModal1Open, setIsModen1Open] = React.useState(false);
+		const [isModal2Open, setIsModen2Open] = React.useState(false);
+		const [anchorEl, setAnchorEl] = React.useState(null);
+		const open = Boolean(anchorEl);
+
+		const handleClose = () => {
+			setAnchorEl(null);
+		};
+
+        const handleNameChange = (event) => {
+			handleClose();
+			setIsModen1Open(true);
+		}
+
+		const handleResetPass = (event) => {
+			handleClose();
+			setIsModen2Open(true);
+		}
 
 		// TODO get default user and make values consistent across usages
-		const [ userState, setUserState ] = useState(new User());
+		const [ emailAddress, setEmailAddress ] = useState('');
+		const [ passWord, setPassWord ] = useState('');
 
-		const [ alert1, setAlert1 ] = useState(false);
-		const [ alert2, setAlert2 ] = useState(false);
-		const [ alertContent, setAlertContent ] = useState('');
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -47,16 +70,9 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
-		const handleOnValueChange = (field, value) => {
-			setUserState({...userState, [field] : value})
-		}
 
-		const handleOnSubmitForm = (event) => {		
-			userStore.createNewUser(userState);
-			if (userStore.errorStatus) {
-				console.log('Dumb bitch');
-			}
-			props.onClose();
+		const handleOnSubmitForm = (event) => {			
+            props.onClose();
 		}
 
 		return (
@@ -83,42 +99,12 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 							level="inherit"
 							fontSize="1.25em"
 							mb="1em"
+							textAlign = 'center'
 						>
-							Register an account
+							Settings for {userStore.firstname} {userStore.lastname}
 						</Typography>
-						<form
-							onSubmit={(event) => {
-								event.preventDefault();
-								handleOnSubmitForm(event);
-							}}
-						>
-						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<Stack spacing={2}>
-								<TextField
-									required
-									label="Email Address" autoFocus
-									onChange={(email) => { handleOnValueChange("email", email.target.value); }}
-								/>
-								<TextField
-									required
-									label="Password" autoFocus
-									type = "password"
-									onChange={(password) => { handleOnValueChange("password", password.target.value) }}
-								/>
-								<TextField
-									required
-									label="First Name" autoFocus
-									onChange={(firstname) => { handleOnValueChange("firstname", firstname.target.value) }}
-								/>
-								<TextField
-									required
-									label="Last Name" autoFocus
-									onChange={(lastname) => { handleOnValueChange("lastname", lastname.target.value) }}
-								/>																								
-								<Button type="submit">Register!</Button>
-							</Stack>
-						</LocalizationProvider>
-						</form>
+						<ChangeNameModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
+						<ResetPassModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 					</Box>
 				</Modal>
 		);

@@ -1,40 +1,27 @@
-import { Controller, Get, Params, Patch, Post, Put, Query, Response } from '@decorators/express';
+import { Controller, Delete, Get, Post, Put} from '@decorators/express';
 import dbPool from '../db/dbPool';
-import { updateTransactionById } from '../util/queryBuilder';
 import format from 'pg-format';
-import { ClientBase, PoolClient } from 'pg';
-import Transaction from '../model/Transaction';
+import { ClientBase} from 'pg';
+import TransactionsRepository from "../repository/transactionsRepository";
+import Transaction from "../model/Transaction";
+import TransferTransaction, {
+	getToAccountTransaction,
+	getToTransactionFromFromTransaction, getFromTransactionFromToTransaction
+} from "../model/TransferTransaction";
+import Category from "../model/Category";
 
 @Controller('/')
 export default class TransactionsController {
+
+	transactionsRepo = new TransactionsRepository();
+
 	@Get("/transaction/:userId")
 	async getTransactionsForUser(req, res) {
 		const userId = req.params.userId;
 		const startDate = req.query.startDate;
 		const endDate = req.query.endDate;
 
-		const { rows } = await dbPool.query(
-			`SELECT
-				T.transaction_id,
-				virtual_account,
-				physical_account,
-				value,
-				(
-					SELECT row_to_json(TC.*)
-					FROM TransactionsCategories TC
-					WHERE TC.category_id = T.category
-				) AS category,
-				timestampepochseconds,
-				description,
-				notes,
-				array_agg(Tags.tag) AS tags
-			FROM Transactions T
-			INNER JOIN VirtualAccounts VA ON T.virtual_account = VA.account_id 
-			INNER JOIN Tags ON Tags.transaction_id = T.transaction_id
-			WHERE VA.user_id = $1 AND timestampepochseconds BETWEEN $2 AND $3
-			GROUP BY T.transaction_id`,
-			[userId, startDate, endDate]
-		);
+		const { rows } = await this.transactionsRepo.getTransactionsForUserInPeriod(userId, startDate, endDate);
 
 		res.send(rows);
 	}
@@ -75,99 +62,115 @@ export default class TransactionsController {
 		const t : Transaction = req.body;
 
 		// TODO Validate virtual and physical accounts belong to user
+		this.transactionsRepo.createTransaction(t)
+			.then(() => res.send(t))
+			.catch((e) => {throw(e)})
+	}
+
+	@Put("/transaction/:userId/:transactionId")
+	async updateTransaction(req, res) {
+		const userId = req.params.userId;
+		const transactionId: number = parseInt(req.params.transactionId);
+
+		const t : TransferTransaction = req.body;
+		const tags = req.body.tags;
 
 		const client = await dbPool.connect()
+
 		try {
 			await client.query('BEGIN')
 
-			await this.insertTransaction(client, t);
+			let from_transfer_transaction;
+			let to_transfer_transaction;
+			let transactionsToUpdate;
 
-			await client.query('COMMIT')
-			res.send(t);
-		} catch (e) {
-			await client.query('ROLLBACK')
-			throw (e);
-		} finally {
-			client.release();
-		}
-	}
+			if(transactionId === t.from_transfer_transaction) {
+				from_transfer_transaction = t;
+				to_transfer_transaction = getToTransactionFromFromTransaction(t);
+				transactionsToUpdate = [from_transfer_transaction, to_transfer_transaction];
+			} else if (transactionId === t.to_transfer_transaction) {
+				to_transfer_transaction = t;
+				from_transfer_transaction = getFromTransactionFromToTransaction(t);
+				transactionsToUpdate = [from_transfer_transaction, to_transfer_transaction];
+			} else {
+				transactionsToUpdate = [t];
+			}
 
-	@Patch("/transaction/:userId/:transactionId")
-	async updateTransaction(req, res) {
-		const userId = req.params.userId;
-		const transactionId: number = req.params.transactionId
+			for(const transaction of transactionsToUpdate) {
 
-		const tags = req.body.tags;
-
-		const transactionTableParameters = req.body;
-		delete transactionTableParameters.tags;
-
-		var transactionQuery = updateTransactionById(transactionId, transactionTableParameters);
-
-		// Turn req.body into an array of values
-		var colValues = Object.keys(transactionTableParameters).map(function (key) {
-			return transactionTableParameters[key];
-		});
-
-		const client = await dbPool.connect()
-		try {
-			await client.query(
-				transactionQuery, colValues
-			)
-
-			if (tags) {
 				await client.query(
-					format("DELETE FROM Tags WHERE transaction_id = %L", transactionId)
-				);
+				`
+					UPDATE Transactions
+					SET
+						virtual_account = $1,
+						physical_account = $2,
+						value = $3,
+						category = $4,
+						timestampEpochSeconds = $5,
+						description = $6,
+						notes = $7,
+						from_transfer_transaction = $8,
+						to_transfer_transaction = $9
+					WHERE transaction_id = $10
+				`,
+					[
+						transaction.virtual_account,
+						transaction.physical_account,
+						transaction.value,
+						transaction.category.category_id,
+						transaction.timestampepochseconds,
+						transaction.description,
+						transaction.notes,
+						transaction.from_transfer_transaction,
+						transaction.to_transfer_transaction,
+						transaction.transaction_id
+					]
+				)
 
-				for (const tag of tags) {
-					await client.query( // TODO: Do within single transaction
-						`
+				if (tags) {
+					await client.query(
+						format("DELETE FROM Tags WHERE transaction_id = %L", transaction.transaction_id)
+					);
+
+					for (const tag of tags) {
+						await client.query(
+							`
 							INSERT INTO Tags(
 								tag,
 								transaction_id
 							) VALUES ($1,$2);
 						`,
-						[tag, transactionId]
-					);
+							[tag, transaction.transaction_id]
+						);
+					}
 				}
 			}
-
-			// Handle transfer transaction
-			// TODO test
-
-			const transactionCategory = await this.getTransactionType(client, transactionId);
-
-			if (transactionCategory === "TRANSFER") {
-				client.query(format(
-					`
-					UPDATE Transactions
-					SET value = %L
-					WHERE sister_transfer_transaction = %L
-					`,
-					-transactionTableParameters.value, // Negative needed for transfer
-					transactionId
-				)
-				)
+				await client.query('COMMIT')
+				res.send(req.body);
+			} catch (e) {
+				await client.query('ROLLBACK')
+				throw (e);
+			} finally {
+				client.release();
 			}
+	}
 
-			const returnObject = req.body;
-			returnObject.tags = tags;
-			returnObject.transaction_id = transactionId;
-			res.send(req.body);
+	@Delete("/transaction/:userId/:transactionId")
+	async deleteTransaction(req, res) {
+		const transactionId: number = parseInt(req.params.transactionId);
 
-			await client.query('COMMIT');
-		} catch (e) {
-			await client.query('ROLLBACK')
-			throw (e);
-		} finally {
-			client.release();
-		}
+		this.transactionsRepo.deleteTransaction(transactionId)
+			.then(() => res.send())
+			.catch((e) => {console.log(e)});
 	}
 
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
+		const t : TransferTransaction = req.body;
 
+		this.transactionsRepo.createTransferTransaction(t)
+			.then(() => res.send(t))
+			.catch((e) => {throw(e)})
 	}
 
 	@Get("/category/:userId")
@@ -175,36 +178,37 @@ export default class TransactionsController {
 		const userId = req.params.userId;
 
 		const availableCategories = (
-			await dbPool.query(
-				`
-				SELECT
-					category_id,
-					displayname,
-					user_id,
-					category_type,
-					(
-						SELECT json_agg(nested_category)
-						FROM (
-								SELECT
-								category_id,
-								displayname,
-								user_id,
-								category_type
-							FROM
-								TransactionsCategories T_sub
-							WHERE
-								user_id = $1 AND T_sub.parent_category = T.category_id
-						) AS nested_category
-					) AS children
-				FROM
-					TransactionsCategories T
-				WHERE user_id =$1 AND parent_category IS NULL
-				`,
-				[userId]
-			)
+			await this.transactionsRepo.getCategories(userId)
 		).rows;
 
-		res.send(availableCategories);		
+		res.send(availableCategories);
+	}
+
+	@Post("/category/:userId")
+	async createCategory(req, res) {
+		const category : Category = req.body;
+		const userId = req.params.userId;
+
+		// TODO Validate virtual and physical accounts belong to user
+		this.transactionsRepo.createCategory(userId, category)
+			.then(() => res.send(category))
+			.catch((e) => {throw(e)})
+	}
+
+	@Put("/category/:categoryId")
+	async updateCategory(req, res) {
+		const category : Category = req.body;
+		const categoryId = req.params.categoryId;
+
+		this.transactionsRepo.updateCategory(categoryId, category).then(r => res.send(category));
+	}
+
+	@Delete("/category/:categoryIdToDelete/:replacingWith")
+	async deleteCategory(req, res) {
+		const categoryIdToDelete = req.params.categoryIdToDelete;
+		const replacingWith = req.params.replacingWith;
+
+		this.transactionsRepo.deleteCategory(categoryIdToDelete, replacingWith).then(r => res.send());
 	}
 
 	@Get("/tag/:userId")
@@ -223,6 +227,17 @@ export default class TransactionsController {
 		res.send(availableTags);
 	}
 
+	@Get("/transaction_per_day/:userId")
+	async getTransactionsGroupedPerDay(req, res) {
+		const userId = req.params.userId;
+		const startDate = req.query.startDate;
+		const endDate = req.query.endDate;
+
+		const { rows } = await this.transactionsRepo.getTransactionsGroupedPerDay(userId, startDate, endDate);
+
+		res.send(rows);
+	}
+
 	async getTransactionType(client: ClientBase, transactionId: number) {
 		const transactionCategory = (await client.query(format(
 			`
@@ -233,37 +248,5 @@ export default class TransactionsController {
 		))).rows[0].category_type;
 
 		return transactionCategory;
-	}
-
-	async insertTransaction(client: ClientBase, t: Transaction) {
-		const result = await client.query(
-			`
-					INSERT INTO Transactions(
-						virtual_account,
-						physical_account,
-						value,
-						category,
-						timestampEpochSeconds,
-						description,
-						notes
-					) VALUES ($1,$2,$3,$4,$5,$6,$7)
-					RETURNING transaction_id;
-				`,
-			[t.virtual_account, t.physical_account, t.value, t.category.category_id, t.timestampepochseconds, t.description, t.notes]
-		);
-
-		t.transaction_id = result.rows[0].transaction_id;
-		if(t.tags) {
-			for (const tag of t.tags) {
-				await client.query( // TODO: Do within single transaction
-					`
-						INSERT INTO Tags(tag,
-										 transaction_id)
-						VALUES ($1, $2);
-					`,
-					[tag, t.transaction_id]
-				);
-			}
-		}
 	}
 }
