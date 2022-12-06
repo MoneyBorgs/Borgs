@@ -85,9 +85,7 @@ export default class AccountsController {
                 [accountId]
             )
 
-            a.account_id = result.rows[0].account_id;
-
-			res.send(a);
+			res.send();
 	}
 	@Delete("/physicalaccount/:accountId")
 	async deletePhysicalAccount(req, res) {
@@ -100,9 +98,7 @@ export default class AccountsController {
                 [accountId]
             )
 
-            a.account_id = result.rows[0].account_id;
-
-			res.send(a);
+			res.send();
 	}
 	@Get("/monthly_physical_balance/:pa/:year")
 	async getMonthlyPhysicalAccountBalance(req, res) {
