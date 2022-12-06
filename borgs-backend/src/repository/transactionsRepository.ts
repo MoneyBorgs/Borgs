@@ -3,6 +3,7 @@ import {ClientBase, QueryResult} from "pg";
 import Transaction from "../model/Transaction";
 import DailyTransactions from "../model/DailyTransactions";
 import TransferTransaction, {getFromAccountTransaction, getToAccountTransaction} from "../model/TransferTransaction";
+import Category from "../model/Category";
 
 export default class TransactionsRepository {
 
@@ -176,6 +177,57 @@ export default class TransactionsRepository {
         );
     }
 
+    async getCategories(userId) {
+        return dbPool.query(
+            `
+				SELECT
+					category_id,
+					displayname,
+					user_id,
+					category_type,
+					(
+						SELECT json_agg(nested_category)
+						FROM (
+								SELECT
+								category_id,
+								displayname,
+								user_id,
+								category_type
+							FROM
+								TransactionsCategories T_sub
+							WHERE
+								user_id = $1 AND T_sub.parent_category = T.category_id
+						) AS nested_category
+					) AS children
+				FROM
+					TransactionsCategories T
+				WHERE user_id =$1 AND parent_category IS NULL
+				`,
+            [userId]
+        );
+    }
+
+    async createCategory(userId : number, category : Category) {
+        return dbPool.query(
+            `
+                INSERT INTO borgs.public.transactionscategories(parent_category, displayname, user_id, category_type)
+                VALUES (null, $1, $2, $3) 
+            `, [category.displayname, userId, category.category_type]
+        )
+    }
+
+    async updateCategory(categoryId: number, category: Category) {
+        return dbPool.query(
+            `
+                UPDATE borgs.public.transactionscategories
+                SET
+                    displayname = $1,
+                    category_type = $2
+                WHERE category_id = $3
+            `, [category.displayname, category.category_type, categoryId]
+        )
+    }
+
     /**
      * Routine for inserting a transaction with its tags.
      * Should be preferably called within a SQL Transaction
@@ -216,4 +268,35 @@ export default class TransactionsRepository {
         return t;
     }
 
+    async deleteCategory(categoryIdToDelete: number, replacingWith: number) {
+        const client = await dbPool.connect()
+        try {
+            await client.query('BEGIN')
+
+            await client.query(
+                `
+					UPDATE borgs.public.transactions
+					SET
+					    category = $2
+					WHERE category = $1;
+				`,
+                [categoryIdToDelete, replacingWith]
+            );
+
+            await client.query(
+                `
+					DELETE FROM borgs.public.transactionscategories
+					WHERE category_id = $1;
+				`,
+                [categoryIdToDelete]
+            );
+
+            return client.query('COMMIT');
+        } catch (e) {
+            await client.query('ROLLBACK')
+            throw (e);
+        } finally {
+            client.release();
+        }
+    }
 }

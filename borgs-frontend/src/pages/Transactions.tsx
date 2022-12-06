@@ -4,6 +4,8 @@ import { observer } from "mobx-react-lite";
 import { NewTransactionMenu } from '../components/transactions/NewTransactionMenu';
 import {TransactionList} from "../components/transactions/list/TransactionList";
 import dayjs from "dayjs";
+import {CategoryButton} from "../components/transactions/category/CategoryButton";
+import { Stack } from 'rsuite';
 
 export const Transactions = observer(() => {
 
@@ -17,7 +19,10 @@ export const Transactions = observer(() => {
 				padding: "1em 2.5em",
 			}}>
 			<h1>Transactions</h1>
-			<NewTransactionMenu/>
+			<Stack spacing={5}>
+				<NewTransactionMenu/>
+				<CategoryButton/>
+			</Stack>
 			<TransactionList/>
 		</div>
 	)

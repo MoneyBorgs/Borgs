@@ -43,7 +43,7 @@ CREATE TYPE transaction_category_type AS ENUM('INCOME', 'EXPENSE', 'TRANSFER');
 
 CREATE TABLE TransactionsCategories (
 	category_id SERIAL PRIMARY KEY,
-	parent_category int REFERENCES TransactionsCategories(category_id),
+	parent_category int REFERENCES TransactionsCategories(category_id) ON DELETE CASCADE,
 	displayName TEXT NOT NULL,
 	user_id INT NOT NULL REFERENCES Users(uid),
 	category_type transaction_category_type NOT NULL
@@ -55,7 +55,7 @@ CREATE TABLE Transactions (
 	virtual_account INT NOT NULL REFERENCES VirtualAccounts(account_id),
 	physical_account INT NOT NULL REFERENCES PhysicalAccounts(account_id),
 	value NUMERIC NOT NULL,
-	category INT NOT NULL REFERENCES TransactionsCategories(category_id),
+	category INT NOT NULL REFERENCES TransactionsCategories(category_id) ON DELETE CASCADE,
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
 	description TEXT,
 	notes TEXT,

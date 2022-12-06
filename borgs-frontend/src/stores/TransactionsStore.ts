@@ -131,4 +131,31 @@ export default class TransactionsStore {
                 this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
             }));
     }
+
+    @action
+    createCategory(category:Category) {
+        axiosRequest.post(`/category/${this.userStore.uid}`, category)
+            .then(action(() => {
+                this.updateAvailableCategories(true);
+            }));
+    }
+
+    @action
+    updateCategory(category: Category) {
+        axiosRequest.put(`/category/${category.category_id}`, category)
+            .then(action(() => {
+                const localCategory = this.availableCategories.find((localCategory) => localCategory.category_id === category.category_id);
+                if(localCategory) {
+                    localCategory.displayname = category.displayname;
+                }
+            }));
+    }
+    
+    @action
+    deleteCategory(categoryToDelete: Category, replacingWith : Category) {
+        axiosRequest.delete(`/category/${categoryToDelete.category_id}/${replacingWith.category_id}`)
+            .then(action(() => {
+                this.updateAvailableCategories(true);
+        }));
+    }
 }
