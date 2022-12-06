@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {observer} from "mobx-react-lite";
 import Transaction from '../../../model/Transaction';
-import {Box, Divider, List, ListProps, Paper, Typography} from "@mui/material";
-import {TransactionListItem} from "./TransactionListItem";
+import {Box, List, Paper} from "@mui/material";
 import dayjs from "dayjs";
-import {Button, DateRangePicker} from 'rsuite';
+import {DateRangePicker, Loader} from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import {useStores} from "../../../hooks/useStores";
 import {RangeType} from "rsuite/DateRangePicker";
@@ -40,6 +39,11 @@ export const TransactionList = observer(() => {
                                 dayjs().endOf("month").toDate()
                             ]}/>
                     </Box>
+                    {!transactionsStore.isUpdatingDailyTransactionsData ? null :
+                    <Box justifyContent="center" sx={{display: 'flex', margin: "25px"}}>
+                        <Loader content="Loading transactions..." />
+                    </Box>
+                    }
                     <List>
                         {transactionsStore.currentDailyTransactionsData.map((dayTransactions) => {
                             return <DayTransactionsListItem
