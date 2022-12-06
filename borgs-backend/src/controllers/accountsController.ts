@@ -1,4 +1,4 @@
-import { Controller, Get, Params, Patch, Post, Put, Response } from '@decorators/express';
+import { Controller, Get, Params, Patch, Post, Put, Response, Delete } from '@decorators/express';
 import dbPool from '../db/dbPool';
 import { updateTransactionById } from '../util/queryBuilder';
 import format from 'pg-format';
@@ -74,7 +74,7 @@ export default class AccountsController {
 
 			res.send(a);
 		} 
-	@Patch("/delete_virtualaccount/:userId")
+	@Delete("/delete_virtualaccount/:userId")
 	async deleteVirtualAccount(req, res) {
 		console.log(`Deleting virtual account AccountsController`);
 		const userId = req.params.userId;
@@ -89,7 +89,7 @@ export default class AccountsController {
 
 			res.send(a);
 	}
-	@Patch("/delete_physicalaccount/:userId")
+	@Delete("/delete_physicalaccount/:userId")
 	async deletePhysicalAccount(req, res) {
 		console.log(`Deleting physical account AccountsController`);
 		const userId = req.params.userId;
