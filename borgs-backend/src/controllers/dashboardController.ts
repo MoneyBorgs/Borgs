@@ -78,7 +78,8 @@ export default class DashboardController {
 		const { rows } = await dbPool.query(
 			`SELECT
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_expenses,
-				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes
+				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes,
+				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) + SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS diff
 			FROM
 				Transactions T
 			JOIN
@@ -90,7 +91,8 @@ export default class DashboardController {
 			ON
 				T.category = TC.category_id
 			WHERE
-				PA.user_id = $1`,
+				PA.user_id = $1
+				AND EXTRACT(MONTH FROM TO_TIMESTAMP(timestampepochseconds)) = EXTRACT(MONTH FROM CURRENT_DATE)`,
 			[userId]
 		);
 

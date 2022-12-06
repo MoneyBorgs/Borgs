@@ -13,6 +13,8 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import accountCard, { categoryCard, incomesAndExpensesCard } from '../components/dashboard/accountCard';
 import { useRouterStore } from 'mobx-state-router';
+import { NewTransactionMenu } from '../components/transactions/NewTransactionMenu';
+import { formatCurrencyText } from '../utils/TextUtils';
 
 export const MainPage = observer(() => {
 	const {dashboardStore, userStore} = useStores();
@@ -21,15 +23,38 @@ export const MainPage = observer(() => {
 	return (
 		<div>
 			<Typography variant='h5' paddingLeft='3%' paddingTop='3%'>
-				Welcome {userStore.firstname} {userStore.lastname}!
+				Welcome, <strong>{userStore.firstname} {userStore.lastname}</strong>!
 			</Typography>
+
 			<Typography variant='h2' align='center' padding='1%'>
 				Home
 			</Typography>
 
-			<Typography variant='h4' align='center'>
-				Total Balance = <strong>$ {dashboardStore.currentTotalBalance.toFixed(2)}</strong>
-			</Typography>
+			<div style={{ 
+					display: 'flex', 
+					flexDirection: 'row'}}>
+
+				<div style={{ 
+					width: '70%', 
+					paddingLeft: '8%',
+					paddingTop: '2%',
+					paddingRight: '4%',
+					borderRight: '1px solid #222'}}>
+
+				<Typography variant='h4' align='center'>
+					Total Balance = <strong>$ {formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
+				</Typography>
+
+				</div>
+
+				<div style={{ 
+						width: '30%',
+						paddingLeft: '10%'}}>
+
+				<NewTransactionMenu></NewTransactionMenu>
+
+				</div>
+			</div>
 
 			<div style={{ 
 					display: 'flex', 
@@ -60,8 +85,8 @@ export const MainPage = observer(() => {
 					width: '50%', 
 					paddingLeft: '4%',
 					paddingTop: '5%',
-					paddingRight: '8%',
-					paddingBottom: '8%'}}>
+					paddingRight: '6%',
+					paddingBottom: '6%'}}>
 
 					{incomesAndExpensesCard(dashboardStore, routerStore)}
 

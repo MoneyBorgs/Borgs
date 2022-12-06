@@ -2,7 +2,7 @@ import currency from "currency.js";
 
 export function formatCurrencyText(value) {
     return currency(value,
-        {separator: ".", decimal: ",", symbol: "$"}
+        {separator: ",", decimal: ".", symbol: "$"}
     ).format();
 }
 
