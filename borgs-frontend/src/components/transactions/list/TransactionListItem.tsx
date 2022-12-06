@@ -35,13 +35,13 @@ export const TransactionListItem = observer((props: TransactionListItemProps) =>
         }
 
         return (
-            <ListItem {...props} >
+            <ListItem {...props} key={props.transaction.transaction_id}>
                 <ListItemButton>
-                    <ListItemAvatar>
-                        <Avatar>
-                            // TODO Have pictures
-                        </Avatar>
-                    </ListItemAvatar>
+                    {/*<ListItemAvatar>*/}
+                    {/*    <Avatar>*/}
+                    {/*        // TODO Have pictures*/}
+                    {/*    </Avatar>*/}
+                    {/*</ListItemAvatar>*/}
                     <ListItemText
                         primary={props.transaction.description}
                         secondary={

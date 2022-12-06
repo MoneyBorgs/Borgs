@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put} from '@decorators/express';
+import { Controller, Delete, Get, Post, Put} from '@decorators/express';
 import dbPool from '../db/dbPool';
 import format from 'pg-format';
 import { ClientBase} from 'pg';
@@ -8,6 +8,7 @@ import TransferTransaction, {
 	getToAccountTransaction,
 	getToTransactionFromFromTransaction, getFromTransactionFromToTransaction
 } from "../model/TransferTransaction";
+import Category from "../model/Category";
 
 @Controller('/')
 export default class TransactionsController {
@@ -154,6 +155,15 @@ export default class TransactionsController {
 			}
 	}
 
+	@Delete("/transaction/:userId/:transactionId")
+	async deleteTransaction(req, res) {
+		const transactionId: number = parseInt(req.params.transactionId);
+
+		this.transactionsRepo.deleteTransaction(transactionId)
+			.then(() => res.send())
+			.catch((e) => {console.log(e)});
+	}
+
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
 		const t : TransferTransaction = req.body;
@@ -168,36 +178,37 @@ export default class TransactionsController {
 		const userId = req.params.userId;
 
 		const availableCategories = (
-			await dbPool.query(
-				`
-				SELECT
-					category_id,
-					displayname,
-					user_id,
-					category_type,
-					(
-						SELECT json_agg(nested_category)
-						FROM (
-								SELECT
-								category_id,
-								displayname,
-								user_id,
-								category_type
-							FROM
-								TransactionsCategories T_sub
-							WHERE
-								user_id = $1 AND T_sub.parent_category = T.category_id
-						) AS nested_category
-					) AS children
-				FROM
-					TransactionsCategories T
-				WHERE user_id =$1 AND parent_category IS NULL
-				`,
-				[userId]
-			)
+			await this.transactionsRepo.getCategories(userId)
 		).rows;
 
 		res.send(availableCategories);
+	}
+
+	@Post("/category/:userId")
+	async createCategory(req, res) {
+		const category : Category = req.body;
+		const userId = req.params.userId;
+
+		// TODO Validate virtual and physical accounts belong to user
+		this.transactionsRepo.createCategory(userId, category)
+			.then(() => res.send(category))
+			.catch((e) => {throw(e)})
+	}
+
+	@Put("/category/:categoryId")
+	async updateCategory(req, res) {
+		const category : Category = req.body;
+		const categoryId = req.params.categoryId;
+
+		this.transactionsRepo.updateCategory(categoryId, category).then(r => res.send(category));
+	}
+
+	@Delete("/category/:categoryIdToDelete/:replacingWith")
+	async deleteCategory(req, res) {
+		const categoryIdToDelete = req.params.categoryIdToDelete;
+		const replacingWith = req.params.replacingWith;
+
+		this.transactionsRepo.deleteCategory(categoryIdToDelete, replacingWith).then(r => res.send());
 	}
 
 	@Get("/tag/:userId")
