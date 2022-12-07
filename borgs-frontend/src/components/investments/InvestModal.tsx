@@ -11,7 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import UserStore from '../../stores/UserStore';
-import User from '../../model/User';
+import Investment from '../../model/Investment';
 import { useRouterStore } from "mobx-state-router";
 import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
@@ -37,14 +37,11 @@ export interface InvestModalProps extends Omit<ModalUnstyledOwnProps, "children"
 
 export const InvestModal = observer((props : InvestModalProps) => {
 
-	const { accountsStore, investmentsStoere} = useStores();
-
-	const { userStore } = useStores();
+	const { accountsStore, userStore, investmentsStore, rootStore } = useStores();
 	const router = useRouterStore();
 
-	// TODO get default user and make values consistent across usages
-	const [ ticker, setTicker ] = useState('');
-	const [ quantity, setQuantity ] = useState('');
+	const [ investmentState, setInvestmentState ] = useState(new Investment());
+
 	const [ va, setVA ] = useState('');
 	const [ pa, setPA ] = useState('');
 
@@ -58,6 +55,10 @@ export const InvestModal = observer((props : InvestModalProps) => {
 	 * @param field the field of the User type to be set
 	 * @param value the value 
 	 */
+
+	 const handleOnValueChange = (field, value) => {
+		setInvestmentState({...investmentState, [field] : value})
+	}
 
 	const handleOnSubmitForm = (event) => {		
 		// We will generate a transaction with the values of the stock * quantity invested
@@ -75,16 +76,33 @@ export const InvestModal = observer((props : InvestModalProps) => {
 			  API_TOKEN: 'a962cb8caba6e6ee094665113d7a4b8b',
 			  options: {
 				limit: 1,
-				symbols: ticker
+				symbols: investmentState.ticker
 			  }
 			})
 			.then(response => {
 				let stock_price = response.data[0].open;
 
-				let value = stock_price * +quantity;
+				let value = stock_price * investmentState.count;
 				console.log(value);
 
 				// at this point we have all the information we need to call a regular transaction api
+
+				var temp = 0;
+
+				
+
+				investmentState.price = value;
+				investmentState.timestampepochseconds = Math.trunc(Date.now()/1000);
+				investmentState.user_id = userStore.uid;
+
+				console.log(investmentState)
+
+				// Logging the investment
+				investmentsStore.createInvestment(investmentState);
+
+				rootStore.updateCache()
+
+				
 
 				setAlert1(false);
 				setAlert2(true);
@@ -149,14 +167,12 @@ export const InvestModal = observer((props : InvestModalProps) => {
 						<TextField
 							required
 							label="Stock Ticker" autoFocus
-							onChange={(event) => setTicker(event.target.value)}
-							value = {ticker}
+							onChange={(ticker) => handleOnValueChange("ticker",ticker.target.value)}
 						/>
 						<TextField
 							required
 							label="Number of Contracts" autoFocus
-							onChange={(event) => setQuantity(event.target.value)}
-							value = {quantity}
+							onChange={(count) => handleOnValueChange("count", +count.target.value)}
 						/>
 						<AccountPicker
 							options={accountsStore.currentVirtualAccountsData}

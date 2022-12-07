@@ -155,12 +155,7 @@ export function paTableCard(reportsStore) {
 				</Column>
 
 				<Column width={100}>
-					<HeaderCell> Number of transactions</HeaderCell>
-					<Cell dataKey="number_of_transactions"/>
-				</Column>
-
-				<Column width={100}>
-					<HeaderCell>% of expenses</HeaderCell>
+					<HeaderCvaTableBalanceell>% of expenses</HeaderCell>
 					<PercentCell dataKey="percent_total_expenses" rowData={undefined} />
 				</Column>
 

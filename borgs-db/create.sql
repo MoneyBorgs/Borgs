@@ -66,6 +66,7 @@ CREATE TABLE Transactions (
 -- Create Investments
 CREATE TABLE Investments (
 	investment_id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES Users(uid), 
 	count INT NOT NULL,
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
 	ticker VARCHAR(32) NOT NULL,

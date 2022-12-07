@@ -12,6 +12,7 @@ import AccountsController from "./controllers/accountsController";
 import DashboardController from "./controllers/dashboardController";
 import ReportsController from "./controllers/reportsController";
 import AllocationsController from "./controllers/allocationsController";
+import InvestmentsController from "./controllers/investmentsController";
 import cors from "cors";
 import UsersController from "./controllers/usersController";
 
@@ -41,6 +42,7 @@ attachControllers(app, [
   DashboardController,
   ReportsController,
   AllocationsController,
+  InvestmentsController,
   UsersController
 ])
 
