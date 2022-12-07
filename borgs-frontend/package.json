@@ -25,6 +25,7 @@
     "mobx-react-lite": "^3.4.0",
     "mobx-state-router": "^6.0.0",
     "money-js": "^1.0.2",
+    "node-stock-data": "^1.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.0.1",

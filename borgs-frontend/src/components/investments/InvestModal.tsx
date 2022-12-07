@@ -16,7 +16,6 @@ import { useRouterStore } from "mobx-state-router";
 import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
 import {AccountPicker} from '../fields/AccountPicker';
-import {getCurrentData, getCurrentPrice, getHistoricalPrices} from "yahoo-stock-prices-fetch"
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -37,7 +36,7 @@ export interface InvestModalProps extends Omit<ModalUnstyledOwnProps, "children"
 }
 
 export const InvestModal = observer((props : InvestModalProps) => {
-	
+
 	const { accountsStore, investmentsStoere} = useStores();
 
 	const { userStore } = useStores();
@@ -69,9 +68,32 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 		let stockExists = true;
 
-		const data = getCurrentData('AAPL');
-		console.log(data);
+		const stockdata = require('node-stock-data');
 
+		stockdata.stocks(
+			{
+			  API_TOKEN: 'a962cb8caba6e6ee094665113d7a4b8b',
+			  options: {
+				limit: 1,
+				symbols: 'AAPL'
+			  }
+			})
+			.then(response => {
+				let stock_price = response.data[0].open;
+
+				
+
+				setAlert1(false);
+				setAlert2(true);
+				setAlertContent('Investment succesfully made')
+			  })
+			.catch(error => {
+				setAlert2(false);
+				setAlert1(true);
+				setAlertContent('Stock Ticker does not exist or did not exist at date given');
+			})
+
+		/*
 		if (stockExists) {
 			
 			setAlert1(false);
@@ -83,6 +105,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 			setAlert1(true);
 			setAlertContent('Stock Ticker does not exist or did not exist at date given');
 		}
+		*/
 	}
 
 	return (
