@@ -1,5 +1,6 @@
 import React from 'react'
 import { observer } from "mobx-react-lite";
+import { NewInvestmentMenu } from '../components/investments/NewInvestmentMenu';
 
 export const Investments = observer(() => {
 	return (
@@ -8,6 +9,7 @@ export const Investments = observer(() => {
 				padding: "1em 2.5em",
 			}}>
 			<h1>Investments</h1>
+			<NewInvestmentMenu/>
 		</div>
 	)
 });

@@ -5,6 +5,7 @@ import DashboardStore from './DashboardStore';
 import ReportsStore from './ReportsStore';
 import TransactionsStore from './TransactionsStore';
 import UserStore from './UserStore';
+import InvestmentsStore from './InvestmentsStore';
 
 export default class RootStore {
 	transactionsStore: TransactionsStore;
@@ -13,6 +14,7 @@ export default class RootStore {
 	dashboardStore: DashboardStore;
 	reportsStore: ReportsStore;
 	userStore: UserStore;
+	investmentsStoere: InvestmentsStore;
 	constructor() {
 		this.userStore = new UserStore(this);
 		this.accountsStore = new AccountsStore(this);
@@ -20,6 +22,7 @@ export default class RootStore {
 		this.dashboardStore = new DashboardStore(this);
 		this.reportsStore = new ReportsStore(this);
 		this.transactionsStore = new TransactionsStore(this);
+		this.investmentsStoere = new InvestmentsStore(this);
 
 		// Cache initial results
 		this.updateCache();
@@ -36,5 +39,6 @@ export default class RootStore {
 		this.dashboardStore.updateIncomesExpenses();
 		this.transactionsStore.updateDailyTransactionsForDateRange(dayjs().startOf("month"), dayjs().endOf("month"));
 		this.reportsStore.updateReportsData();
+		this.investmentsStoere.updateInvestments();
 	}
 }

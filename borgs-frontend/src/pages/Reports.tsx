@@ -10,12 +10,14 @@ import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 import {formatCurrencyText} from "../utils/TextUtils";
 import { Typography } from '@mui/material';
-import { vaTableCard, paTableCard, vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
-import { vaChartCard, paChartCard, vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
+import { vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
+import { vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
+import { useRouterStore } from 'mobx-state-router';
 
 export const Reports = observer(() => {
 
 	const { reportsStore, userStore, accountsStore } = useStores();
+	const routerStore = useRouterStore();
 
 	const year = reportsStore.year;
 
@@ -59,7 +61,7 @@ export const Reports = observer(() => {
 				paddingLeft: '10%',
 				paddingTop: '2.5%'}}>
 			
-			{vaTableAccordion(reportsStore)}
+			{vaTableAccordion(reportsStore, routerStore)}
 			
 			</div>
 
@@ -71,7 +73,7 @@ export const Reports = observer(() => {
 				paddingLeft: '10%',
 				paddingTop: '2.5%'}}>
 
-			{paTableAccordion(reportsStore)}
+			{paTableAccordion(reportsStore, routerStore)}
 			
 			</div>
 

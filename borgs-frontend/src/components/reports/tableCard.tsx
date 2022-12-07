@@ -16,7 +16,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-let routerStore;
+
 const {Column, HeaderCell, Cell} = Table;
 const BoldCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
@@ -54,7 +54,7 @@ export const PercentCell = ({rowData, dataKey, ...props }) => (
 		
 	</Cell>
 	);
-
+/*
 export function vaTableCard(reportsStore) {
   	return (
     <Card style = {cardStyle}>
@@ -116,6 +116,7 @@ export function vaTableCard(reportsStore) {
 }
 
 export function paTableCard(reportsStore) {
+	const router = useRouterStore();
 	return (
   <Card style = {cardStyle}>
 	<CardContent>
@@ -172,13 +173,13 @@ export function paTableCard(reportsStore) {
 
 	</CardContent>
 	<CardActions>
-        <Button size="small" onClick={() => { routerStore.goTo('accounts'); }}>See Accounts</Button>
+        <Button size="small" onClick={() => { router.goTo('accounts'); }}>See Accounts</Button>
       </CardActions>
   </Card>
 );
 }
-
-export function vaTableAccordion(reportsStore) {
+*/
+export function vaTableAccordion(reportsStore, routerStore) {
 	return (
 		<Accordion>
 			<AccordionSummary
@@ -246,7 +247,7 @@ export function vaTableAccordion(reportsStore) {
 	);
 }
 
-export function paTableAccordion(reportsStore) {
+export function paTableAccordion(reportsStore, routerStore) {
 	return (
 		<Accordion>
 			<AccordionSummary
@@ -281,7 +282,7 @@ export function paTableAccordion(reportsStore) {
 					<Column width={150}>
 						<HeaderCell>Account expenses</HeaderCell>
 						<CurrencyCell dataKey="total_expenses" rowData={undefined}/>
-					</Column>
+					</Column>router
 
 					<Column width={150}>
 						<HeaderCell>Account income</HeaderCell>
