@@ -42,20 +42,28 @@ export interface ResetPassModalProps extends Omit<ModalUnstyledOwnProps, "childr
 export const ResetPassModal = observer((props : ResetPassModalProps) => {
 	
 		const { userStore } = useStores();
-		const router = useRouterStore();
 
+		// define variables and methods to handle the user's old and updated passwords
 		const [ oldPass, setOldPass ] = useState('');
 		const [ newPass, setNewPass ] = useState('');
+
+		// define variables and methods to display the proper alert message
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
+
+		// import the hash encyrption package
 		const bcrypt = require("bcryptjs");
 
+		// define variable and method to handle if the modal is open
 		const [open, setOpen] = React.useState(false);
+
+		// open the modal
 		const handleOpen = () => {
 			setOpen(true);
 		};
 
+		// close the modal
 		const handleClose = () => {
 			setAlert1(false);
 			setAlert2(false);
@@ -71,21 +79,28 @@ export const ResetPassModal = observer((props : ResetPassModalProps) => {
 
 		const handleOnSubmitForm = (event) => {		
 
+			// compare to see if the user's "Old Password" matches their password in the database
 			bcrypt.compare(oldPass, userStore.password, function(err, result) {
+				// proceed with this code if the passwords match
 				if (result) {
 				  console.log("It matches!");
+				  // convert the user's desired new password to hash
 				  bcrypt.genSalt(10, (err, salt) => {
 					bcrypt.hash(newPass, salt, function(err, hash) {
+						// call the backend to update the user's password
 						userStore.updatePassWord(hash);
 						userStore.changePassWord();
 					});
 					})
-				  setAlert2(false);
-				  setAlert1(true);
-				  setAlertContent('Password successfully changed. You may close the window.')				  
+					// display a sucess message
+					setAlert2(false);
+					setAlert1(true);
+					setAlertContent('Password successfully changed. You may close the window.')				  
 				}
+				// proceed with this code if the passwords do not match
 				else {
 				  	console.log("Invalid password!");
+					// display error message
 					setAlert1(false);
 					setAlert2(true);
 					setAlertContent('Incorrect password. Please try again.');					

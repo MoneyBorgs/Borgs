@@ -31,18 +31,17 @@ export interface RegisterCreateModalProps extends Omit<ModalUnstyledOwnProps, "c
 	onClose: () => void	
 }
 
-
-
 export const RegisterCreateModal = observer((props : RegisterCreateModalProps) => {
 	
 		const { userStore } = useStores();
 
+		// import the hash conversion package
 		const bcrypt = require("bcryptjs");
 
-		// TODO get default user and make values consistent across usages
+		// define variables and methods to handle the user's attempted registration info
 		const [ userState, setUserState ] = useState(new User());
-		const [ emailAddress, setEmailAddress ] = useState(new User());
 
+		// define variables and methods to display the proper alert message
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('')
@@ -55,30 +54,38 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		 * @param value the value 
 		 */
 
+		// as the user types in the text boxes, update the respective user info value
 		const handleOnValueChange = (field, value) => {
 			setUserState({...userState, [field] : value})
 		}
 
 		function setAlerts() {
+			// checks if there is already an email in the database with this account
+			// proceed with this code if no account with this email already exists
 			if (userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0] === undefined) {
+				// display success message
 				setAlert1(false);
 				setAlert2(true);
 				setAlertContent('You have successfully registered to MoneyBorgs! You may now close this window and login.')
+				// hash the user's string literl password
 				bcrypt.genSalt(10, (err, salt) => {
 					bcrypt.hash(userState.password, salt, function(err, hash) {
-					// Store hash in the database
+					// store hash in the database along with the rest of the new user info
 					userState.password = hash;
 					userStore.createNewUser(userState);
 					});
 					})
 			}
+			// proceed with this code if an account with this email already exists
 			else {
+				// display error message
 				setAlert2(false);
 				setAlert1(true);
 				setAlertContent('An account already exists with this email. Please try again.')
 			}
 		}
 
+		// when the form is submitted, call the backend to see if an account with this email already exists
 		const handleOnSubmitForm = (event) => {	
 			userStore.updateEmail(userState.email);
 			userStore.userWithEmail();
@@ -152,9 +159,3 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		);
 	}
 )
-
-function userFromFormData(data: FormData) : User {
-	let t = new User();
-
-	throw new Error('Function not implemented.');
-}
