@@ -16,6 +16,7 @@ import { useRouterStore } from "mobx-state-router";
 import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
 import {AccountPicker} from '../fields/AccountPicker';
+import RootStore from '../../stores/RootStore';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -37,7 +38,7 @@ export interface InvestModalProps extends Omit<ModalUnstyledOwnProps, "children"
 
 export const InvestModal = observer((props : InvestModalProps) => {
 
-	const { accountsStore, userStore, investmentsStore, rootStore } = useStores();
+	const { accountsStore, userStore, investmentsStore } = useStores();
 	const router = useRouterStore();
 
 	const [ investmentState, setInvestmentState ] = useState(new Investment());
@@ -92,7 +93,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 				
 
 				investmentState.price = value;
-				investmentState.timestampepochseconds = Math.trunc(Date.now()/1000);
+				investmentState.timestampepochseconds = dayjs().unix();
 				investmentState.user_id = userStore.uid;
 
 				console.log(investmentState)
@@ -100,9 +101,9 @@ export const InvestModal = observer((props : InvestModalProps) => {
 				// Logging the investment
 				investmentsStore.createInvestment(investmentState);
 
-				rootStore.updateCache()
+				RootStore.updateCache()
 
-				
+
 
 				setAlert1(false);
 				setAlert2(true);
