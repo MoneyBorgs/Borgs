@@ -6,11 +6,13 @@ import RootStore from "./RootStore";
 
 export default class UserStore {
 
+    // observable variables that will be changed based on user input / account info
+    // these variables will be used to keep track of the current logged in user's information
     @observable currentUserData : User[] = [];
     @observable currentUsersWithName : User[] = [];
     @observable currentUserWithEmail: User[] = [];
     @observable currentUserWithPassWord: User[] = [];
-	@observable uid = 3
+	@observable uid = 1
     @observable firstname = 'Ryan'
     @observable lastname = 'Mitchell'
     @observable email = 'rtm40@duke.edu'
@@ -18,7 +20,6 @@ export default class UserStore {
     @observable loggedInUser: boolean = false;
     @observable isRegisterModalOpen: boolean = false;
     @observable currentRegisterModal : User = new User();
-    @observable emailCount = 0;
     @observable errorStatus: boolean = false;
 
     rootStore: RootStore;
@@ -28,18 +29,20 @@ export default class UserStore {
         this.rootStore = rootStore;
     }
 
+    // opens the registration modal
     @action
     setIsRegisterModalOpen(shouldBeOpen : boolean) {
         this.isRegisterModalOpen = shouldBeOpen;
     }
 
-    
+    // handles request to open the registration modal
     @action
     openRegisterModal(user : User) {
         this.currentRegisterModal = user;
         this.setIsRegisterModalOpen(true);
     }
 
+    // registers new user into the database
     @action
     createNewUser(user: User) {
         console.log(`Registering new user`);
@@ -52,12 +55,7 @@ export default class UserStore {
             ))
     }
 
-    @action
-    countEmails() {
-        axiosRequest.get(`/user/count/${this.firstname}`)
-            .then(action((res) : AxiosResponse<User[], any> => this.emailCount = res.data));
-    }
-
+    // finds all users with a given first name in the database
 	@action
     usersWithName() {
 		console.log(this.firstname);
@@ -67,6 +65,7 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUsersWithName = res.data));
     }
 
+    // updates the value of the observable firstname variable
     @action
     updateFirstName(new_name) {
         this.firstname = new_name
@@ -74,6 +73,7 @@ export default class UserStore {
 		console.log(new_name)
     }
 
+    // updates the value of the observable lastname variable
     @action
     updateLastName(new_name) {
         this.lastname = new_name
@@ -81,6 +81,7 @@ export default class UserStore {
 		console.log(new_name)
     }
 
+    // retrieves all users in the database with a given email address
     @action
     userWithEmail() {
         console.log(this.email);
@@ -89,14 +90,7 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
     }
 
-    // @action
-    // userWithEmail() {
-    //     console.log(this.email);
-    //     console.log('Retrieving user with given email');
-    //     axiosRequest.get(`/user/${this.email}`)
-    //         .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithEmail = res.data));
-    // }
-
+    // retrieves all users in the database with a given password
     @action
     userWithPassWord() {
         console.log('Current UserStore password is: ' + this.password);
@@ -105,6 +99,7 @@ export default class UserStore {
             .then(action((res) : AxiosResponse<User[], any> => this.currentUserWithPassWord = res.data));
     }
 
+    // changes a user's first name and last name in the database
     @action
     changeDisplayName() {
         console.log('New first name is: ' + this.firstname);
@@ -112,13 +107,14 @@ export default class UserStore {
         axiosRequest.put(`/user/${this.email}/${this.firstname}/${this.lastname}`);
     }
 
+    // changes a user's password in the database
     @action
     changePassWord() {
         console.log('New password is: ' + this.password);
         axiosRequest.put(`/user/${this.email}/${this.password}`);
     }
 
-
+    // changes the name of the observable email variable
     @action
     updateEmail(new_email) {
         this.email = new_email
@@ -126,6 +122,7 @@ export default class UserStore {
         console.log(new_email)
     }
 
+    // changes the value of the observable login status variable
     @action
     updateLoginStatus(new_status) {
         this.loggedInUser = new_status;
@@ -133,6 +130,7 @@ export default class UserStore {
         console.log('New UserStore Login Status is: ' + this.loggedInUser)
     }
 
+    // changes the value of the observable password variable
     @action
     updatePassWord(new_password) {
         this.password = new_password
@@ -140,6 +138,7 @@ export default class UserStore {
         console.log('Submitted Password is: ' + new_password)
     }
 
+    // changes the value of the observable uid variable
     @action
     updateUser(new_uid) {
         this.uid = new_uid

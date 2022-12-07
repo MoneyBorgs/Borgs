@@ -79,6 +79,10 @@ const ResponsiveAppBar = () => {
 	};
 
 	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
+
+	const handleLogout = () => {
 		userStore.updateLoginStatus(false);
 		routerStore.goTo("register");
 		setAnchorElUser(null);
@@ -93,24 +97,9 @@ const ResponsiveAppBar = () => {
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<Typography
-						variant="h6"
-						noWrap
-						component="a"
-						href="/"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'inherit',
-							textDecoration: 'none',
-						}}
-					>
-						BORGS
-					</Typography>
-
+					<Box sx={{ pr: 2 }}>
+					<img style={{ width: 50, height: 50 }} src={require('../resources/mini-logo.PNG')} alt='money borgs logo'/>
+					</Box>
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
 							size="large"
@@ -180,7 +169,7 @@ const ResponsiveAppBar = () => {
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								Profile
+								<Avatar sx={{ bgcolor: 'inherit' }} src="/broken-image.jpg" />
 							</IconButton>
 						</Tooltip>
 						<Menu
@@ -199,7 +188,7 @@ const ResponsiveAppBar = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<MenuItem onClick={handleCloseUserMenu}>
+							<MenuItem onClick={handleLogout}>
 								<Typography textAlign="center">Logout</Typography>
 							</MenuItem>
 							<MenuItem onClick={handleSettingsMenu}>

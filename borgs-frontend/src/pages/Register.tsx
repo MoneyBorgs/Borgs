@@ -16,12 +16,6 @@ export const Register = observer(() => {
 	let { userStore, dashboardStore } = useStores();
 	const [firstName, setFirstName] = useState('');
 
-	const handleOnSubmitForm = (event) => {
-		console.log(firstName)
-        userStore.updateFirstName(firstName);
-        userStore.usersWithName();
-    }
-
 	return (
 		<div
 			style={{

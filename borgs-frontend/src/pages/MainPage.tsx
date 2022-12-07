@@ -23,19 +23,19 @@ export const MainPage = observer(() => {
 	return (
 		<div>
 			<Typography variant='h5' paddingLeft='3%' paddingTop='3%'>
-				Welcome, <strong>{userStore.firstname} {userStore.lastname}</strong>!
+				Welcome {userStore.firstname} {userStore.lastname}!
 			</Typography>
 
 			<Typography variant='h2' align='center' padding='1%'>
 				Home
 			</Typography>
 
-			<div style={{ 
-					display: 'flex', 
+			<div style={{
+					display: 'flex',
 					flexDirection: 'row'}}>
 
-				<div style={{ 
-					width: '70%', 
+				<div style={{
+					width: '70%',
 					paddingLeft: '8%',
 					paddingTop: '2%',
 					paddingRight: '4%',
@@ -47,7 +47,7 @@ export const MainPage = observer(() => {
 
 				</div>
 
-				<div style={{ 
+				<div style={{
 						width: '30%',
 						paddingLeft: '10%'}}>
 
@@ -57,32 +57,32 @@ export const MainPage = observer(() => {
 			</div>
 
 			<div style={{ 
-					display: 'flex', 
+					display: 'flex',
 					flexDirection: 'row'}}>
 
-				<div style={{ 
-					width: '50%', 
+				<div style={{
+					width: '50%',
 					paddingLeft: '8%',
 					paddingTop: '5%',
 					paddingRight: '4%',
 					paddingBottom: '8%'}}>
-					
-					<div style={{ 
+
+					<div style={{
 						paddingLeft: '8%',
 						paddingTop: '5%',
 						paddingRight: '4%',
 						paddingBottom: '8%'}}>
 							{accountCard(dashboardStore, routerStore)}
 						</div>
-					
+
 					{categoryCard(dashboardStore, routerStore)}
 
-				
+
 
 				</div>
 
-				<div style={{ 
-					width: '50%', 
+				<div style={{
+					width: '50%',
 					paddingLeft: '4%',
 					paddingTop: '5%',
 					paddingRight: '6%',
@@ -90,7 +90,7 @@ export const MainPage = observer(() => {
 
 					{incomesAndExpensesCard(dashboardStore, routerStore)}
 
-				</div>	
+				</div>
 
 			</div>
 

@@ -38,13 +38,67 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		const { userStore } = useStores();
 		const router = useRouterStore();
 
-		// TODO get default user and make values consistent across usages
+		// import hash encryption package
+		const bcrypt = require("bcryptjs");
+
+		// define variables and methods to handle the user's attempted login information
 		const [ emailAddress, setEmailAddress ] = useState('');
 		const [ passWord, setPassWord ] = useState('');
 
+		// define variables and methods to display the proper alert content (error or success)
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
+
+		// compare the string literal password to a hash sequence 
+		function compareHash() {
+			// userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0] is the info of the user in the database with the attempted login email  
+			bcrypt.compare(userStore.password, userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][1], function(err, result) {
+				// proceed if password matches
+				if (result) {
+				  console.log("It matches!");
+				  console.log('Printing' + userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][1]);
+				  console.log('Printing' + passWord);
+				  // update userStore info with the logged in account's information
+				  userStore.updateUser(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0][2]);
+				  userStore.updateFirstName(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
+				  userStore.updateLastName(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
+				  userStore.updatePassWord(userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][1]);
+				  userStore.updateLoginStatus(true);
+
+				  // display success message
+				  setAlert1(false);
+				  setAlert2(true);
+				  setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
+  
+				  // wait some time for user to read success message, then direct to dashboard
+				  setTimeout(() => {  router.goTo("reports"); }, 3000);
+				  setTimeout(() => {  props.onClose(); }, 3000);
+				}
+				// proceed with this code if password does not match
+				else {
+				  	console.log("Invalid password!");
+					// display error message
+				  	setAlert2(false);
+					setAlert1(true);
+					setAlertContent('Invalid password');
+				}
+			  });
+		}
+
+		function loginActions() {
+			// proceed with this code if the user typed in an email in the database
+			if (userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0] !== undefined) {
+				compareHash();
+			}
+			// proceed with this code if the user typed in an email that is not in the database
+			else {
+				// display error message
+				setAlert2(false);
+				setAlert1(true);
+				setAlertContent('There is no MoneyBorgs account associated with this email address');
+			}
+		}
 
 
 		/**
@@ -54,30 +108,13 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		 * @param value the value 
 		 */
 
+		// when the form is submitted, update the userStore info with the attempted login credentials
+		// then, proceed with email and password validation
 		const handleOnSubmitForm = (event) => {			
 			userStore.updateEmail(emailAddress);
 			userStore.updatePassWord(passWord);
-			userStore.userWithPassWord();
-			console.log('Printing' + userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1]);
-			console.log('Printing' + passWord);
-			if (userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][1] == passWord) {
-				userStore.updateUser(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid])[0][2]);
-				userStore.updateFirstName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][3]);
-				userStore.updateLastName(userStore.currentUserWithPassWord.map( user => [user.email, user.password, user.uid, user.firstname, user.lastname])[0][4]);
-				userStore.updateLoginStatus(true);
-				setAlert1(false);
-				setAlert2(true);
-				setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
-
-				setTimeout(() => {  router.goTo("reports"); }, 3000);
-				setTimeout(() => {  props.onClose(); }, 3000);
-
-			}
-			else {
-				setAlert2(false);
-				setAlert1(true);
-				setAlertContent('Incorrect username or password');
-			}
+			userStore.userWithEmail();
+			setTimeout(() => { loginActions() }, 1000);
 		}
 
 		return (
@@ -139,9 +176,3 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 		);
 	}
 )
-
-function userFromFormData(data: FormData) : User {
-	let t = new User();
-
-	throw new Error('Function not implemented.');
-}
