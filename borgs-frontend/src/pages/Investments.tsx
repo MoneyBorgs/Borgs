@@ -36,6 +36,8 @@ export const Investments = observer(() => {
 			}}>
 			<h1>Investments</h1>
 			<NewInvestmentMenu/>
+
+			
 		</div>
 	)
 });

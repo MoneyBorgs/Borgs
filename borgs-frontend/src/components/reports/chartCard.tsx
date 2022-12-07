@@ -225,7 +225,7 @@ export function paChartAccordion(reportsStore, accountsStore) {
                     options={accountsStore.currentPhysicalAccountsData}
                     label={"Physical Account"}
                     inputName="physical-account-picker"
-                    onChange={((event, account) => {reportsStore.updateVirtualAccount(account.account_id)})} 
+                    onChange={((event, account) => {reportsStore.updatePhysicalAccount(account.account_id)})} 
                 />
 
 
@@ -243,7 +243,7 @@ export function paChartAccordion(reportsStore, accountsStore) {
                     />
                 </Stack>
 
-                <ComposedChart width={1100} height={250} data={reportsStore.monthlyVaBalance} margin={{ top: 5, right: 20, bottom: 5, left: 100 }}>
+                <ComposedChart width={1100} height={250} data={reportsStore.monthlyPaBalance} margin={{ top: 5, right: 20, bottom: 5, left: 100 }}>
                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                     <XAxis dataKey="month" />
                     <YAxis
