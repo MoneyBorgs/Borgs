@@ -21,6 +21,26 @@ export const Reports = observer(() => {
 
 	const year = reportsStore.year;
 
+	if (accountsStore.currentPhysicalAccountsData.length === 0) {
+		return (
+			<div
+			style={{
+				padding: "1em 2.5em",
+			}}>
+			<h1>Reports</h1>
+
+			<br></br>
+
+			Make sure to add <strong>both</strong> virtual and physical accounts to look at reports!
+
+			<br></br>
+
+			<Button size="small" onClick={() => { routerStore.goTo('accounts'); }}>See Accounts</Button>
+
+			</div>
+		)
+	}
+
 	return (
 		<div
 			style={{

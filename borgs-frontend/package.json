@@ -36,7 +36,8 @@
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4",
     "yahoo-finance": "^0.3.7",
-    "yahoo-stock-prices": "^1.1.0"
+    "yahoo-stock-prices": "^1.1.0",
+    "yahoo-stock-prices-fetch": "^1.4.4"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -16,6 +16,7 @@ import { useRouterStore } from "mobx-state-router";
 import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
 import {AccountPicker} from '../fields/AccountPicker';
+import {getCurrentData, getCurrentPrice, getHistoricalPrices} from "yahoo-stock-prices-fetch"
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -67,6 +68,9 @@ export const InvestModal = observer((props : InvestModalProps) => {
 		// get yahoo finance info
 
 		let stockExists = true;
+
+		const data = getCurrentData('AAPL');
+		console.log(data);
 
 		if (stockExists) {
 			
