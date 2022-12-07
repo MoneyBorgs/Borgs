@@ -66,9 +66,10 @@ CREATE TABLE Transactions (
 -- Create Investments
 CREATE TABLE Investments (
 	investment_id SERIAL PRIMARY KEY,
-	count NUMERIC NOT NULL,
+	count INT NOT NULL,
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
-	ticker VARCHAR(32) NOT NULL
+	ticker VARCHAR(32) NOT NULL,
+	price NUMERIC NOT NULL
 );
 
 -- Create tags
