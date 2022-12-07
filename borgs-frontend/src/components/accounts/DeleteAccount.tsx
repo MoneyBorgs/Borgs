@@ -48,10 +48,12 @@ export const AccountDeleteModal = observer((props : AccountDeleteModalProps) => 
 		 * @param value the value 
 		 */
 		const handleOnValueChange = (account : Account) => {
+			// sets account that is supposed to be deleted to the user selected account
 			setAccountState(account)
 		}
 
 		const handleOnSubmitForm = (event) => {
+			// handles when form is submitted to delete the correct account
 			if (accountsStore.adding_account=="virtual"){
 				accountsStore.deleteVirtualAccount(accountState);
 			} 			

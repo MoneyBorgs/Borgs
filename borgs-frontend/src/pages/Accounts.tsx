@@ -36,32 +36,36 @@ export const Accounts = observer(() => {
 
     return (
         <div>
-            <NewAccountMenu/>
-			<DeleteAccountMenu/>
-			<EditAccountMenu/>
+			{/* Different modal buttons to create, edit, and delete accounts */}
+			<div><NewAccountMenu/></div>
+			<br></br>
+            <div><EditAccountMenu/></div>
+			<br></br>
+			<div><DeleteAccountMenu/></div>
+			<hr></hr>
             <TextField id="outlined-basic" 
             label="Account ID" variant="outlined" 
             onChange={(event) => setUserID(event.target.value)}
             value = {userID}/>
 			<Button variant="text" onClick={handleOnSubmitForm}>Submit</Button>
-            
+            {/* Displaying virtual and physical accounts */}
             <div>
-                Virtual Accounts
-            {
-            accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
-            )}
+				<h3> Virtual Accounts </h3>
+				<h4> {
+				accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
+				)} </h4>
             </div>
             <div>
-                Physical Accounts
-            {
-            accountsStore.currentPhysicalAccountsData.map( account => {return <li> {account.name} </li>}
-            )}
+				<h3> Physical Accounts </h3>
+				<h4>{
+				accountsStore.currentPhysicalAccountsData.map( account => {return <li> {account.name} </li>}
+				)}</h4>
             </div>
             
             <div>
 			<br></br>
 			<br></br>
-			
+			{/* Selecting account to display in graph */}
 			<AccountPicker
 				options={accountsStore.currentPhysicalAccountsData}
 				label={"Physical Account"}

@@ -22,6 +22,7 @@ export const NewAccountMenu = observer(() => {
 		};
 
 		const handleNewVirtualAccount = (event) => {
+			// handles when virtual account is selected
 			accountsStore.adding_account = "virtual"
 			handleClose();
 			setIsModenOpen(true);
@@ -29,6 +30,7 @@ export const NewAccountMenu = observer(() => {
 		}
 
 		const handleNewPhysicalAccount = (event) => {
+			// handles when physical account is selected
 			accountsStore.adding_account = "physical"
 			handleClose();
 			setIsModenOpen(true);

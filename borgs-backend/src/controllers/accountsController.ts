@@ -8,6 +8,7 @@ import Account from '../model/Account';
 export default class AccountsController {
     @Get("/virtualaccounts/:userId")
 	async getVirtualAccountsForUser(req, res) {
+		// get request to get all virtual accounts for a user
 		const userId = req.params.userId;
 		const { rows } = await dbPool.query(
 			`SELECT
@@ -22,6 +23,7 @@ export default class AccountsController {
 	}
 	@Get("/physicalaccounts/:userId")
 	async getPhysicalAccountsForUser(req, res) {
+		// get request to get all physical accounts for a user
 		const userId = req.params.userId;
 		console.log("Getting physical accounts for user controller");
 		const { rows } = await dbPool.query(
@@ -38,6 +40,7 @@ export default class AccountsController {
 	}
 	@Post("/physicalaccount/:userId")
 	async addNewPhysicalAccount(req, res) {
+		// post request to create new physical account for specific user and name
 		console.log(`Creating new physical account AccountsController`);
 		const userId = req.params.userId;
 		const a : Account = req.body;
@@ -57,6 +60,7 @@ export default class AccountsController {
 		} 
 	@Post("/virtualaccount/:userId")
 	async addNewVirtualAccount(req, res) {
+		// post request to create new virtual account for specific user and name
 		console.log(`Creating new virtual account AccountsController`);
 		const userId = req.params.userId;
 		const a : Account = req.body;
@@ -76,6 +80,7 @@ export default class AccountsController {
 		} 
 	@Put("/virtualaccount/:accountId")
 	async editVirtualAccount(req, res) {
+		// put request to edit a virtual account based on specified name and account id
 		console.log(`Editing virtual account AccountsController`);
 		const accountId = req.params.accountId;
 		const a : Account = req.body;
@@ -90,6 +95,7 @@ export default class AccountsController {
 		} 
 	@Put("/physicalaccount/:accountId")
 	async editPhysicalAccount(req, res) {
+		// put request to edit a physical account based on specified name and account id
 		console.log(`Editing virtual account AccountsController`);
 		const accountId = req.params.accountId;
 		const a : Account = req.body;
@@ -104,6 +110,7 @@ export default class AccountsController {
 		} 
 	@Delete("/virtualaccount/:accountId")
 	async deleteVirtualAccount(req, res) {
+		// delete request to delete a virtual account based on specified account id
 		console.log(`Deleting virtual account AccountsController`);
 		const accountId = req.params.accountId;
 		const a : Account = req.body;
@@ -117,6 +124,7 @@ export default class AccountsController {
 	}
 	@Delete("/physicalaccount/:accountId")
 	async deletePhysicalAccount(req, res) {
+		// delete request to delete a physical account based on specified account id
 		console.log(`Deleting physical account AccountsController`);
 		const accountId = req.params.accountId;
 		const a : Account = req.body;
@@ -130,6 +138,8 @@ export default class AccountsController {
 	}
 	@Get("/monthly_physical_balance/:pa/:year")
 	async getMonthlyPhysicalAccountBalance(req, res) {
+		// get request to get monthly balances for a specified physical id and year
+		// used in graph 
 		console.log("Getting physical id monthly balances controller");
 		const pa = req.params.pa;
 		const year = req.params.year;
@@ -180,6 +190,8 @@ export default class AccountsController {
 
 	@Get("/monthly_virtual_balance/:va/:year")
 	async getMonthlyVirtualAccountBalance(req, res) {
+		// get request to get monthly balances for a specified physical id and year
+		// can be used in graph 
 		console.log("Getting virtual id monthly balances controller");
 		const va = req.params.va;
 		const year = req.params.year;

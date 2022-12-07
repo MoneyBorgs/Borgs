@@ -47,10 +47,12 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 		 * @param value the value 
 		 */
 		const handleOnValueChange = (field, value) => {
+			// handles when user inputs text into the box
 			setAccountState({...accountState, [field] : value})
 		}
 
 		const handleOnSubmitForm = (event) => {
+			// handles when the form is submitted by the submit button
 			if (accountsStore.adding_account=="virtual"){
 				accountsStore.createNewVirtualAccount(accountState);
 			} 			
