@@ -75,27 +75,14 @@ export const InvestModal = observer((props : InvestModalProps) => {
 			  API_TOKEN: 'a962cb8caba6e6ee094665113d7a4b8b',
 			  options: {
 				limit: 1,
-				symbols: 'AAPL'
+				symbols: ticker
 			  }
 			})
 			.then(response => {
 				let stock_price = response.data[0].open;
 
-				let value = stock_price * +quantity
-
-				var Transaction = {
-					transaction_id!: number;
-					virtual_account!: number;
-					physical_account!: number;
-					value!: number;
-					category!: Category;
-					timestampepochseconds!: number;
-					description!: String;
-					notes!: String;
-					tags!: Tag[];
-					from_transfer_transaction!: number;
-					to_transfer_transaction!: number;
-				}
+				let value = stock_price * +quantity;
+				console.log(value);
 
 				// at this point we have all the information we need to call a regular transaction api
 

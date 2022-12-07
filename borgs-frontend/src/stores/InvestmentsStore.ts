@@ -4,13 +4,13 @@ import { axiosRequest } from "../api/api";
 import RootStore from "./RootStore";
 import UserStore from "./UserStore";
 import AccountsStore from "./AccountsStore";
-import MonthlyBalance from "../model/MonthlyBalance";
+import Investment from "../model/Investment";
 import TableBalance from "../model/TableBalance";
 import TransactionsStore from "./TransactionsStore";
 
-export default class ReportsStore {
+export default class InvestmentsStore {
 
-	@observable currentBalance : number = 0;
+	@observable currentInvestment : Investment[] = [];
 
 	rootStore : RootStore;
 	userStore : UserStore;
@@ -29,4 +29,16 @@ export default class ReportsStore {
     updateInvestments() {
 
     }
+
+	@action
+	createInvestment(investment: Investment) {
+		console.log("Creating investment")
+
+		axiosRequest.post(`/investment`, investment).
+			then(action(
+				(res: AxiosResponse<Investment, any>) => {
+					this.currentInvestment.push(res.data)
+				}
+			))
+	}
 }
