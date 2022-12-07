@@ -13,55 +13,27 @@ import { Typography } from '@mui/material';
 import { vaTableCard, paTableCard, vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
 import { vaChartCard, paChartCard, vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
 
-const { Column, HeaderCell, Cell } = Table;
-
-function conditionalColor(data) {
-	var color = "black";
-	if (data < 0) {
-		color = "red";
-	}
-	else if (data > 0) {
-		color = "green";
-	}
-	return color;
-}
-
-export const CurrencyCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography color={conditionalColor(rowData[dataKey])}>
-		{formatCurrencyText(rowData[dataKey])}
-		</Typography>
-		
-	</Cell>
-	);
-
-export const PercentCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography>
-		{rowData[dataKey].toFixed(2)}%
-		</Typography>
-		
-	</Cell>
-	);
-
 export const Reports = observer(() => {
 
 	const { reportsStore, userStore, accountsStore } = useStores();
 
 	const year = reportsStore.year;
 
-	const next_year = +year + 1;
-	const last_year = +year - 1;
-
 	return (
-		<div>
+		<div
+			style={{
+				padding: "1em 2.5em",
+			}}>
+			<h1>Reports</h1>
+
+
 			<div style={{ 
 				width: '100%', 
 				display: 'flex', 
 				justifyContent: 'space-between', 
 				alignItems: 'center',
 				paddingLeft: '10%',
-				paddingTop: '5%'}}>
+				paddingTop: '1%'}}>
 			
 			{vaChartAccordion(reportsStore, accountsStore)}
 
