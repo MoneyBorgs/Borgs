@@ -4,11 +4,11 @@ import Menu from '@mui/joy/Menu';
 import MenuItem from '@mui/joy/MenuItem';
 import { useStores } from '../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import { AccountCreateModal } from './NewRegisteredAccount';
+import { AccountDeleteModal } from './DeleteAccount';
 import User from '../../model/User';
 import Account from '../../model/Account';
 
-export const NewAccountMenu = observer(() => {
+export const DeleteAccountMenu = observer(() => {
 		const { userStore } = useStores();
         const { accountsStore } = useStores();
 		const [anchorEl, setAnchorEl] = React.useState(null);
@@ -21,16 +21,14 @@ export const NewAccountMenu = observer(() => {
 			setAnchorEl(null);
 		};
 
-		const handleNewVirtualAccount = (event) => {
-			// handles when virtual account is selected
+		const handleDeleteVirtualAccount = (event) => {
 			accountsStore.adding_account = "virtual"
 			handleClose();
 			setIsModenOpen(true);
 			//transactionsStore.openExpenseModal(Transaction.getDefaultTransaction());
 		}
 
-		const handleNewPhysicalAccount = (event) => {
-			// handles when physical account is selected
+		const handleDeletePhysicalAccount = (event) => {
 			accountsStore.adding_account = "physical"
 			handleClose();
 			setIsModenOpen(true);
@@ -48,7 +46,7 @@ export const NewAccountMenu = observer(() => {
 					color="neutral"
 					onClick={handleClick}
 				>
-					Create Account
+					Delete Account
 				</Button>
 				<Menu
 					id="basic-menu"
@@ -58,10 +56,10 @@ export const NewAccountMenu = observer(() => {
 					aria-labelledby="basic-demo-button"
 					placement="bottom-start"
 				>
-					<MenuItem onClick={handleNewVirtualAccount}>New Virtual Account</MenuItem>
-					<MenuItem onClick={handleNewPhysicalAccount}>New Physical Account</MenuItem>
+					<MenuItem onClick={handleDeleteVirtualAccount}>Delete Virtual Account</MenuItem>
+					<MenuItem onClick={handleDeletePhysicalAccount}>Delete Physical Account</MenuItem>
 				</Menu>
-				<AccountCreateModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
+				<AccountDeleteModal open={isModalOpen} onClose={() => {setIsModenOpen(false)}}/>
 			</div>
 		);
 	}

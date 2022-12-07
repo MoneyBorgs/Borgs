@@ -11,6 +11,8 @@ import Account from '../model/Account';
 import MenuItem from '@mui/material/MenuItem';
 import { useStores } from '../hooks/useStores';
 import { NewAccountMenu } from '../components/accounts/NewAccountMenu';
+import { DeleteAccountMenu } from '../components/accounts/DeleteAccountMenu';
+import { EditAccountMenu } from '../components/accounts/EditAccountMenu';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AccountPicker } from '../components/fields/AccountPicker';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -34,30 +36,36 @@ export const Accounts = observer(() => {
 
     return (
         <div>
-            <NewAccountMenu/>
+			{/* Different modal buttons to create, edit, and delete accounts */}
+			<div><NewAccountMenu/></div>
+			<br></br>
+            <div><EditAccountMenu/></div>
+			<br></br>
+			<div><DeleteAccountMenu/></div>
+			<hr></hr>
             <TextField id="outlined-basic" 
             label="Account ID" variant="outlined" 
             onChange={(event) => setUserID(event.target.value)}
             value = {userID}/>
 			<Button variant="text" onClick={handleOnSubmitForm}>Submit</Button>
-            
+            {/* Displaying virtual and physical accounts */}
             <div>
-                Virtual Accounts
-            {
-            accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
-            )}
+				<h3> Virtual Accounts </h3>
+				<h4> {
+				accountsStore.currentVirtualAccountsData.map( account => {return <li> {account.name} </li>}
+				)} </h4>
             </div>
             <div>
-                Physical Accounts
-            {
-            accountsStore.currentPhysicalAccountsData.map( account => {return <li> {account.name} </li>}
-            )}
+				<h3> Physical Accounts </h3>
+				<h4>{
+				accountsStore.currentPhysicalAccountsData.map( account => {return <li> {account.name} </li>}
+				)}</h4>
             </div>
             
             <div>
 			<br></br>
 			<br></br>
-			
+			{/* Selecting account to display in graph */}
 			<AccountPicker
 				options={accountsStore.currentPhysicalAccountsData}
 				label={"Physical Account"}

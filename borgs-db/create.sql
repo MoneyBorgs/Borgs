@@ -52,8 +52,8 @@ CREATE TABLE TransactionsCategories (
 -- Create Transactions
 CREATE TABLE Transactions (
 	transaction_id SERIAL PRIMARY KEY,
-	virtual_account INT NOT NULL REFERENCES VirtualAccounts(account_id),
-	physical_account INT NOT NULL REFERENCES PhysicalAccounts(account_id),
+	virtual_account INT NOT NULL REFERENCES VirtualAccounts(account_id) ON DELETE CASCADE,
+	physical_account INT NOT NULL REFERENCES PhysicalAccounts(account_id) ON DELETE CASCADE,
 	value NUMERIC NOT NULL,
 	category INT NOT NULL REFERENCES TransactionsCategories(category_id) ON DELETE CASCADE,
 	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time

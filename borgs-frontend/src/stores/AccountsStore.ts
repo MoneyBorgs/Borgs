@@ -30,6 +30,7 @@ export default class AccountsStore {
 	}
 	@action
     updateVirtualAccounts() {
+        // Calls a get request to get all virtual accounts for a given uid
 		const {userStore} = this.rootStore
 		console.log(this.userStore.uid);
         console.log("Updating virtual accounts");
@@ -40,6 +41,7 @@ export default class AccountsStore {
 
 	@action
 	updatePhysicalAccounts() {
+        // Calls a get request to get all physical accounts for a given uid
 		const { userStore } = this.rootStore
 		console.log(this.userStore.uid);
 		console.log("Updating physical accounts");
@@ -49,10 +51,11 @@ export default class AccountsStore {
 	}
 	@action
 	getMonthlyVirtualAccountData(account_id : number, year: number) {
-
+        // Calls a get request to get grouped virtual account data for a specific year and account
+        // Can be used for graphs
 		console.log("Getting virtual id monthly balances");
 
-        axiosRequest.get(`/monthly_balance/${account_id}/${year}/`)
+        axiosRequest.get(`/monthly_balance/${account_id}/${year}`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;
@@ -68,10 +71,11 @@ export default class AccountsStore {
 	}
 
 	getMonthlyPhysicalAccountData(account_id : number, year: number) {
-
+        // Calls a get request to get grouped physical account data for a specific year and account
+        // used for the graph
 		console.log("Getting physical id monthly balances");
 
-        axiosRequest.get(`/monthly_physical_balance/${account_id}/${year}/`)
+        axiosRequest.get(`/monthly_physical_balance/${account_id}/${year}`)
             .then(action((res) : AxiosResponse<MonthlyBalance[], any> => {
 
 				let total_balance : number = 0;
@@ -86,6 +90,7 @@ export default class AccountsStore {
 
 	@action
     createNewPhysicalAccount(account: Account) {
+        // Calls a post request to create new physical account for specified user id
         console.log(`Creating new physical account`);
 		const { userStore } = this.rootStore;
         axiosRequest.post(`/physicalaccount/${userStore.uid}`, account)
@@ -97,6 +102,7 @@ export default class AccountsStore {
     }
 	@action
     createNewVirtualAccount(account: Account) {
+        // Calls a post request to create new virtual account for specified user id
         console.log(`Creating new virtual account AccountsStore`);
 		const { userStore } = this.rootStore;
         axiosRequest.post(`/virtualaccount/${userStore.uid}`, account)
@@ -108,5 +114,57 @@ export default class AccountsStore {
 		
     }
 	
+	@action
+    deleteVirtualAccount(account: Account) {
+        // Calls a delete request to delete virtual account of that account id
+        console.log(`Deleting virtual account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.delete(`/virtualaccount/${account.account_id}`)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updateVirtualAccounts();
+                }
+            ));
+		
+    }
+	@action
+    deletePhysicalAccount(account: Account) {
+        // Calls a delete request to delete physical account of that account id
+        console.log(`Deleting physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.delete(`/physicalaccount/${account.account_id}`)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updatePhysicalAccounts();
+                }
+            ));
+		
+    }
+	@action
+    editVirtualAccount(account: Account) {
+        // Calls a put request to edit virtual account of that account id with specified new name
+        console.log(`Editing physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.put(`/virtualaccount/${account.account_id}`, account)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updateVirtualAccounts();
+                }
+            ));
+		
+    }
+	@action
+    editPhysicalAccount(account: Account) {
+        // Calls a put request to edit physical account of that account id with specified new name
+        console.log(`Editing physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.put(`/physicalaccount/${account.account_id}`, account)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updatePhysicalAccounts();
+                }
+            ));
+		
+    }
 
 }

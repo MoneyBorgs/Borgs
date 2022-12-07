@@ -14,6 +14,7 @@ import UserStore from '../../stores/UserStore';
 import AccountsStore from '../../stores/AccountsStore';
 import User from '../../model/User';
 import Account from '../../model/Account';
+import { AccountPicker } from '../fields/AccountPicker';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -29,16 +30,16 @@ const style = {
 	pb: 3,
 };
 
-export interface AccountCreateModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
+export interface AccountDeleteModalProps extends Omit<ModalUnstyledOwnProps, "children" | "onClose"> {
 	onClose: () => void	
 }
 
-export const AccountCreateModal = observer((props : AccountCreateModalProps) => {
+export const AccountDeleteModal = observer((props : AccountDeleteModalProps) => {
 	
 		const { userStore, accountsStore } = useStores();
     	const rootStore = useStores();
 		// TODO get default user and make values consistent across usages
-		const [ accountState, setAccountState ] = useState(new Account());
+		const [ accountState, setAccountState ] = useState<Account>(new Account());
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -46,18 +47,18 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
-		const handleOnValueChange = (field, value) => {
-			// handles when user inputs text into the box
-			setAccountState({...accountState, [field] : value})
+		const handleOnValueChange = (account : Account) => {
+			// sets account that is supposed to be deleted to the user selected account
+			setAccountState(account)
 		}
 
 		const handleOnSubmitForm = (event) => {
-			// handles when the form is submitted by the submit button
+			// handles when form is submitted to delete the correct account
 			if (accountsStore.adding_account=="virtual"){
-				accountsStore.createNewVirtualAccount(accountState);
+				accountsStore.deleteVirtualAccount(accountState);
 			} 			
 			else{
-				accountsStore.createNewPhysicalAccount(accountState);
+				accountsStore.deletePhysicalAccount(accountState);
 			}
 			props.onClose();
 		}
@@ -87,7 +88,7 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 							fontSize="1.25em"
 							mb="1em"
 						>
-							Register an account
+							Delete an account
 						</Typography>
 						<form
 							onSubmit={(event) => {
@@ -97,14 +98,20 @@ export const AccountCreateModal = observer((props : AccountCreateModalProps) => 
 						>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<Stack spacing={2}>
-								<TextField
+								{/* <TextField
 									required
 									label="Account Name" autoFocus
 									onChange={(accountName) => {
 										handleOnValueChange("name", accountName.target.value);
 									}}
-								/>														
-								<Button type="submit">Create!</Button>
+								/> */}
+								<AccountPicker
+									options={accountsStore.adding_account === "virtual" ? accountsStore.currentVirtualAccountsData : accountsStore.currentPhysicalAccountsData}
+									label="Pick account to delete"
+									inputName="account"
+									onChange={(event, account) => handleOnValueChange(account)}
+									/>														
+								<Button type="submit">Delete!</Button>
 							</Stack>
 						</LocalizationProvider>
 						</form>

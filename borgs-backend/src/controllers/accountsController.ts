@@ -1,4 +1,4 @@
-import { Controller, Get, Params, Patch, Post, Put, Response } from '@decorators/express';
+import { Controller, Get, Params, Patch, Post, Put, Response, Delete } from '@decorators/express';
 import dbPool from '../db/dbPool';
 import { updateTransactionById } from '../util/queryBuilder';
 import format from 'pg-format';
@@ -8,6 +8,7 @@ import Account from '../model/Account';
 export default class AccountsController {
     @Get("/virtualaccounts/:userId")
 	async getVirtualAccountsForUser(req, res) {
+		// get request to get all virtual accounts for a user
 		const userId = req.params.userId;
 		const { rows } = await dbPool.query(
 			`SELECT
@@ -22,6 +23,7 @@ export default class AccountsController {
 	}
 	@Get("/physicalaccounts/:userId")
 	async getPhysicalAccountsForUser(req, res) {
+		// get request to get all physical accounts for a user
 		const userId = req.params.userId;
 		console.log("Getting physical accounts for user controller");
 		const { rows } = await dbPool.query(
@@ -38,6 +40,7 @@ export default class AccountsController {
 	}
 	@Post("/physicalaccount/:userId")
 	async addNewPhysicalAccount(req, res) {
+		// post request to create new physical account for specific user and name
 		console.log(`Creating new physical account AccountsController`);
 		const userId = req.params.userId;
 		const a : Account = req.body;
@@ -57,6 +60,7 @@ export default class AccountsController {
 		} 
 	@Post("/virtualaccount/:userId")
 	async addNewVirtualAccount(req, res) {
+		// post request to create new virtual account for specific user and name
 		console.log(`Creating new virtual account AccountsController`);
 		const userId = req.params.userId;
 		const a : Account = req.body;
@@ -74,59 +78,120 @@ export default class AccountsController {
 
 			res.send(a);
 		} 
+	@Put("/virtualaccount/:accountId")
+	async editVirtualAccount(req, res) {
+		// put request to edit a virtual account based on specified name and account id
+		console.log(`Editing virtual account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+			const result = await dbPool.query(
+				`UPDATE VirtualAccounts 
+				SET name = $2
+				WHERE account_id = $1`,
+				[accountId, a.name]
+			)
 
-		@Get("/monthly_physical_balance/:pa/:year")
-		async getMonthlyPhysicalAccountBalance(req, res) {
-			console.log("Getting physical id monthly balances controller");
-			const pa = req.params.pa;
-			const year = req.params.year;
-	
-			const { rows } = await dbPool.query(
-				`SELECT 
-					physical_account,
-					EXTRACT(MONTH FROM TO_TIMESTAMP(timestampepochseconds)) AS month,
-					SUM(value) AS net_result
-				FROM
-					Transactions
-				WHERE 
-					physical_account = $1
-					AND EXTRACT(YEAR FROM TO_TIMESTAMP(timestampepochseconds)) = $2
-				GROUP BY 
-					1, 2
-				ORDER BY
-					1, 2, 3`,
-				[pa, year]
-			);
-	
-			let empty_space = rows.length
-	
-			let included_months : number[] = []
-	
-			for (let j = 0; j < rows.length; j++) {
-				included_months.push(rows[j].month)
-			}
-	
-			let ret : any[] = []
-	
-			for (let i = 1; i < 13; i++) {
-				if (!included_months.includes(i)) {
-					let temp = {
-						virtual_account: +pa, // + operator turns strings to int
-						month: i,
-						net_result: 0,
-					}
-	
-					ret.push(temp)
-				} else {
-					ret.push(rows.shift())
-				}
-			}
-	
-			res.send(ret);
+			res.send(a);
+		} 
+	@Put("/physicalaccount/:accountId")
+	async editPhysicalAccount(req, res) {
+		// put request to edit a physical account based on specified name and account id
+		console.log(`Editing virtual account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+			const result = await dbPool.query(
+				`UPDATE PhysicalAccounts 
+				SET name = $2
+				WHERE account_id = $1`,
+				[accountId, a.name]
+			)
+
+			res.send();
+		} 
+	@Delete("/virtualaccount/:accountId")
+	async deleteVirtualAccount(req, res) {
+		// delete request to delete a virtual account based on specified account id
+		console.log(`Deleting virtual account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+            const result = await dbPool.query(
+                `DELETE FROM VirtualAccounts 
+				WHERE account_id = $1`,
+                [accountId]
+            )
+
+			res.send();
+	}
+	@Delete("/physicalaccount/:accountId")
+	async deletePhysicalAccount(req, res) {
+		// delete request to delete a physical account based on specified account id
+		console.log(`Deleting physical account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+            const result = await dbPool.query(
+                `DELETE FROM PhysicalAccounts 
+				WHERE account_id = $1`,
+                [accountId]
+            )
+
+			res.send();
+	}
+	@Get("/monthly_physical_balance/:pa/:year")
+	async getMonthlyPhysicalAccountBalance(req, res) {
+		// get request to get monthly balances for a specified physical id and year
+		// used in graph 
+		console.log("Getting physical id monthly balances controller");
+		const pa = req.params.pa;
+		const year = req.params.year;
+
+		const { rows } = await dbPool.query(
+			`SELECT 
+				physical_account,
+				EXTRACT(MONTH FROM TO_TIMESTAMP(timestampepochseconds)) AS month,
+				SUM(value) AS net_result
+			FROM
+				Transactions
+			WHERE 
+				physical_account = $1
+				AND EXTRACT(YEAR FROM TO_TIMESTAMP(timestampepochseconds)) = $2
+			GROUP BY 
+				1, 2
+			ORDER BY
+				1, 2, 3`,
+			[pa, year]
+		);
+
+		let empty_space = rows.length
+
+		let included_months : number[] = []
+
+		for (let j = 0; j < rows.length; j++) {
+			included_months.push(rows[j].month)
 		}
+
+		let ret : any[] = []
+
+		for (let i = 1; i < 13; i++) {
+			if (!included_months.includes(i)) {
+				let temp = {
+					virtual_account: +pa, // + operator turns strings to int
+					month: i,
+					net_result: 0,
+				}
+
+				ret.push(temp)
+			} else {
+				ret.push(rows.shift())
+			}
+		}
+
+		res.send(ret);
+	}
 
 	@Get("/monthly_virtual_balance/:va/:year")
 	async getMonthlyVirtualAccountBalance(req, res) {
+		// get request to get monthly balances for a specified physical id and year
+		// can be used in graph 
 		console.log("Getting virtual id monthly balances controller");
 		const va = req.params.va;
 		const year = req.params.year;
@@ -174,4 +239,6 @@ export default class AccountsController {
 
 		res.send(ret);
 	}
+
+	
 }
