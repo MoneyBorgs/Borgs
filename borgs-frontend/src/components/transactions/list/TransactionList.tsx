@@ -76,7 +76,7 @@ const predefinedRanges : RangeType[] = [
     },
     {
         label: 'Last 30 days',
-        value: [dayjs().startOf("day").subtract(30, "month").toDate(), dayjs().endOf("day").toDate()],
+        value: [dayjs().startOf("day").subtract(30, "day").toDate(), dayjs().endOf("day").toDate()],
         placement: 'left',
         closeOverlay: false
     },

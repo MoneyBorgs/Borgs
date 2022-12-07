@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Post, Put} from '@decorators/express';
 import dbPool from '../db/dbPool';
 import format from 'pg-format';
-import { ClientBase} from 'pg';
+import {ClientBase, QueryResult} from 'pg';
 import TransactionsRepository from "../repository/transactionsRepository";
 import Transaction from "../model/Transaction";
 import TransferTransaction, {
@@ -15,23 +15,30 @@ export default class TransactionsController {
 
 	transactionsRepo = new TransactionsRepository();
 
+	/**
+	 * Retrieves all transactions for a given userId provided in the query path
+	 */
 	@Get("/transaction/:userId")
 	async getTransactionsForUser(req, res) {
 		const userId = req.params.userId;
 		const startDate = req.query.startDate;
 		const endDate = req.query.endDate;
 
-		const { rows } = await this.transactionsRepo.getTransactionsForUserInPeriod(userId, startDate, endDate);
+		const { rows } : QueryResult<Transaction> = await this.transactionsRepo.getTransactionsForUserInPeriod(userId, startDate, endDate);
 
 		res.send(rows);
 	}
 
+	/**
+	 * Retrieves a specific transactions for a given transactionId provided in the query path
+	 * Output should follow type Transaction found in the model
+	 */
 	@Get("/transaction/:userId/:transactionId")
 	async getTransaction(req, res) {
 		const userId = req.params.userId;
 		const transactionId = req.params.transactionId
 
-		const { rows } = await dbPool.query(
+		const { rows }: QueryResult<Transaction> = await dbPool.query(
 			/// TODO Return category object instead of displayName
 			`SELECT
 				T.transaction_id,
@@ -57,6 +64,10 @@ export default class TransactionsController {
 		res.send(rows[0]);
 	}
 
+	/**
+	 * Creates a transaction for a given userId.
+	 * Body of HTTP request must follow format of Transaction model
+	 */
 	@Post("/transaction/:userId")
 	async createTransactionForUser(req, res) {
 		const t : Transaction = req.body;
@@ -67,6 +78,12 @@ export default class TransactionsController {
 			.catch((e) => {throw(e)})
 	}
 
+	/**
+	 * Updates a transaction for a given userId.
+	 * If this is an EXPENSE or INCOME transaction, then HTTP Request body
+	 * must follow format of Transaction Model;
+	 * if it's a transfer transaction, then the body shall follow the subclass TransferTransaction
+	 */
 	@Put("/transaction/:userId/:transactionId")
 	async updateTransaction(req, res) {
 		const userId = req.params.userId;
@@ -155,6 +172,9 @@ export default class TransactionsController {
 			}
 	}
 
+	/**
+	 * Deletes a given transaction
+	 */
 	@Delete("/transaction/:userId/:transactionId")
 	async deleteTransaction(req, res) {
 		const transactionId: number = parseInt(req.params.transactionId);
@@ -164,6 +184,17 @@ export default class TransactionsController {
 			.catch((e) => {console.log(e)});
 	}
 
+	/**
+	 * Creates a transfer transaction for a given user,
+	 * following the modal found in TransferTransaction
+	 *
+	 * A transfer transaction is treated as two different transactions
+	 * of opposite values following a Double-entry bookkeeping method.
+	 *
+	 * The two sides of the transaction (originating and incoming transfer)
+	 * are linked together by the from_transfer_transaction and the to_transfer_transaction fields,
+	 * which mark what transaction represents the debit (from) and which represents the credit (to)
+	 */
 	@Post("/transaction/transfer/:userId")
 	async createTransferTransaction(req, res) {
 		const t : TransferTransaction = req.body;
@@ -173,6 +204,9 @@ export default class TransactionsController {
 			.catch((e) => {throw(e)})
 	}
 
+	/**
+	 * Get all categories for a given userId
+	 */
 	@Get("/category/:userId")
 	async getCategories(req, res) {
 		const userId = req.params.userId;
@@ -184,6 +218,10 @@ export default class TransactionsController {
 		res.send(availableCategories);
 	}
 
+	/**
+	 * Create a new category for a given userId
+	 * The HTTP body must include a Category object
+	 */
 	@Post("/category/:userId")
 	async createCategory(req, res) {
 		const category : Category = req.body;
@@ -195,6 +233,9 @@ export default class TransactionsController {
 			.catch((e) => {throw(e)})
 	}
 
+	/**
+	 * Updates a given category based on the categoryId query path paremeter
+	 */
 	@Put("/category/:categoryId")
 	async updateCategory(req, res) {
 		const category : Category = req.body;
@@ -203,6 +244,9 @@ export default class TransactionsController {
 		this.transactionsRepo.updateCategory(categoryId, category).then(r => res.send(category));
 	}
 
+	/**
+	 * Deletes a given category based on the categoryId query path paremeter
+	 */
 	@Delete("/category/:categoryIdToDelete/:replacingWith")
 	async deleteCategory(req, res) {
 		const categoryIdToDelete = req.params.categoryIdToDelete;
@@ -211,6 +255,9 @@ export default class TransactionsController {
 		this.transactionsRepo.deleteCategory(categoryIdToDelete, replacingWith).then(r => res.send());
 	}
 
+	/**
+	 * Get all available distinct tags for a given user
+	 */
 	@Get("/tag/:userId")
 	async getTagsForUser(req, res) {
 		const userId = req.params.userId;
@@ -227,6 +274,10 @@ export default class TransactionsController {
 		res.send(availableTags);
 	}
 
+	/**
+	 * Get transactions grouped by day following the DailyTransactions model
+	 * including ending daily balance and associated transactions for that day
+	 */
 	@Get("/transaction_per_day/:userId")
 	async getTransactionsGroupedPerDay(req, res) {
 		const userId = req.params.userId;
