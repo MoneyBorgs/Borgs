@@ -81,7 +81,23 @@ export const InvestModal = observer((props : InvestModalProps) => {
 			.then(response => {
 				let stock_price = response.data[0].open;
 
-				
+				let value = stock_price * +quantity
+
+				var Transaction = {
+					transaction_id!: number;
+					virtual_account!: number;
+					physical_account!: number;
+					value!: number;
+					category!: Category;
+					timestampepochseconds!: number;
+					description!: String;
+					notes!: String;
+					tags!: Tag[];
+					from_transfer_transaction!: number;
+					to_transfer_transaction!: number;
+				}
+
+				// at this point we have all the information we need to call a regular transaction api
 
 				setAlert1(false);
 				setAlert2(true);
