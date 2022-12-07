@@ -9,7 +9,9 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import { RouterStore } from 'mobx-state-router';
 import { useRouterStore } from 'mobx-state-router';
-import {formatCurrencyText} from "../../utils/TextUtils";
+import { CurrencyCell } from '../reports/tableCard';
+import { BarChart, YAxis, Bar } from 'recharts';
+import { formatCurrencyText } from '../../utils/TextUtils';
 
 let routerStore;
 const {Column, HeaderCell, Cell} = Table;
@@ -17,24 +19,7 @@ const BoldCell = ({rowData, dataKey, ...props }) => (
 	<Cell {...props}>
 		<b>{rowData[dataKey]}</b>
 	</Cell>
-	);
-function conditionalColor(data) {
-	var color = "black";
-	if (data < 0) {
-		color = "red";
-	}
-	else if (data > 0) {
-		color = "green";
-	}
-	return color;
-}
-const CurrencyCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography color={conditionalColor(rowData[dataKey])}>
-		{formatCurrencyText(rowData[dataKey])}
-		</Typography>
-	</Cell>
-	);
+		);
 
 export default function accountCard(dashboardStore, routerStore) {
   	return (
@@ -116,7 +101,7 @@ export function incomesAndExpensesCard(dashboardStore, routerStore) {
   <Card>
 	<CardContent>
 	  <Typography sx={{ fontSize: 28 }} color="text.secondary" gutterBottom>
-		Incomes and Expenses Summary
+		Current Month Incomes and Expenses
 	  </Typography>
 
 	  <div style={{
@@ -130,16 +115,41 @@ export function incomesAndExpensesCard(dashboardStore, routerStore) {
 				}}
 				>
 					<Column width={250} align="center" fixed>
-						<HeaderCell><b>Total Incomes</b></HeaderCell>
-						<CurrencyCell dataKey="total_incomes" rowData={undefined}/>
+						<HeaderCell><b>Monthly Expense</b></HeaderCell>
+						<CurrencyCell dataKey="total_expenses" rowData={undefined}/>
 					</Column>
 
 					<Column width={250} align="center">
-						<HeaderCell><b>Total Expenses</b></HeaderCell>
-						<CurrencyCell dataKey="total_expenses" rowData={undefined}/>
+						<HeaderCell><b>Monthly Income</b></HeaderCell>
+						<CurrencyCell dataKey="total_incomes" rowData={undefined}/>
 					</Column>
 				</Table>	
 			</div>
+
+		<br></br>
+		<br></br>
+		<br></br> 
+
+		<div style={{
+			display: 'block', width: 700
+			}}>
+				<BarChart width={500} height={250} data={dashboardStore.currentExpensesIncomes} margin={{ top: 5, right: 20, bottom: 5, left: 100 }}>
+					<YAxis
+						tickFormatter={(value) => {return formatCurrencyText(value)}}
+					/>
+					<Bar dataKey="total_expenses" fill="#F84F31" />
+					<Bar dataKey="total_incomes" fill="#23C552" />
+				</BarChart>
+
+				
+
+				<br></br> 
+				{dashboardStore.currentExpensesIncomes[0].diff > 0? 
+					<Typography>This month you have spent <strong>{formatCurrencyText(dashboardStore.currentExpensesIncomes[0].diff)}</strong> less than you have deposited.</Typography>
+					:
+					<Typography>This month you have spent <strong>{formatCurrencyText(Math.abs(dashboardStore.currentExpensesIncomes[0].diff))}</strong> more than you have deposited.</Typography> }
+				<br></br>
+        	</div>
 	</CardContent>
 	<CardActions>
 	  <Button size="small" onClick={() => { routerStore.goTo('reports'); }}>See Detailed Reports</Button>

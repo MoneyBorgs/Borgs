@@ -13,7 +13,8 @@ import { Table } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import accountCard, { categoryCard, incomesAndExpensesCard } from '../components/dashboard/accountCard';
 import { useRouterStore } from 'mobx-state-router';
-import {formatCurrencyText} from "../utils/TextUtils";
+import { NewTransactionMenu } from '../components/transactions/NewTransactionMenu';
+import { formatCurrencyText } from '../utils/TextUtils';
 
 export const MainPage = observer(() => {
 	const {dashboardStore, userStore} = useStores();
@@ -22,37 +23,75 @@ export const MainPage = observer(() => {
 	return (
 		<div>
 			<Typography variant='h5' paddingLeft='3%' paddingTop='3%'>
-				Welcome {userStore.firstname} {userStore.lastname}!
+				Welcome, <strong>{userStore.firstname} {userStore.lastname}</strong>!
 			</Typography>
+
 			<Typography variant='h2' align='center' padding='1%'>
 				Home
 			</Typography>
 
-			<Typography variant='h4' align='center'>
-				Total Balance = <strong>{formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
-			</Typography>
-
 			<div style={{ 
-				width: '100%', 
-				display: 'flex', 
-				justifyContent: 'space-between', 
-				alignItems: 'center',
-				paddingLeft: '5%',
-				paddingTop: '5%'}}>
+					display: 'flex', 
+					flexDirection: 'row'}}>
 
-			{accountCard(dashboardStore, routerStore)}
+				<div style={{ 
+					width: '70%', 
+					paddingLeft: '8%',
+					paddingTop: '2%',
+					paddingRight: '4%',
+					borderRight: '1px solid #222'}}>
+
+				<Typography variant='h4' align='center'>
+					Total Balance = <strong>$ {formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
+				</Typography>
+
+				</div>
+
+				<div style={{ 
+						width: '30%',
+						paddingLeft: '10%'}}>
+
+				<NewTransactionMenu></NewTransactionMenu>
+
+				</div>
 			</div>
 
 			<div style={{ 
-				width: '100%', 
-				display: 'flex', 
-				justifyContent: 'space-between', 
-				alignItems: 'center',
-				padding: '5%'}}>
+					display: 'flex', 
+					flexDirection: 'row'}}>
 
-			{categoryCard(dashboardStore, routerStore)}
+				<div style={{ 
+					width: '50%', 
+					paddingLeft: '8%',
+					paddingTop: '5%',
+					paddingRight: '4%',
+					paddingBottom: '8%'}}>
+					
+					<div style={{ 
+						paddingLeft: '8%',
+						paddingTop: '5%',
+						paddingRight: '4%',
+						paddingBottom: '8%'}}>
+							{accountCard(dashboardStore, routerStore)}
+						</div>
+					
+					{categoryCard(dashboardStore, routerStore)}
 
-			{incomesAndExpensesCard(dashboardStore, routerStore)}
+				
+
+				</div>
+
+				<div style={{ 
+					width: '50%', 
+					paddingLeft: '4%',
+					paddingTop: '5%',
+					paddingRight: '6%',
+					paddingBottom: '6%'}}>
+
+					{incomesAndExpensesCard(dashboardStore, routerStore)}
+
+				</div>	
+
 			</div>
 
 		</div>
