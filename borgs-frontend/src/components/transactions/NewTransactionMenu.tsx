@@ -1,13 +1,9 @@
 import * as React from 'react';
-import Button from '@mui/joy/Button';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
 import {useStores} from '../../hooks/useStores';
 import {observer} from 'mobx-react-lite';
 import {ExpenseCreateOrEditModal} from './ExpenseCreateOrEditModal';
-import Transaction from '../../model/Transaction';
-import dayjs from "dayjs";
 import {CategoryTypes} from "../../model/Category";
+import {Button, Menu, MenuItem} from "@mui/material";
 
 interface IModalState  {
 	isModalOpen : boolean;
@@ -61,7 +57,6 @@ export const NewTransactionMenu = observer(() => {
 					aria-haspopup="true"
 					aria-expanded={open ? 'true' : undefined}
 					variant="outlined"
-					color="neutral"
 					onClick={handleClick}
 				>
 					New Transaction
@@ -72,7 +67,6 @@ export const NewTransactionMenu = observer(() => {
 					open={open}
 					onClose={handleClose}
 					aria-labelledby="basic-demo-button"
-					placement="bottom-start"
 				>
 					<MenuItem onClick={handleNewExpense}>Expense</MenuItem>
 					<MenuItem onClick={handleNewIncome}>Income</MenuItem>
