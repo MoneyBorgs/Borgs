@@ -110,7 +110,7 @@ export default class AccountsStore {
 	
 	@action
     deleteVirtualAccount(account: Account) {
-        console.log(`Deleting new virtual account AccountsStore`);
+        console.log(`Deleting virtual account AccountsStore`);
 		const { userStore } = this.rootStore;
         axiosRequest.delete(`/virtualaccount/${account.account_id}`)
             .then(action(
@@ -122,9 +122,33 @@ export default class AccountsStore {
     }
 	@action
     deletePhysicalAccount(account: Account) {
-        console.log(`Deleting new physical account AccountsStore`);
+        console.log(`Deleting physical account AccountsStore`);
 		const { userStore } = this.rootStore;
         axiosRequest.delete(`/physicalaccount/${account.account_id}`)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updatePhysicalAccounts();
+                }
+            ));
+		
+    }
+	@action
+    editVirtualAccount(account: Account) {
+        console.log(`Editing physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.put(`/virtualaccount/${account.account_id}`, account)
+            .then(action(
+                (res: AxiosResponse<Account, any>) => {
+                    this.updateVirtualAccounts();
+                }
+            ));
+		
+    }
+	@action
+    editPhysicalAccount(account: Account) {
+        console.log(`Editing physical account AccountsStore`);
+		const { userStore } = this.rootStore;
+        axiosRequest.put(`/physicalaccount/${account.account_id}`, account)
             .then(action(
                 (res: AxiosResponse<Account, any>) => {
                     this.updatePhysicalAccounts();

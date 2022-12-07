@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useStores } from '../hooks/useStores';
 import { NewAccountMenu } from '../components/accounts/NewAccountMenu';
 import { DeleteAccountMenu } from '../components/accounts/DeleteAccountMenu';
+import { EditAccountMenu } from '../components/accounts/EditAccountMenu';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AccountPicker } from '../components/fields/AccountPicker';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -37,6 +38,7 @@ export const Accounts = observer(() => {
         <div>
             <NewAccountMenu/>
 			<DeleteAccountMenu/>
+			<EditAccountMenu/>
             <TextField id="outlined-basic" 
             label="Account ID" variant="outlined" 
             onChange={(event) => setUserID(event.target.value)}

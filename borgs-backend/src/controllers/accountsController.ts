@@ -74,6 +74,34 @@ export default class AccountsController {
 
 			res.send(a);
 		} 
+	@Put("/virtualaccount/:accountId")
+	async editVirtualAccount(req, res) {
+		console.log(`Editing virtual account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+			const result = await dbPool.query(
+				`UPDATE VirtualAccounts 
+				SET name = $2
+				WHERE account_id = $1`,
+				[accountId, a.name]
+			)
+
+			res.send(a);
+		} 
+	@Put("/physicalaccount/:accountId")
+	async editPhysicalAccount(req, res) {
+		console.log(`Editing virtual account AccountsController`);
+		const accountId = req.params.accountId;
+		const a : Account = req.body;
+			const result = await dbPool.query(
+				`UPDATE PhysicalAccounts 
+				SET name = $2
+				WHERE account_id = $1`,
+				[accountId, a.name]
+			)
+
+			res.send();
+		} 
 	@Delete("/virtualaccount/:accountId")
 	async deleteVirtualAccount(req, res) {
 		console.log(`Deleting virtual account AccountsController`);
