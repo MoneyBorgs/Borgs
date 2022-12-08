@@ -17,6 +17,7 @@ import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
 import {AccountPicker} from '../fields/AccountPicker';
 import RootStore from '../../stores/RootStore';
+import dayjs from "dayjs";
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -100,9 +101,6 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 				// Logging the investment
 				investmentsStore.createInvestment(investmentState);
-
-				RootStore.updateCache()
-
 
 
 				setAlert1(false);

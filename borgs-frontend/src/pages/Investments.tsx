@@ -4,9 +4,10 @@ import { NewInvestmentMenu } from '../components/investments/NewInvestmentMenu';
 import Button from '@mui/material/Button';
 import { useStores } from '../hooks/useStores';
 import { useRouterStore } from 'mobx-state-router';
+import { AllInvestmentsTable } from '../components/investments/AllInvestmentsTable';
 
 export const Investments = observer(() => {
-	const { reportsStore, userStore, accountsStore } = useStores();
+	const { investmentsStore, userStore, accountsStore } = useStores();
 	const routerStore = useRouterStore();
 
 	if (accountsStore.currentPhysicalAccountsData.length === 0) {
@@ -37,7 +38,13 @@ export const Investments = observer(() => {
 			<h1>Investments</h1>
 			<NewInvestmentMenu/>
 
-			
+			<br></br>
+
+			{AllInvestmentsTable(investmentsStore, routerStore)}
+
+			<br></br>
+
+			Note: current stock data uses an api with limited amount of use, don't press this button unless you have to.
 		</div>
 	)
 });
