@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStores } from '../hooks/useStores';
 import UserStore from '../stores/UserStore';
+import { SettingsModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/SettingsModal"
 
 let routerStore;
 
@@ -48,13 +49,6 @@ const pages : IPage[] = [
 		}
 	},
 	{
-		key: 'allocations',
-		displayName: 'Allocations',
-		onClick: () => {
-			routerStore.goTo('allocations');
-		}
-	},
-	{
 		key: 'reports',
 		displayName: 'Reports',
 		onClick: () => {
@@ -74,6 +68,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const ResponsiveAppBar = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
+	const [isModal1Open, setIsModen1Open] = React.useState(false);
 
 	routerStore = useRouterStore()
 
@@ -100,12 +95,20 @@ const ResponsiveAppBar = () => {
 		setAnchorElUser(null);
 	};
 
+	const handleSettingsMenu = (event) => {
+		setAnchorElUser(null);
+		setIsModen1Open(true);
+	}
+
 	return (
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-					<Typography
+					{/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+					<Box sx={{ pr: 2 }}>
+					<img style={{ width: 50, height: 50 }} src={require('../resources/mini-logo.PNG')} alt='money borgs logo'/>
+					</Box>
+					{/* <Typography
 						variant="h6"
 						noWrap
 						component="a"
@@ -121,7 +124,7 @@ const ResponsiveAppBar = () => {
 						}}
 					>
 						LOGO
-					</Typography>
+					</Typography> */}
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
@@ -159,7 +162,7 @@ const ResponsiveAppBar = () => {
 							))}
 						</Menu>
 					</Box>
-					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+					{/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
 					<Typography
 						variant="h5"
 						noWrap
@@ -176,7 +179,7 @@ const ResponsiveAppBar = () => {
 							textDecoration: 'none',
 						}}
 					>
-						BORGS
+						LOGO
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map((page) => (
@@ -193,7 +196,7 @@ const ResponsiveAppBar = () => {
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+								<Avatar sx={{ bgcolor: 'inherit' }} src="/broken-image.jpg" />
 							</IconButton>
 						</Tooltip>
 						<Menu
@@ -215,12 +218,11 @@ const ResponsiveAppBar = () => {
 							<MenuItem onClick={handleLogout}>
 								<Typography textAlign="center">Logout</Typography>
 							</MenuItem>
-							{/* {settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">{setting}</Typography>
-								</MenuItem>
-							))} */}
+							<MenuItem onClick={handleSettingsMenu}>
+								<Typography textAlign="center">Settings</Typography>
+							</MenuItem>
 						</Menu>
+						<SettingsModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
 					</Box>
 				</Toolbar>
 			</Container>
