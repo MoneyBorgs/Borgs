@@ -35,8 +35,14 @@ export default class ReportsController {
 				SUM(T.value) AS balance,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes,
-				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100 AS percent_total_expenses,
-				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END)/total_incomes * 100 AS percent_total_incomes
+				CASE
+					WHEN total_expenses = 0 THEN 0
+					ELSE SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100
+					END AS percent_total_expenses,
+				CASE
+					WHEN total_incomes = 0 THEN 0
+					ELSE SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END)/total_incomes * 100
+					END AS percent_total_incomes
 			FROM
 				Transactions T
 			JOIN
@@ -92,8 +98,14 @@ export default class ReportsController {
 				SUM(T.value) AS balance,
 				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END) AS total_expenses,
 				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END) AS total_incomes,
-				SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100 AS percent_total_expenses,
-				SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END)/total_incomes * 100 AS percent_total_incomes
+				CASE
+					WHEN total_expenses = 0 THEN 0
+					ELSE SUM(CASE WHEN TC.category_type = 'EXPENSE' THEN T.value ELSE 0 END)/total_expenses * 100
+					END AS percent_total_expenses,
+				CASE
+					WHEN total_incomes = 0 THEN 0
+					ELSE SUM(CASE WHEN TC.category_type = 'INCOME' THEN T.value ELSE 0 END)/total_incomes * 100
+					END AS percent_total_incomes
 			FROM
 				Transactions T
 			JOIN

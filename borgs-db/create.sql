@@ -56,11 +56,21 @@ CREATE TABLE Transactions (
 	physical_account INT NOT NULL REFERENCES PhysicalAccounts(account_id) ON DELETE CASCADE,
 	value NUMERIC NOT NULL,
 	category INT NOT NULL REFERENCES TransactionsCategories(category_id) ON DELETE CASCADE,
-	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
+	timestampepochseconds BIGINT NOT NULL, -- Date stored in unix/epoch time
 	description TEXT,
 	notes TEXT,
     from_transfer_transaction INT REFERENCES Transactions(transaction_id) ON DELETE CASCADE,
 	to_transfer_transaction INT REFERENCES Transactions(transaction_id) ON DELETE CASCADE
+);
+
+-- Create Investments
+CREATE TABLE Investments (
+	investment_id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES Users(uid), 
+	count INT NOT NULL,
+	timestampepochseconds INT NOT NULL, -- Date stored in unix/epoch time
+	ticker VARCHAR(32) NOT NULL,
+	price NUMERIC NOT NULL
 );
 
 -- Create tags

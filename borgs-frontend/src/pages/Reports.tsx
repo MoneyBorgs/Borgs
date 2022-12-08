@@ -10,58 +10,52 @@ import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
 import {formatCurrencyText} from "../utils/TextUtils";
 import { Typography } from '@mui/material';
-import { vaTableCard, paTableCard, vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
-import { vaChartCard, paChartCard, vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
-
-const { Column, HeaderCell, Cell } = Table;
-
-function conditionalColor(data) {
-	var color = "black";
-	if (data < 0) {
-		color = "red";
-	}
-	else if (data > 0) {
-		color = "green";
-	}
-	return color;
-}
-
-export const CurrencyCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography color={conditionalColor(rowData[dataKey])}>
-		{formatCurrencyText(rowData[dataKey])}
-		</Typography>
-		
-	</Cell>
-	);
-
-export const PercentCell = ({rowData, dataKey, ...props }) => (
-	<Cell {...props}>
-		<Typography>
-		{rowData[dataKey].toFixed(2)}%
-		</Typography>
-		
-	</Cell>
-	);
+import { vaTableAccordion, paTableAccordion} from '../components/reports/tableCard';
+import { vaChartAccordion, paChartAccordion} from '../components/reports/chartCard';
+import { useRouterStore } from 'mobx-state-router';
 
 export const Reports = observer(() => {
 
 	const { reportsStore, userStore, accountsStore } = useStores();
+	const routerStore = useRouterStore();
 
 	const year = reportsStore.year;
 
-	const next_year = +year + 1;
-	const last_year = +year - 1;
+	if (accountsStore.currentPhysicalAccountsData.length === 0) {
+		return (
+			<div
+			style={{
+				padding: "1em 2.5em",
+			}}>
+			<h1>Reports</h1>
+
+			<br></br>
+
+			Make sure to add <strong>both</strong> virtual and physical accounts to look at reports!
+
+			<br></br>
+
+			<Button size="small" onClick={() => { routerStore.goTo('accounts'); }}>See Accounts</Button>
+
+			</div>
+		)
+	}
 
 	return (
-		<div>
+		<div
+			style={{
+				padding: "1em 2.5em",
+			}}>
+			<h1>Reports</h1>
+
+
 			<div style={{ 
 				width: '100%', 
 				display: 'flex', 
 				justifyContent: 'space-between', 
 				alignItems: 'center',
 				paddingLeft: '10%',
-				paddingTop: '5%'}}>
+				paddingTop: '1%'}}>
 			
 			{vaChartAccordion(reportsStore, accountsStore)}
 
@@ -87,7 +81,7 @@ export const Reports = observer(() => {
 				paddingLeft: '10%',
 				paddingTop: '2.5%'}}>
 			
-			{vaTableAccordion(reportsStore)}
+			{vaTableAccordion(reportsStore, routerStore)}
 			
 			</div>
 
@@ -99,7 +93,7 @@ export const Reports = observer(() => {
 				paddingLeft: '10%',
 				paddingTop: '2.5%'}}>
 
-			{paTableAccordion(reportsStore)}
+			{paTableAccordion(reportsStore, routerStore)}
 			
 			</div>
 

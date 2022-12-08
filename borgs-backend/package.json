@@ -25,6 +25,7 @@
     "jade": "~1.11.0",
     "lodash": "^4.17.21",
     "morgan": "~1.9.1",
+    "node-stock-data": "^1.1.2",
     "pg": "^8.8.0",
     "pg-format": "^1.0.4",
     "pg-types": "^4.0.0"

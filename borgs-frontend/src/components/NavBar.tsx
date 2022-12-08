@@ -55,6 +55,13 @@ const pages : IPage[] = [
 			routerStore.goTo('reports');
 		}
 	},
+	{
+		key: 'investments',
+		displayName: 'Investments',
+		onClick: () => {
+			routerStore.goTo('investments');
+		}
+	},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 

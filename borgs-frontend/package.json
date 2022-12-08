@@ -21,9 +21,12 @@
     "bcryptjs": "^2.4.3",
     "currency.js": "^2.0.4",
     "dayjs": "^1.11.5",
+    "google-stock-realtime": "^1.1.2",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "mobx-state-router": "^6.0.0",
+    "money-js": "^1.0.2",
+    "node-stock-data": "^1.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.0.1",
@@ -31,8 +34,12 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.1.16",
     "rsuite": "^5.22.0",
+    "stocksocket": "^2.1.2",
     "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yahoo-finance": "^0.3.7",
+    "yahoo-stock-prices": "^1.1.0",
+    "yahoo-stock-prices-fetch": "^1.4.4"
   },
   "scripts": {
     "start": "react-scripts start",

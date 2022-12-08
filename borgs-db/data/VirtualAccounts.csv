@@ -1,73 +1,71 @@
-0,0,General berg
-1,0,Emergencies stad
-2,0,General town
-3,0,Short-term shire
+0,0,Medium-term berg
+1,0,Food stad
+2,0,Short-term town
+3,1,Duke Tuition shire
 4,1,Food mouth
-5,1,Long-term land
-6,1,Emergencies side
-7,1,General berg
-8,2,Medium-term berg
+5,1,Medium-term land
+6,2,Long-term side
+7,2,Food berg
+8,2,Food berg
 9,2,Emergencies burgh
-10,2,Food town
-11,2,Duke Tuition berg
-12,3,Short-term stad
-13,3,Food mouth
-14,3,Short-term chester
-15,3,Long-term burgh
-16,4,General haven
-17,4,Medium-term side
-18,4,General furt
-19,5,Long-term port
-20,5,Medium-term furt
-21,5,Emergencies furt
-22,6,Short-term haven
-23,6,Emergencies chester
-24,6,Long-term ville
-25,6,Duke Tuition berg
-26,7,Medium-term shire
-27,7,Short-term ville
-28,7,Medium-term haven
-29,8,Duke Tuition view
+10,3,Emergencies town
+11,3,Short-term berg
+12,3,Medium-term stad
+13,3,General mouth
+14,4,General chester
+15,4,Duke Tuition burgh
+16,4,Emergencies haven
+17,4,Food side
+18,5,Duke Tuition furt
+19,5,Emergencies port
+20,5,Long-term furt
+21,6,Medium-term furt
+22,6,Medium-term haven
+23,6,Medium-term chester
+24,7,Emergencies ville
+25,7,Short-term berg
+26,7,General shire
+27,8,Emergencies ville
+28,8,Emergencies haven
+29,8,Short-term view
 30,8,Emergencies furt
-31,8,Food ton
-32,8,Short-term ville
-33,9,General fort
-34,9,Short-term ville
-35,9,Food stad
-36,10,Short-term view
-37,10,Emergencies bury
-38,10,Long-term side
-39,11,General land
-40,11,Short-term burgh
-41,11,General burgh
-42,12,Emergencies chester
-43,12,Short-term mouth
-44,12,Emergencies view
-45,12,Emergencies shire
-46,13,Long-term furt
+31,9,Short-term ton
+32,9,Duke Tuition ville
+33,9,Duke Tuition fort
+34,10,General ville
+35,10,Long-term stad
+36,10,Long-term view
+37,10,Long-term bury
+38,11,Food side
+39,11,Short-term land
+40,11,Food burgh
+41,12,Short-term burgh
+42,12,General chester
+43,12,Duke Tuition mouth
+44,13,General view
+45,13,Long-term shire
+46,13,Short-term furt
 47,13,Food mouth
-48,13,Duke Tuition ton
-49,13,Emergencies land
-50,14,Emergencies furt
-51,14,Long-term bury
-52,14,Long-term mouth
-53,15,Food fort
-54,15,Long-term view
-55,15,General fort
-56,15,Short-term furt
-57,16,Long-term view
-58,16,General bury
-59,16,Duke Tuition stad
-60,16,Short-term port
-61,17,Short-term mouth
-62,17,Short-term land
-63,17,Duke Tuition furt
-64,17,Emergencies chester
-65,18,Duke Tuition land
-66,18,Food fort
-67,18,Duke Tuition ville
-68,18,Duke Tuition berg
-69,19,Long-term ville
+48,14,Food ton
+49,14,Medium-term land
+50,14,Medium-term furt
+51,14,Duke Tuition bury
+52,15,Duke Tuition mouth
+53,15,Medium-term fort
+54,15,Emergencies view
+55,16,Short-term fort
+56,16,Long-term furt
+57,16,Food view
+58,16,Duke Tuition bury
+59,17,Long-term stad
+60,17,Emergencies port
+61,17,Emergencies mouth
+62,17,Long-term land
+63,18,Medium-term furt
+64,18,Medium-term chester
+65,18,Short-term land
+66,18,Emergencies fort
+67,19,Emergencies ville
+68,19,Food berg
+69,19,Short-term ville
 70,19,Short-term ton
-71,19,General shire
-72,19,Food borough

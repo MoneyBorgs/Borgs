@@ -9,7 +9,7 @@ import {
 import { MainPage } from '../pages/MainPage';
 import { Reports } from '../pages/Reports';
 import { Accounts } from '../pages/Accounts';
-import { Allocations } from '../pages/Allocations';
+import { Investments } from '../pages/Investments';
 import { Transactions } from '../pages/Transactions';
 import { Register } from '../pages/Register';
 import React from 'react';
@@ -51,6 +51,12 @@ export const routes : SuperRoute[] = [
 		pattern: '/register',
 		showNavBar: false,
 		container: <Register/>
+	},
+	{
+		name: 'investments',
+		pattern: '/investments',
+		showNavBar: true,
+		container: <Investments/>
 	},
 ];
 

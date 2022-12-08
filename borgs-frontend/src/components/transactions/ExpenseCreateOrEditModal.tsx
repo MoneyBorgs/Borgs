@@ -195,7 +195,7 @@ function tagObjectsToStrings(tags : (Tag | string)[]) {
 	return ret;
 }
 
-function renderAccountSelectorsForExpenseOrIncome(currentVirtualAccountsData,
+export function renderAccountSelectorsForExpenseOrIncome(currentVirtualAccountsData,
 												  currentPhysicalAccountsData,
 												  handleOnValueChange,
 												  preFilledTransaction) {

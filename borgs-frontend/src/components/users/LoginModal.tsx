@@ -72,7 +72,7 @@ export const LoginCreateModal = observer((props : LoginCreateModalProps) => {
 				  setAlertContent('Successfully logged in. You will now be directed to your dashboard...')
   
 				  // wait some time for user to read success message, then direct to dashboard
-				  setTimeout(() => {  router.goTo("reports"); }, 3000);
+				  setTimeout(() => {  router.goTo("mainpage"); }, 3000);
 				  setTimeout(() => {  props.onClose(); }, 3000);
 				}
 				// proceed with this code if password does not match
