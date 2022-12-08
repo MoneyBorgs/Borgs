@@ -14,27 +14,31 @@ import {useRouterStore} from "mobx-state-router";
 export const NewRegistrationMenu = observer(() => {
 		const { userStore } = useStores();
 		const router = useRouterStore();
+
+		// define values and methods to handle when the modals are open or closed
 		const [anchorEl, setAnchorEl] = React.useState(null);
 		const [isModal1Open, setIsModen1Open] = React.useState(false);
 		const [isModal2Open, setIsModen2Open] = React.useState(false);
 		const open = Boolean(anchorEl);
-		const handleClick = (event) => {
-			setAnchorEl(event.currentTarget);
-		};
+
+		// close the menu
 		const handleClose = () => {
 			setAnchorEl(null);
 		};
 
+		// open the registration modal
 		const handleNewUser = (event) => {
 			handleClose();
 			setIsModen1Open(true);
 		}
 
+		// open the login modal
 		const handleNewLogin = (event) => {
 			handleClose();
 			setIsModen2Open(true);
 		}
 
+		// bypass login and go straight to dashboard of account with uid = 1
 		const bypassLogin = () => {
 			handleClose();
 			userStore.updateLoginStatus(true);
@@ -83,7 +87,6 @@ export const NewRegistrationMenu = observer(() => {
 					>
 						Bypass login
 					</Button> </Box>
-
 				<RegisterCreateModal open={isModal1Open} onClose={() => {setIsModen1Open(false)}}/>
 				<LoginCreateModal open={isModal2Open} onClose={() => {setIsModen2Open(false)}}/>
 			</div>

@@ -112,6 +112,8 @@ def gen_transaction_categories(available_uids):
             category_id += 1
             writer.writerow([category_id, None, 'Other expenses', uid, 'EXPENSE'])
             category_id += 1
+            writer.writerow([category_id, None, 'Investments', uid, 'EXPENSE'])
+            category_id += 1
             writer.writerow([category_id, None, 'Other income', uid, 'INCOME'])
             category_id += 1
             for i in range(randrange(1,10,1)): # person can have [1,10] categories

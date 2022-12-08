@@ -14,8 +14,8 @@ import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
 import Alert from '@mui/material/Alert';
-import { ChangeNameModal } from "./ChangeNameModal"
-import { ResetPassModal } from "./ResetPassModal"
+import { ChangeNameModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ChangeNameModal"
+import { ResetPassModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ResetPassModal"
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -38,31 +38,29 @@ export interface SettingsModalProps extends Omit<ModalUnstyledOwnProps, "childre
 export const SettingsModal = observer((props : SettingsModalProps) => {
 	
 		const { userStore } = useStores();
-		const router = useRouterStore();
 
+		// define variables and methods to handle if the modals are open or closed
         const [isModal1Open, setIsModen1Open] = React.useState(false);
 		const [isModal2Open, setIsModen2Open] = React.useState(false);
 		const [anchorEl, setAnchorEl] = React.useState(null);
 		const open = Boolean(anchorEl);
 
+		// close the modal
 		const handleClose = () => {
 			setAnchorEl(null);
 		};
 
+		// open the change display name modal
         const handleNameChange = (event) => {
 			handleClose();
 			setIsModen1Open(true);
 		}
 
+		// open the reset password modal
 		const handleResetPass = (event) => {
 			handleClose();
 			setIsModen2Open(true);
 		}
-
-		// TODO get default user and make values consistent across usages
-		const [ emailAddress, setEmailAddress ] = useState('');
-		const [ passWord, setPassWord ] = useState('');
-
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -70,10 +68,6 @@ export const SettingsModal = observer((props : SettingsModalProps) => {
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
-
-		const handleOnSubmitForm = (event) => {			
-            props.onClose();
-		}
 
 		return (
 				<Modal {...props}>
@@ -110,9 +104,3 @@ export const SettingsModal = observer((props : SettingsModalProps) => {
 		);
 	}
 )
-
-function userFromFormData(data: FormData) : User {
-	let t = new User();
-
-	throw new Error('Function not implemented.');
-}

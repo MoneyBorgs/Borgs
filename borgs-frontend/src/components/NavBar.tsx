@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStores } from '../hooks/useStores';
 import UserStore from '../stores/UserStore';
-import { SettingsModal } from "./users/SettingsModal"
+import { SettingsModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/SettingsModal"
 
 let routerStore;
 
@@ -86,6 +86,10 @@ const ResponsiveAppBar = () => {
 	};
 
 	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
+
+	const handleLogout = () => {
 		userStore.updateLoginStatus(false);
 		routerStore.goTo("register");
 		setAnchorElUser(null);
@@ -100,7 +104,11 @@ const ResponsiveAppBar = () => {
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<Typography
+					{/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+					<Box sx={{ pr: 2 }}>
+					<img style={{ width: 50, height: 50 }} src={require('../resources/mini-logo.PNG')} alt='money borgs logo'/>
+					</Box>
+					{/* <Typography
 						variant="h6"
 						noWrap
 						component="a"
@@ -115,8 +123,8 @@ const ResponsiveAppBar = () => {
 							textDecoration: 'none',
 						}}
 					>
-						BORGS
-					</Typography>
+						LOGO
+					</Typography> */}
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
@@ -154,6 +162,7 @@ const ResponsiveAppBar = () => {
 							))}
 						</Menu>
 					</Box>
+					{/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
 					<Typography
 						variant="h5"
 						noWrap
@@ -170,7 +179,7 @@ const ResponsiveAppBar = () => {
 							textDecoration: 'none',
 						}}
 					>
-						BORGS
+						LOGO
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map((page) => (
@@ -187,7 +196,7 @@ const ResponsiveAppBar = () => {
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								Profile
+								<Avatar sx={{ bgcolor: 'inherit' }} src="/broken-image.jpg" />
 							</IconButton>
 						</Tooltip>
 						<Menu
@@ -206,7 +215,7 @@ const ResponsiveAppBar = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<MenuItem onClick={handleCloseUserMenu}>
+							<MenuItem onClick={handleLogout}>
 								<Typography textAlign="center">Logout</Typography>
 							</MenuItem>
 							<MenuItem onClick={handleSettingsMenu}>

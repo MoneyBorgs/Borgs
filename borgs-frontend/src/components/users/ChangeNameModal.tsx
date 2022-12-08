@@ -38,17 +38,21 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 		const { userStore } = useStores();
 		const router = useRouterStore();
 
-		// TODO get default user and make values consistent across usages
+		// define variables and methods used to change name
 		const [ firstName, setFirstName ] = useState('');
 		const [ lastName, setLastName ] = useState('');
+
+		// define variables and methods used to display proper alert
 		const [ alert, setAlert ] = useState(false);
 		const [ alertContent, setAlertContent ] = useState('');
 
+		// define variable and method to display modal
 		const [open, setOpen] = React.useState(false);
 		const handleOpen = () => {
 			setOpen(true);
 		};
 
+		// handle closing the modal
 		const handleClose = () => {
 			setAlert(false);
 			setOpen(false);
@@ -61,6 +65,8 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 		 * @param value the value 
 		 */
 
+		// when form is submitted, update userStore first and last name
+		// then, call backend to change display name and display a success message
 		const handleOnSubmitForm = (event) => {	
 			userStore.updateFirstName(firstName);
 			userStore.updateLastName(lastName);
@@ -129,7 +135,7 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 							Your Current Display Name Is:
 						</Typography>
 						<Box sx={{ pb: 2 }}>
-						<Typography
+						<Typography // display the user's current name; will auto update when they change it
 							id="basic-modal-dialog-title"
 							component="h2"
 							level="inherit"
@@ -152,17 +158,19 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 								<TextField
 									required
 									label="New First Name" autoFocus
+									// handle the user's new desired first name
 									onChange={(event) => setFirstName(event.target.value)}
 									value = {firstName}
 								/>
 								<TextField
 									required
 									label="New Last Name" autoFocus
+									// handle the user's new desired last name 
 									onChange={(event) => setLastName(event.target.value)}
 									value = {lastName}
 								/>
-								{alert ? <Alert severity='success'>{alertContent}</Alert> : <></> }																				
-								<Button
+								{alert ? <Alert severity='success'>{alertContent}</Alert> : <></>  } 																			
+								<Button // submit button
 								type="submit"
 								id="basic-demo-button"
 								aria-controls={open ? 'basic-menu' : undefined}
@@ -180,9 +188,3 @@ export const ChangeNameModal = observer((props : ChangeNameModalProps) => {
 		);
 	}
 )
-
-function userFromFormData(data: FormData) : User {
-	let t = new User();
-
-	throw new Error('Function not implemented.');
-}

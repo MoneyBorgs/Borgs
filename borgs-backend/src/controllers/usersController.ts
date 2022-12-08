@@ -4,6 +4,7 @@ import User from '../model/User';
 
 @Controller('/')
 export default class UsersController {
+    // register a new account into the database
     @Post("/user")
 	async addNewAccount(req, res) {
 
@@ -25,6 +26,7 @@ export default class UsersController {
 			res.send(u);
 		}
 
+    // get all accounts with a given email address in the database
     @Get("/user/:emailAddress")
     async getUserWithEmail(req, res) {
         const emailAddress = req.params.emailAddress;
@@ -37,6 +39,7 @@ export default class UsersController {
             res.send(rows);
     }
 
+    // get all accounts with a given password in the database
     @Get("/user/:emailAddress/:passWord")
     async getUserWithPassWord(req, res) {
         const passWord = req.params.passWord;
@@ -50,6 +53,7 @@ export default class UsersController {
             res.send(rows);
     }
 
+    // change a user's first and last name in the database
     @Put("/user/:emailAddress/:firstName/:lastName")
     async updateDisplayName(req) {
         const firstName = req.params.firstName;
@@ -63,6 +67,7 @@ export default class UsersController {
             )
     }
 
+    // change a user's password in the database
     @Put("/user/:emailAddress/:passWord")
     async resetPassword(req) {
         const passWord = req.params.passWord;
@@ -75,19 +80,7 @@ export default class UsersController {
             )
     }
 
-    @Get("/user/count/:emailAddress")
-    async getAccsWithEmail(req, res) {
-        const emailAddress = req.params.emailAddress;
-            const { rows } = await dbPool.query(
-                `SELECT COUNT(*)
-                FROM Users
-                WHERE email = $1
-                GROUP BY email`,
-                [emailAddress]
-            );
-            res.send(rows);
-        }
-
+    // get all accounts with a given first name in the database
     @Get("/user/:firstName")
     async getUsersWithName(req, res) {
         const firstName = req.params.firstName;

@@ -10,8 +10,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import UserStore from '../../stores/UserStore';
+import TransactionsStore from '../../stores/TransactionsStore';
 import Investment from '../../model/Investment';
+import Transaction from '../../model/Transaction';
+import Category, {CategoryTypes} from "../../model/Category";
 import { useRouterStore } from "mobx-state-router";
 import Alert from '@mui/material/Alert';
 import { DatePickerField } from '../fields/DatePickerField';
@@ -39,13 +41,16 @@ export interface InvestModalProps extends Omit<ModalUnstyledOwnProps, "children"
 
 export const InvestModal = observer((props : InvestModalProps) => {
 
-	const { accountsStore, userStore, investmentsStore } = useStores();
+	const { accountsStore, userStore, investmentsStore, transactionsStore } = useStores();
 	const router = useRouterStore();
 
 	const [ investmentState, setInvestmentState ] = useState(new Investment());
+	const [ transactionState, setTransactionState ] = useState(new Transaction());
 
 	const [ va, setVA ] = useState('');
 	const [ pa, setPA ] = useState('');
+	// setPA(accountsStore.currentPhysicalAccountsData[0].account_id.toString());
+	// setVA(accountsStore.currentVirtualAccountsData[0].account_id.toString());
 
 	const [ alert1, setAlert1 ] = useState(false);
 	const [ alert2, setAlert2 ] = useState(false);
@@ -62,6 +67,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 		setInvestmentState({...investmentState, [field] : value})
 	}
 
+
 	const handleOnSubmitForm = (event) => {		
 		// We will generate a transaction with the values of the stock * quantity invested
 		// Transaction will be considered an expense to the virtual and physical accounts
@@ -75,7 +81,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 		stockdata.stocks(
 			{
-			  API_TOKEN: 'a962cb8caba6e6ee094665113d7a4b8b',
+			  API_TOKEN: 'efd2d4eea0da7aae94e83d3025b6675d',
 			  options: {
 				limit: 1,
 				symbols: investmentState.ticker
@@ -96,12 +102,33 @@ export const InvestModal = observer((props : InvestModalProps) => {
 				investmentState.price = value;
 				investmentState.timestampepochseconds = dayjs().unix();
 				investmentState.user_id = userStore.uid;
+				
 
 				console.log(investmentState)
 
 				// Logging the investment
 				investmentsStore.createInvestment(investmentState);
 
+
+				if (typeof va === 'string') {
+					setVA(accountsStore.currentVirtualAccountsData[0].account_id.toString());
+				}
+
+				if (typeof pa === 'string') {
+					setPA(accountsStore.currentPhysicalAccountsData[0].account_id.toString());
+				}
+
+				transactionState.virtual_account = +va;
+				transactionState.physical_account = +pa;
+				transactionState.value = value*-1;
+				transactionState.timestampepochseconds = dayjs().unix();
+				transactionState.category = transactionsStore.availableCategories.filter((category) => {
+					return category.displayname === "Investments"
+				})[0];
+
+				console.log(transactionState.virtual_account);
+				console.log(transactionState.physical_account);
+				transactionsStore.createNewTransaction(transactionState);
 
 				setAlert1(false);
 				setAlert2(true);

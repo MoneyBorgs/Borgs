@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import User from '../../model/User';
+import Alert from '@mui/material/Alert';
 
 
 const style = {
@@ -34,12 +35,17 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 	
 		const { userStore } = useStores();
 
-		// TODO get default user and make values consistent across usages
+		// import the hash conversion package
+		const bcrypt = require("bcryptjs");
+
+		// define variables and methods to handle the user's attempted registration info
 		const [ userState, setUserState ] = useState(new User());
 
+		// define variables and methods to display the proper alert message
 		const [ alert1, setAlert1 ] = useState(false);
 		const [ alert2, setAlert2 ] = useState(false);
-		const [ alertContent, setAlertContent ] = useState('');
+		const [ alertContent, setAlertContent ] = useState('')
+
 
 		/**
 		 * Handles the value change on the inputs by setting the respective field variable
@@ -47,17 +53,44 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		 * @param field the field of the User type to be set
 		 * @param value the value 
 		 */
+
+		// as the user types in the text boxes, update the respective user info value
 		const handleOnValueChange = (field, value) => {
 			setUserState({...userState, [field] : value})
 		}
 
-		const handleOnSubmitForm = (event) => {		
-			userStore.createNewUser(userState);
-			if (userStore.errorStatus) {
-				console.log('Dumb bitch');
+		function setAlerts() {
+			// checks if there is already an email in the database with this account
+			// proceed with this code if no account with this email already exists
+			if (userStore.currentUserWithEmail.map( user => [user.email, user.password, user.uid])[0] === undefined) {
+				// display success message
+				setAlert1(false);
+				setAlert2(true);
+				setAlertContent('You have successfully registered to MoneyBorgs! You may now close this window and login.')
+				// hash the user's string literl password
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(userState.password, salt, function(err, hash) {
+					// store hash in the database along with the rest of the new user info
+					userState.password = hash;
+					userStore.createNewUser(userState);
+					});
+					})
 			}
-			props.onClose();
+			// proceed with this code if an account with this email already exists
+			else {
+				// display error message
+				setAlert2(false);
+				setAlert1(true);
+				setAlertContent('An account already exists with this email. Please try again.')
+			}
 		}
+
+		// when the form is submitted, call the backend to see if an account with this email already exists
+		const handleOnSubmitForm = (event) => {	
+			userStore.updateEmail(userState.email);
+			userStore.userWithEmail();
+			setTimeout(() => { setAlerts() }, 1000);
+	}
 
 		return (
 				<Modal {...props}>
@@ -99,6 +132,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 									label="Email Address" autoFocus
 									onChange={(email) => { handleOnValueChange("email", email.target.value); }}
 								/>
+								{alert1 ? <Alert severity='error'>{alertContent}</Alert> : <></> }
 								<TextField
 									required
 									label="Password" autoFocus
@@ -114,7 +148,8 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 									required
 									label="Last Name" autoFocus
 									onChange={(lastname) => { handleOnValueChange("lastname", lastname.target.value) }}
-								/>																								
+								/>		
+								{alert2 ? <Alert severity='success'>{alertContent}</Alert> : <></> }																						
 								<Button type="submit">Register!</Button>
 							</Stack>
 						</LocalizationProvider>
@@ -124,9 +159,3 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 		);
 	}
 )
-
-function userFromFormData(data: FormData) : User {
-	let t = new User();
-
-	throw new Error('Function not implemented.');
-}
