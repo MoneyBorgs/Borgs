@@ -81,7 +81,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 		stockdata.stocks(
 			{
-			  API_TOKEN: 'efd2d4eea0da7aae94e83d3025b6675d',
+			  API_TOKEN: '2c5d00420484e57438fcb9494d63be16',
 			  options: {
 				limit: 1,
 				symbols: investmentState.ticker
@@ -108,7 +108,9 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 				// Logging the investment
 				investmentsStore.createInvestment(investmentState);
-
+				console.log(va)
+				console.log(pa)
+				console.log(accountsStore.currentVirtualAccountsData[0].account_id.toString())
 
 				if (typeof va === 'string') {
 					setVA(accountsStore.currentVirtualAccountsData[0].account_id.toString());

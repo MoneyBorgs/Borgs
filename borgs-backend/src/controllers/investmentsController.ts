@@ -52,7 +52,7 @@ export default class InvestmentsController {
             
             const response = await stockdata.stocks(
                 {
-                    API_TOKEN: 'efd2d4eea0da7aae94e83d3025b6675d',
+                    API_TOKEN: '2c5d00420484e57438fcb9494d63be16',
                     options: {
                     limit: 1,
                     symbols: rows[i].ticker
