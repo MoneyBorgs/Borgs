@@ -42,7 +42,7 @@ export const MainPage = observer(() => {
 					borderRight: '1px solid #222'}}>
 
 				<Typography variant='h4' align='center'>
-					Total Balance = <strong>$ {formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
+					Total Balance = <strong>{formatCurrencyText(dashboardStore.currentTotalBalance)}</strong>
 				</Typography>
 
 				</div>

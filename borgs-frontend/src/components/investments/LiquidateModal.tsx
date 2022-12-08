@@ -103,7 +103,7 @@ export const LiquidateModal = observer((props : LiquidateModalProps) => {
 
 		console.log(transactionState.virtual_account);
 		console.log(transactionState.physical_account);
-		transactionsStore.createNewTransaction(transactionState);
+		transactionsStore.createNewTransaction({...transactionState, description: `${investmentState.ticker} sell`});
 		investmentsStore.liquidateInvestment(investmentsStore.toBeLiquidated.investment_id);
 
 		setAlert1(false);

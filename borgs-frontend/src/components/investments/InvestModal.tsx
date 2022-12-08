@@ -131,7 +131,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 				console.log(transactionState.virtual_account);
 				console.log(transactionState.physical_account);
-				transactionsStore.createNewTransaction(transactionState);
+				transactionsStore.createNewTransaction({...transactionState, description: `${investmentState.ticker} purchase`});
 
 				setAlert1(false);
 				setAlert2(true);

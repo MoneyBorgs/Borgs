@@ -95,7 +95,7 @@ export default class TransactionsRepository {
                         row_number() OVER (PARTITION BY date_trunc('day', to_timestamp(timestampepochseconds) AT TIME ZONE 'UTC') ORDER BY timestampepochseconds) AS nth_transaction
                     FROM borgs.public.Transactions T
                     INNER JOIN borgs.public.VirtualAccounts VA ON T.virtual_account = VA.account_id 
-                    INNER JOIN borgs.public.Tags ON Tags.transaction_id = T.transaction_id
+                    LEFT JOIN borgs.public.Tags ON Tags.transaction_id = T.transaction_id
                     WHERE VA.user_id = $1
                     GROUP BY T.transaction_id, va_user_id
                 ) q
