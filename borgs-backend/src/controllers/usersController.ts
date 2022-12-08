@@ -53,7 +53,10 @@ export default class UsersController {
             res.send(rows);
     }
 
+<<<<<<< HEAD
     // change a user's first and last name in the database
+=======
+>>>>>>> feature/reports
     @Put("/user/:emailAddress/:firstName/:lastName")
     async updateDisplayName(req) {
         const firstName = req.params.firstName;
@@ -67,7 +70,10 @@ export default class UsersController {
             )
     }
 
+<<<<<<< HEAD
     // change a user's password in the database
+=======
+>>>>>>> feature/reports
     @Put("/user/:emailAddress/:passWord")
     async resetPassword(req) {
         const passWord = req.params.passWord;
@@ -80,7 +86,23 @@ export default class UsersController {
             )
     }
 
+<<<<<<< HEAD
     // get all accounts with a given first name in the database
+=======
+    @Get("/user/count/:emailAddress")
+    async getAccsWithEmail(req, res) {
+        const emailAddress = req.params.emailAddress;
+            const { rows } = await dbPool.query(
+                `SELECT COUNT(*)
+                FROM Users
+                WHERE email = $1
+                GROUP BY email`,
+                [emailAddress]
+            );
+            res.send(rows);
+        }
+
+>>>>>>> feature/reports
     @Get("/user/:firstName")
     async getUsersWithName(req, res) {
         const firstName = req.params.firstName;

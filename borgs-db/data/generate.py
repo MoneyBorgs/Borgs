@@ -2,7 +2,9 @@
 # requirements but only needs to be run once and committed
 # python version 3.10.6
 # faker version 15.1.1
+# numpy version
 import csv
+import numpy as np
 from random import randrange, choice
 from faker import Faker
 import pathlib
@@ -21,14 +23,14 @@ def gen_users(num_users):
         writer = get_csv_writer(f)
         print('Users...', end=' ', flush=True)
         for uid in range(num_users):
-            if uid % 1000 == 0:
-                print(f'{uid}', end=' ', flush=True)
+            if uid % 10 == 0:
+                print(f'{uid}', end='... ', flush=True)
             profile = fake.profile()
             password = f'pass{uid}'
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            email = name_components[0] + "." + name_components[-1] + "@" + fake.domain_name(1)
+            email = name_components[0] + "." + name_components[-1] + str(uid) + "@" + fake.domain_name(1)
 
             # signalling that this uid can be used in other tables
             available_uids.append(uid) 
@@ -44,7 +46,7 @@ def gen_logins(available_uids):
         for uid in available_uids:
             for i in range(randrange(35,70,1)): # person can have [35,70] logins
                 login_dates = []
-                login_date = randrange(1388534400, 1577836800, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
+                login_date = randrange(1514782800, 1672203600, 1) # 2018-01-01 00:00:00 EST to 2022-12-28 00:00:00 EST
                 
                 if login_date not in login_dates:
                     login_dates.append(login_date)
@@ -64,12 +66,14 @@ def gen_virtual_accounts(available_uids):
             for i in range(randrange(3,5,1)): # person can have [3,5] VAs
                 name_options = ["General", "Long-term", "Short-term", "Medium-term", "Emergencies", "Food", "Duke Tuition"]
                 names = []
-                name = choice(name_options) + " " + fake.city_suffix() + " account"
+                name = choice(name_options) + " " + fake.city_suffix()
                 
+                account_mu = fake.random_int(max=20, min = 2)**3
+
                 if name not in names:
                     names.append(name)
                     writer.writerow([account_id, uid, name])
-                    virtual_account_relations[uid].append(account_id)
+                    virtual_account_relations[uid].append([account_id, account_mu])
                     account_id += 1
     print(f'{account_id} virtual accounts generated')
     return virtual_account_relations
@@ -104,6 +108,12 @@ def gen_transaction_categories(available_uids):
         category_id = 0
         for uid in available_uids:
             category_relations[uid] = []
+            writer.writerow([category_id, None, 'Transfer between accounts', uid, 'TRANSFER'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other expenses', uid, 'EXPENSE'])
+            category_id += 1
+            writer.writerow([category_id, None, 'Other income', uid, 'INCOME'])
+            category_id += 1
             for i in range(randrange(1,10,1)): # person can have [1,10] categories
                 category_types[category_id] = []
                 names = []
@@ -118,9 +128,9 @@ def gen_transaction_categories(available_uids):
 
                     if i > 0 and fake.pybool():
                         parent_category = category_id - 1
-                        writer.writerow([category_id, parent_category, name, uid, category_type])
+                        writer.writerow([category_id, parent_category, name + category_type, uid, category_type])
                     else:
-                        writer.writerow([category_id, None, name, uid, category_type])
+                        writer.writerow([category_id, None, name + category_type, uid, category_type])
 
                     category_id += 1
 
@@ -135,25 +145,45 @@ def gen_transactions(virtual_account_relations, physical_account_relations, cate
         transaction_id = 0
         for uid in available_uids:
             transaction_ids_relations[uid] = []
-            for i in range(randrange(1000,10000,1)): # person can have [1000,10000] transactions
-                
-                virtual_account_id = choice(virtual_account_relations[uid])
-                physical_account_id = choice(physical_account_relations[uid])
-                value = f'{str(fake.random_int(max=10000, min = 1))}.{fake.random_int(max=99):02}'
-                category = choice(category_relations[uid])
-                category_type = category_types[category][0]
 
-                if category_type == "EXPENSE":
-                    value = f'{str(fake.random_int(max=-1, min = -1000))}.{fake.random_int(max=99):02}'
+            virtual_account_options = virtual_account_relations[uid]
 
-                timestamp =  randrange(1388534400, 1668197014, 1) # 2014-01-01 00:00:00 to 2020-01-01 00:00:00
-                description = fake.bs()
-                note = fake.paragraph(nb_sentences=2)
+            lam_a = 0
+            lam_b = 9
 
-                writer.writerow([transaction_id, virtual_account_id, physical_account_id,
-                    value, category, timestamp, description, note, None])
-                transaction_ids_relations[uid].append(transaction_id)
-                transaction_id += 1
+            for account in virtual_account_options:
+                mu = account[1] * lam_a + lam_b # max of 20**3 min of 2**3
+                lam_a = 1
+                lam_b = 0
+                #print("mu is " + str(mu) + "num_transactions is " + str(num_transactions) + " for account " + str(account[0]))
+                sd = np.sqrt(mu - 8) + 2
+
+                num_transactions_multiplier = max(50 - 0.25*mu, 1)
+
+                num_transactions = round(randrange(12, 20, 1) * num_transactions_multiplier) # account can have [3,1000] transactions
+
+                for i in range(num_transactions): 
+                    physical_account_id = choice(physical_account_relations[uid])
+
+                    value = round(np.random.normal(loc = mu, scale = sd), 2)
+                    category = choice(category_relations[uid])
+                    category_type = category_types[category][0]
+
+                    if category_type == "EXPENSE":
+                        value = -abs(value) * 0.95
+                        #print("expense" + str(value))
+                    else:
+                        value = abs(value) * 1.05
+                        #print("income" + str(value))
+
+                    timestamp = randrange(1514782800, 1672203600, 1) # 2018-01-01 00:00:00 EST to 2022-12-28 00:00:00 EST
+                    description = fake.bs()
+                    note = fake.paragraph(nb_sentences=2)
+
+                    writer.writerow([transaction_id, account[0], physical_account_id,
+                        value, category, timestamp, description, note, None, None])
+                    transaction_ids_relations[uid].append(transaction_id)
+                    transaction_id += 1
 
     print(f'{transaction_id} transactions generated')
     return transaction_ids_relations

@@ -5,21 +5,27 @@ import EditIcon from '@rsuite/icons/Edit';
 import Transaction from "../../model/Transaction";
 import {useStores} from "../../hooks/useStores";
 import {useState} from "react";
-import {ExpenseCreateOrEditModal} from "./NewExpenseModal";
+import {ExpenseCreateOrEditModal} from "./ExpenseCreateOrEditModal";
 import TrashIcon from '@rsuite/icons/Trash';
 import {Typography} from "@mui/material";
 import dayjs from "dayjs";
 import {computeCurrencyTextColor, formatCurrencyText} from "../../utils/TextUtils";
+import {CategoryTypes} from "../../model/Category";
 
 export interface TransactionDrawer extends DrawerProps {
     transaction?: Transaction;
 }
 
+interface IModalState  {
+    isModalOpen : boolean;
+    transactionType?: CategoryTypes | undefined;
+}
+
 export const TransactionDrawer = observer((props: TransactionDrawer) => {
 
-        const { accountsStore } = useStores();
+        const { accountsStore, transactionsStore } = useStores();
 
-        const [ isModalOpen, setIsModalOpen ] = useState(false);
+        const [modalState, setModalState] = React.useState<IModalState>({isModalOpen: false});
 
         return (
             <>
@@ -31,13 +37,16 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
                         <Drawer.Actions>
                             <IconButton
                                 icon={<EditIcon />}
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={() => setModalState({isModalOpen: true})}
                                 appearance="subtle">
                                 Edit
                             </IconButton>
                             <IconButton
                                 icon={<TrashIcon />}
-                                onClick={() => {}} // TODO delete
+                                onClick={(event) => {
+                                    transactionsStore.deleteTransaction(props.transaction?.transaction_id);
+                                    if(props.onClose) props.onClose(event);
+                                }}
                                 appearance="subtle">
                             </IconButton>
                         </Drawer.Actions>
@@ -142,10 +151,11 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
 
                     </Drawer.Body>
                     <ExpenseCreateOrEditModal
-                        onClose={() => setIsModalOpen(false)}
-                        open={isModalOpen}
+                        onClose={() => setModalState({isModalOpen: false})}
+                        open={modalState.isModalOpen}
                         transactionType={props.transaction?.category.category_type}
                         preFilledTransaction={props.transaction}
+                        isEditingMode={true}
                     />
                 </Drawer>
             </>

@@ -130,7 +130,7 @@ export const RegisterCreateModal = observer((props : RegisterCreateModalProps) =
 								<TextField
 									required
 									label="Email Address" autoFocus
-									onChange={(email) => { handleOnValueChange("email", email.target.value) }}
+									onChange={(email) => { handleOnValueChange("email", email.target.value); }}
 								/>
 								{alert1 ? <Alert severity='error'>{alertContent}</Alert> : <></> }
 								<TextField
