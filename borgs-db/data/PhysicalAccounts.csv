@@ -1,29 +1,30 @@
-0,0,VISA 13 digit
-1,0,Maestro
-2,1,Maestro
-3,1,Discover
-4,2,JCB 15 digit
-5,3,JCB 16 digit
-6,4,JCB 16 digit
-7,4,Diners Club / Carte Blanche
+0,0,JCB 16 digit
+1,1,JCB 15 digit
+2,1,VISA 13 digit
+3,2,Maestro
+4,2,Maestro
+5,3,Discover
+6,3,JCB 15 digit
+7,4,JCB 16 digit
 8,5,JCB 16 digit
-9,6,JCB 16 digit
-10,7,Mastercard
-11,8,Diners Club / Carte Blanche
-12,8,JCB 15 digit
-13,9,American Express
-14,10,American Express
-15,11,Mastercard
-16,11,VISA 16 digit
-17,12,Maestro
-18,12,VISA 13 digit
-19,13,VISA 13 digit
-20,14,Diners Club / Carte Blanche
-21,14,VISA 19 digit
-22,15,VISA 19 digit
-23,15,VISA 13 digit
-24,16,Maestro
-25,17,Diners Club / Carte Blanche
-26,18,American Express
-27,19,JCB 15 digit
-28,19,American Express
+9,6,Diners Club / Carte Blanche
+10,6,JCB 16 digit
+11,7,JCB 16 digit
+12,8,Mastercard
+13,8,Diners Club / Carte Blanche
+14,9,JCB 15 digit
+15,9,American Express
+16,10,American Express
+17,11,Mastercard
+18,11,VISA 16 digit
+19,12,Maestro
+20,12,VISA 13 digit
+21,13,VISA 13 digit
+22,13,Diners Club / Carte Blanche
+23,14,VISA 19 digit
+24,15,VISA 19 digit
+25,16,VISA 13 digit
+26,17,Maestro
+27,18,Diners Club / Carte Blanche
+28,18,American Express
+29,19,JCB 15 digit

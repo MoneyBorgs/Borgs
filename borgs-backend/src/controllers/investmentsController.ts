@@ -52,14 +52,14 @@ export default class InvestmentsController {
             
             const response = await stockdata.stocks(
                 {
-                    API_TOKEN: 'efd2d4eea0da7aae94e83d3025b6675d',
+                    API_TOKEN: '2c5d00420484e57438fcb9494d63be16',
                     options: {
                     limit: 1,
                     symbols: rows[i].ticker
                     }
                 })
         
-            rows[i].current_price = response.data[0].adj_close
+            rows[i].current_price = response.data[0].open
             rows[i].value = rows[i].count * rows[i].current_price
             rows[i].percent_change = (100*(rows[i].current_price - rows[i].purchase_price)/rows[i].purchase_price)
         }

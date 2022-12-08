@@ -2,11 +2,23 @@ import * as React from 'react';
 import { Table, IconButton } from 'rsuite';
 import { CurrencyCell, PercentCell } from '../reports/tableCard';
 import Button from '@mui/material/Button';
+import { LiquidateModal } from './LiquidateModal';
 
 const {Column, HeaderCell, Cell} = Table;
 
+
+
+
 export function AllInvestmentsTable(investmentsStore, routerStore) {
-	return (
+	
+    const handleLiquidate = (rowData) => {
+        investmentsStore.toBeLiquidated = rowData
+        setIsModalOpen(true);
+    }
+    
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    
+    return (
         <div style={{
         display: 'block', width: 1100
             }}>
@@ -52,7 +64,7 @@ export function AllInvestmentsTable(investmentsStore, routerStore) {
                     <HeaderCell> Liquidate </HeaderCell>
                     <Cell>
                         {rowData => (
-                            <Button onClick={() => investmentsStore.liquidateInvestment(rowData)}>
+                            <Button onClick={() => handleLiquidate(rowData)}>
                             Liquidate
                           </Button>
                         )}
@@ -61,5 +73,6 @@ export function AllInvestmentsTable(investmentsStore, routerStore) {
             </Table>
 
             <Button size="small" onClick={() => { investmentsStore.getAllInvestments(); }}>Update Stock Data</Button>
+            <LiquidateModal open = {isModalOpen} onClose = {() => {setIsModalOpen(false)}}/>
         </div>
 )}

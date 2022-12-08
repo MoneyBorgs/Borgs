@@ -81,7 +81,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 		stockdata.stocks(
 			{
-			  API_TOKEN: 'efd2d4eea0da7aae94e83d3025b6675d',
+			  API_TOKEN: '2c5d00420484e57438fcb9494d63be16',
 			  options: {
 				limit: 1,
 				symbols: investmentState.ticker
@@ -99,7 +99,7 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 				
 
-				investmentState.price = value;
+				investmentState.price = stock_price;
 				investmentState.timestampepochseconds = dayjs().unix();
 				investmentState.user_id = userStore.uid;
 				
@@ -111,15 +111,18 @@ export const InvestModal = observer((props : InvestModalProps) => {
 
 
 				if (typeof va === 'string') {
-					setVA(accountsStore.currentVirtualAccountsData[0].account_id.toString());
+					transactionState.virtual_account = +accountsStore.currentVirtualAccountsData[0].account_id.toString()
+					console.log('this is happening')
+				} else {
+					transactionState.virtual_account = +va
 				}
-
+		
 				if (typeof pa === 'string') {
-					setPA(accountsStore.currentPhysicalAccountsData[0].account_id.toString());
+					transactionState.physical_account = +accountsStore.currentPhysicalAccountsData[0].account_id.toString();
+					console.log('this is happening')
+				} else {
+					transactionState.physical_account = +pa;
 				}
-
-				transactionState.virtual_account = +va;
-				transactionState.physical_account = +pa;
 				transactionState.value = value*-1;
 				transactionState.timestampepochseconds = dayjs().unix();
 				transactionState.category = transactionsStore.availableCategories.filter((category) => {
