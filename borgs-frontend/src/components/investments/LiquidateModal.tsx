@@ -103,6 +103,7 @@ export const LiquidateModal = observer((props : LiquidateModalProps) => {
 
 		console.log(transactionState.virtual_account);
 		console.log(transactionState.physical_account);
+		// TODO fix investmentState.ticker get actual ticket name
 		transactionsStore.createNewTransaction({...transactionState, description: `${investmentState.ticker} sell`});
 		investmentsStore.liquidateInvestment(investmentsStore.toBeLiquidated.investment_id);
 
