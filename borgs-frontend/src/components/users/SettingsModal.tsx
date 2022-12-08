@@ -14,8 +14,8 @@ import UserStore from '../../stores/UserStore';
 import User from '../../model/User';
 import {useRouterStore} from "mobx-state-router";
 import Alert from '@mui/material/Alert';
-import { ChangeNameModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ChangeNameModal"
-import { ResetPassModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/ResetPassModal"
+import { ChangeNameModal } from "./ChangeNameModal"
+import { ResetPassModal } from "./ResetPassModal"
 
 const style = {
 	position: 'absolute' as 'absolute',

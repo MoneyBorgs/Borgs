@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useStores } from '../hooks/useStores';
 import UserStore from '../stores/UserStore';
-import { SettingsModal } from "/home/vcm/Borgs/borgs-frontend/src/components/users/SettingsModal"
+import { SettingsModal } from "./users/SettingsModal"
 
 let routerStore;
 
