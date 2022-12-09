@@ -29,7 +29,7 @@ export default class RootStore {
 	}
 
 	updateCache() {
-		this.transactionsStore.updateAvailableCategories(false);
+		this.transactionsStore.updateAvailableCategories(true);
 		this.transactionsStore.updateAvailableTags();
 		this.accountsStore.updateVirtualAccounts();
 		this.accountsStore.updatePhysicalAccounts();

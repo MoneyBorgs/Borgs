@@ -10,7 +10,7 @@ export default class Transaction {
 	timestampepochseconds!: number;
 	description!: String;
 	notes!: String;
-	tags!: Tag[];
+	tags!: string[];
 	from_transfer_transaction!: number;
 	to_transfer_transaction!: number;
 }

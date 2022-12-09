@@ -142,7 +142,7 @@ export const TransactionDrawer = observer((props: TransactionDrawer) => {
                                             </b>
                                         </Typography>
                                         <TagGroup style={{marginTop: "-5px"}}>
-                                            {props.transaction?.tags.map((tag) => <Tag>{tag.toString()}</Tag>)}
+                                            {props.transaction?.tags.map((tag) => <Tag>{tag?.toString()}</Tag>)}
                                         </TagGroup>
                                     </>
                                 </Col>

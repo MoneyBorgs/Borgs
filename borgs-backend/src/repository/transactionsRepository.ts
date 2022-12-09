@@ -67,7 +67,7 @@ export default class TransactionsRepository {
                         timestampepochseconds,
                         description,
                         notes,
-                        array_agg(Tags.tag) AS tags,
+                        array_remove(array_agg(Tags.tag), NULL) AS tags,
                         from_transfer_transaction,
                         to_transfer_transaction,
                         (
