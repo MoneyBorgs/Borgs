@@ -45,7 +45,11 @@ export default class InvestmentsStore {
 				(res: AxiosResponse<Investment, any>) => {
 					this.updateInvestments()
 				}
-			)) 	
+			)).then(action(
+			() => {
+				this.rootStore.updateCache();
+			}
+		));
     }
 
 	@action
@@ -68,6 +72,10 @@ export default class InvestmentsStore {
 					this.currentInvestment.push(res.data);
 					this.updateInvestments();
 				}
-			))
+			)).then(action(
+			() => {
+				this.rootStore.updateCache();
+			}
+		));
 	}
 }

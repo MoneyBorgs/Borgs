@@ -60,7 +60,11 @@ export default class TransactionsStore {
                 (res: AxiosResponse<Transaction, any>) => {
                     this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
                 }
-            ));
+            )).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
 
     @action
@@ -72,7 +76,11 @@ export default class TransactionsStore {
                 (res: AxiosResponse<Transaction, any>) => {
                     this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
                 }
-            ));
+            )).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
 
     @action
@@ -96,7 +104,7 @@ export default class TransactionsStore {
                 .then(action((res: AxiosResponse<Category[], any>) => {
                     this.isUpdatingCategories = false;
                     this.availableCategories = res.data;
-            }));
+                }));
         }
     }
 
@@ -129,7 +137,11 @@ export default class TransactionsStore {
         axiosRequest.delete(`/transaction/${this.userStore.uid}/${transactionId}`)
             .then(action((res: AxiosResponse<Transaction, any>) => {
                 this.updateDailyTransactionsForDateRange(this.currentLoadedStartDate, this.currentLoadedEndDate)
-            }));
+            })).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
 
     @action
@@ -137,7 +149,11 @@ export default class TransactionsStore {
         axiosRequest.post(`/category/${this.userStore.uid}`, category)
             .then(action(() => {
                 this.updateAvailableCategories(true);
-            }));
+            })).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
 
     @action
@@ -148,14 +164,22 @@ export default class TransactionsStore {
                 if(localCategory) {
                     localCategory.displayname = category.displayname;
                 }
-            }));
+            })).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
-    
+
     @action
     deleteCategory(categoryToDelete: Category, replacingWith : Category) {
         axiosRequest.delete(`/category/${categoryToDelete.category_id}/${replacingWith.category_id}`)
             .then(action(() => {
                 this.updateAvailableCategories(true);
-        }));
+            })).then(action(
+            () => {
+                this.rootStore.updateCache();
+            }
+        ));
     }
 }
